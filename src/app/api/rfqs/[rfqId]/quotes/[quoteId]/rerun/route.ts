@@ -13,7 +13,11 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
     if (!quote) throw new ApiError(404, 'QUOTE_NOT_FOUND', 'Supplier quote was not found.');
     const document = current.quoteDocuments.find((item) => item.id === quote.quoteDocumentId && item.workspaceId === workspace.id) as any;
     const extraction = runQuoteExtraction(document?.sourceText ?? '', current.suppliers.find((supplier) => supplier.id === quote.supplierId)?.name);
+<<<<<<< HEAD
     const updated = await mutateDb((db) => { const quote = db.supplierQuotes.find((item) => item.id === quoteId && item.rfqId === rfqId && item.workspaceId === workspace.id) as any; if (!quote) throw new ApiError(404, 'QUOTE_NOT_FOUND', 'Supplier quote was not found.'); quote.extractedFields = extraction.parsed; quote.status = 'needs_review'; quote.extractionStatus = 'needs_review'; quote.confidenceScore = extraction.parsed.quoteConfidence; quote.updatedAt = now(); const w = db.workspaces.find((item) => item.id === workspace.id) as any; if (w) w.usage = { rfqsCreated: w.usage?.rfqsCreated ?? db.rfqs.filter((rfq) => rfq.workspaceId === workspace.id).length, quoteDocumentsUploaded: w.usage?.quoteDocumentsUploaded ?? db.quoteDocuments.filter((doc) => doc.workspaceId === workspace.id).length, aiExtractionRuns: (w.usage?.aiExtractionRuns ?? 0) + 1, teamMembers: db.workspaceMembers.filter((member) => member.workspaceId === workspace.id).length }; return quote; });
+=======
+    const updated = await mutateDb((db) => { const quote = db.supplierQuotes.find((item) => item.id === quoteId && item.rfqId === rfqId && item.workspaceId === workspace.id) as any; if (!quote) throw new ApiError(404, 'QUOTE_NOT_FOUND', 'Supplier quote was not found.'); quote.extractedFields = extraction.parsed; quote.status = 'needs_review'; quote.extractionStatus = 'needs_review'; quote.confidenceScore = extraction.parsed.quoteConfidence; quote.updatedAt = now(); return quote; });
+>>>>>>> origin/main
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.extraction_started', entityType: 'supplier_quote', entityId: quoteId, metadata: { rerun: true } });
     return jsonOk({ quote: updated });
   } catch (error) { return handleApiError(error); }

@@ -43,8 +43,14 @@ export const trustControls = [
 ] as const;
 
 export const pricingPlans = [
+<<<<<<< HEAD
   ['Starter', 'For lean purchasing teams getting organized.', ['RFQ workspace', 'Quote upload and parsing preview', 'Basic comparison tables', 'Guided setup']],
   ['Growth', 'For teams managing recurring supplier quotes.', ['Multi-user workflows', 'Approval controls', 'Supplier memory', 'Procurement analytics']],
   ['Pro', 'For multi-user procurement and operations teams.', ['Role-based access', 'Audit exports', 'PO draft exports', 'Workflow advisory']],
   ['Enterprise', 'For advanced controls, integrations, and tailored onboarding.', ['Admin readiness', 'Integration planning', 'Security review support', 'Dedicated rollout path']],
+=======
+  ['Starter', 'For teams formalizing RFQ intake and quote comparison.', ['RFQ workspace', 'Quote upload and parsing preview', 'Basic comparison tables', 'Email support']],
+  ['Growth', 'For supplier-heavy companies scaling purchasing visibility.', ['Multi-user workflows', 'Approval routing', 'Supplier memory', 'Procurement analytics']],
+  ['Pro', 'For advanced teams with complex controls and integrations.', ['Role-based access', 'Audit exports', 'Custom onboarding', 'Integration planning']],
+>>>>>>> origin/main
 ] as const;

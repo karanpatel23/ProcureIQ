@@ -13,7 +13,11 @@ export function buildRfqComparison(db: Database, rfq: Rfq) {
   const compared: ComparedQuote[] = quotes.map((quote) => {
     const fields: any = quote.reviewedFields ?? quote.extractedFields ?? {};
     const lineItems = db.quoteLineItems.filter((line) => line.workspaceId === rfq.workspaceId && line.supplierQuoteId === quote.id) as any[];
+<<<<<<< HEAD
     const totalPrice = Number(value(fields.totalPrice) ?? lineItems.reduce((sum, line) => sum + Number(line.extendedPrice ?? (line.quantity * line.unitPrice)), 0)) || null;
+=======
+    const totalPrice = Number(value(fields.totalPrice) ?? lineItems.reduce((sum, line) => sum + Number(line.extendedPrice ?? (line.quantity * line.unitPrice) ?? 0), 0)) || null;
+>>>>>>> origin/main
     const leadTime = value(fields.estimatedLeadTime);
     const paymentTerms = value(fields.paymentTerms);
     const freightTerms = value(fields.freightTerms);
