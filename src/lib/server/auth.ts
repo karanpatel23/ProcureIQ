@@ -106,3 +106,22 @@ export async function requirePageWorkspace() {
 export function safeUser(user: User) { return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt }; }
 export function canManageWorkspace(role: Role) { return role === 'owner' || role === 'admin'; }
 export type WorkspaceContext = { user: User; workspace: Workspace; membership: { role: Role } };
+<<<<<<< HEAD
+
+
+export async function requireInternalAdmin() {
+  const { user } = await requireUser();
+  const allowed = env.INTERNAL_ADMIN_EMAILS.split(',').map((email) => email.trim().toLowerCase()).filter(Boolean);
+  if (!allowed.includes(user.email.toLowerCase())) throw new ApiError(403, 'ADMIN_ONLY', 'Internal admin access is restricted.');
+  return { user };
+}
+
+
+export async function requirePageInternalAdmin() {
+  const { user } = await requirePageUser();
+  const allowed = env.INTERNAL_ADMIN_EMAILS.split(',').map((email) => email.trim().toLowerCase()).filter(Boolean);
+  if (!allowed.includes(user.email.toLowerCase())) { redirect('/app/dashboard'); throw new Error('Redirecting to dashboard'); }
+  return { user };
+}
+=======
+>>>>>>> origin/main

@@ -2,6 +2,8 @@ import { FeaturesSection, FinalCta, FounderSection, GoalsSection, Hero, Industri
 
 export default function Home() {
   return <main><Hero /><ProblemSection /><WorkflowSection /><IndustriesSection /><FeaturesSection /><TrustSection /><GoalsSection /><FounderSection /><PricingSection /><FinalCta /></main>;
+<<<<<<< HEAD
+=======
 const workflow = [
   'RFQ intake assembled from requests, drawings, and supplier history',
   'Supplier quotes ingested from email threads, PDFs, and spreadsheets',
@@ -50,4 +52,5 @@ export default function Home() {
       </section>
     </main>
   );
+>>>>>>> origin/main
 }

@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body><Header />{children}<Footer /></body></html>;
+<<<<<<< HEAD
+=======
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -30,4 +32,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>{children}</body>
     </html>
   );
+>>>>>>> origin/main
 }

@@ -6,7 +6,11 @@ export function Header() {
 }
 
 export function Footer() {
+<<<<<<< HEAD
+  return <footer className="footer"><div><strong>ProcureIQ</strong><p>Procurement intelligence for supplier-heavy teams.</p></div><div><Link href="/platform">Platform</Link><Link href="/security">Security</Link><Link href="/pricing">Pricing</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/contact">Contact</Link></div></footer>;
+=======
   return <footer className="footer"><div><strong>ProcureIQ</strong><p>Procurement intelligence for supplier-heavy teams.</p></div><div><Link href="/platform">Platform</Link><Link href="/security">Security</Link><Link href="/pricing">Pricing</Link><Link href="/contact">Contact</Link></div></footer>;
+>>>>>>> origin/main
 }
 
 export function Hero() {
@@ -47,7 +51,11 @@ export function FounderSection() {
 }
 
 export function PricingSection() {
+<<<<<<< HEAD
+  return <section className="section-shell pricing"><p className="eyebrow">Pricing preview</p><h2>Choose the workflow depth that matches your purchasing motion.</h2><div className="pricing-grid">{pricingPlans.map(([name, description, items]) => <article key={name}><h3>{name}</h3><p>{description}</p><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul><Link className="button secondary" href={`/demo?plan=${name.toLowerCase()}`}>Talk to Sales</Link></article>)}</div></section>;
+=======
   return <section className="section-shell pricing"><p className="eyebrow">Pricing preview</p><h2>Choose the workflow depth that matches your purchasing motion.</h2><div className="pricing-grid">{pricingPlans.map(([name, description, items]) => <article key={name}><h3>{name}</h3><p>{description}</p><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul><Link className="button secondary" href="/demo">Talk to Sales</Link></article>)}</div></section>;
+>>>>>>> origin/main
 }
 
 export function FinalCta() {

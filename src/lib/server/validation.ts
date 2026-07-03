@@ -16,3 +16,19 @@ export const supplierSchema = z.object({
 });
 export const rfqItemInputSchema = z.object({ itemName: z.string().min(1).max(180), description: z.string().max(1000).optional().or(z.literal('')), quantity: z.coerce.number().positive(), unit: z.string().max(40).optional().or(z.literal('')), requiredDate: z.string().optional().or(z.literal('')), notes: z.string().max(800).optional().or(z.literal('')) });
 export const rfqSchema = z.object({ title: z.string().min(2).max(180), description: z.string().max(2000).optional().or(z.literal('')), neededBy: z.string().optional().or(z.literal('')), deliveryLocation: z.string().max(240).optional().or(z.literal('')), internalReference: z.string().max(160).optional().or(z.literal('')), supplierIds: z.array(z.string()).default([]), items: z.array(rfqItemInputSchema).min(1) });
+<<<<<<< HEAD
+
+export const leadRequestSchema = z.object({
+  type: z.enum(['demo', 'contact']),
+  name: z.string().min(2).max(120),
+  workEmail: z.string().email().max(255),
+  company: z.string().min(2).max(160),
+  industry: z.string().max(120).optional().or(z.literal('')),
+  mainPurchasingWorkflow: z.string().max(160).optional().or(z.literal('')),
+  estimatedSupplierQuotesPerMonth: z.string().max(80).optional().or(z.literal('')),
+  currentTools: z.string().max(240).optional().or(z.literal('')),
+  message: z.string().max(2000).optional().or(z.literal('')),
+});
+export const billingPlanSchema = z.object({ plan: z.enum(['starter', 'growth', 'pro', 'enterprise']) });
+=======
+>>>>>>> origin/main
