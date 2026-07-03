@@ -1,3 +1,8 @@
+import { redirect } from 'next/navigation';
+import { requirePageWorkspace } from '@/lib/server/auth';
+
+export const metadata = { title: 'ProcureIQ App' };
+export default async function AppPage() { await requirePageWorkspace(); redirect('/app/dashboard'); }
 import Link from 'next/link';
 
 export const metadata = { title: 'ProcureIQ App Preview', description: 'ProcureIQ application access preview.' };
