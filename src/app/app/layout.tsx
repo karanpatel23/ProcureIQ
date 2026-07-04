@@ -2,11 +2,7 @@ import Link from 'next/link';
 import { requirePageWorkspace } from '@/lib/server/auth';
 
 const nav = [
-<<<<<<< HEAD
   ['Dashboard', '/app/dashboard'], ['RFQs', '/app/rfqs'], ['Suppliers', '/app/suppliers'], ['Quotes', '/app/quotes'], ['Purchase Orders', '/app/purchase-orders'], ['Analytics', '/app/analytics'], ['Billing', '/app/settings/billing'], ['Settings', '/app/settings/company'],
-=======
-  ['Dashboard', '/app/dashboard'], ['RFQs', '/app/rfqs'], ['Suppliers', '/app/suppliers'], ['Quotes', '/app/quotes'], ['Purchase Orders', '/app/purchase-orders'], ['Analytics', '/app/analytics'], ['Settings', '/app/settings/company'],
->>>>>>> origin/main
 ] as const;
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {

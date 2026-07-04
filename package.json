@@ -4,7 +4,8 @@
     "build": "next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "smoke": "node scripts/smoke-check.mjs"
   },
   "dependencies": {
     "next": "latest",
