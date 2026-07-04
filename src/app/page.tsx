@@ -1,5 +1,5 @@
-import { FeaturesSection, FinalCta, FounderSection, GoalsSection, Hero, IndustriesSection, PricingSection, ProblemSection, TrustSection, WorkflowSection } from '@/components/site';
+import { FinalCta, Hero, ProblemSection, ProofMetricsStrip, TrustSection, WorkflowPreview } from '@/components/site';
 
 export default function Home() {
-  return <main><Hero /><ProblemSection /><WorkflowSection /><IndustriesSection /><FeaturesSection /><TrustSection /><GoalsSection /><FounderSection /><PricingSection /><FinalCta /></main>;
+  return <main><Hero /><ProofMetricsStrip /><ProblemSection /><WorkflowPreview /><TrustSection /><FinalCta /></main>;
 }
