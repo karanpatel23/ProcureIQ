@@ -1,0 +1,1 @@
+export default function AppLoadingPage() { return <main><section className="app-shell"><p className="eyebrow">Loading</p><h1>Loading workspace data.</h1><p>Fetching the latest suppliers, RFQs, quotes, approvals, and PO draft activity.</p></section></main>; }
