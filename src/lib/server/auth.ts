@@ -106,7 +106,6 @@ export async function requirePageWorkspace() {
 export function safeUser(user: User) { return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt }; }
 export function canManageWorkspace(role: Role) { return role === 'owner' || role === 'admin'; }
 export type WorkspaceContext = { user: User; workspace: Workspace; membership: { role: Role } };
-<<<<<<< HEAD
 
 
 export async function requireInternalAdmin() {
@@ -123,5 +122,3 @@ export async function requirePageInternalAdmin() {
   if (!allowed.includes(user.email.toLowerCase())) { redirect('/app/dashboard'); throw new Error('Redirecting to dashboard'); }
   return { user };
 }
-=======
->>>>>>> origin/main
