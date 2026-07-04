@@ -1,7 +1,7 @@
-import { FeaturesSection, FinalCta, HeroVisual, WorkflowSection } from '@/components/site';
+import { FinalCta, PlatformModules, PlatformSystemMap } from '@/components/site';
 
-export const metadata = { title: 'Platform | ProcureIQ', description: 'RFQ creation, quote ingestion, quote comparison, PO drafts, supplier memory, and purchasing visibility.' };
+export const metadata = { title: 'Platform | ProcureIQ', description: 'A product architecture tour of ProcureIQ RFQ, quote intake, extraction review, comparison, supplier memory, PO draft, analytics, and audit workflows.' };
 
 export default function PlatformPage() {
-  return <main><section className="page-hero section-shell"><div><p className="eyebrow">Platform</p><h1>One workflow for RFQs, supplier quotes, approvals, and PO drafts.</h1><p>ProcureIQ organizes the buying motion around source-backed quote data, side-by-side supplier decisions, and controlled exports into the tools teams already use.</p></div><HeroVisual /></section><WorkflowSection /><FeaturesSection /><FinalCta /></main>;
+  return <main><section className="page-hero section-shell"><div><p className="eyebrow">Platform</p><h1>ProcureIQ operating layer.</h1><p>One controlled procurement record for RFQs, supplier quote evidence, comparison decisions, supplier memory, and draft purchase orders.</p></div><PlatformSystemMap /></section><PlatformModules /><FinalCta /></main>;
 }
