@@ -1,0 +1,4 @@
+import { FinalCta, FounderSection, GoalsSection } from '@/components/site';
+
+export const metadata = { title: 'About | ProcureIQ', description: 'ProcureIQ is building procurement intelligence for supplier-driven companies.' };
+export default function AboutPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">About ProcureIQ</p><h1>Procurement intelligence for teams that need evidence before action.</h1><p>ProcureIQ exists because supplier decisions often depend on details buried across emails, PDFs, spreadsheets, and memory. We are building a controlled workflow where quote evidence, approvals, and PO drafts stay connected.</p></section><FounderSection /><GoalsSection /><FinalCta title="See how the procurement record comes together." /></main>; }
