@@ -30,13 +30,8 @@ Set these on Vercel, Render, Railway, or your server runtime:
 - `INTERNAL_ADMIN_EMAILS`: comma-separated allowlist for `/admin` and internal admin APIs.
 - `BILLING_PROVIDER`: `none` until checkout is implemented; `stripe` when Stripe keys are configured.
 - `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`: only set when billing is enabled.
-- `AI_PROVIDER`: `local` for deterministic extraction, `openai` for OpenAI, or `azure` for Azure OpenAI.
+- `AI_PROVIDER`: `local` for deterministic extraction, or `openai` after provider integration is configured.
 - `OPENAI_API_KEY`: required only when `AI_PROVIDER=openai`.
-- `OPENAI_MODEL`: OpenAI chat model used when `AI_PROVIDER=openai`.
-- `AZURE_OPENAI_API_KEY`: required only when `AI_PROVIDER=azure`.
-- `AZURE_OPENAI_ENDPOINT`: Azure OpenAI resource endpoint, for example `https://your-resource.openai.azure.com`.
-- `AZURE_OPENAI_DEPLOYMENT`: Azure OpenAI deployment name used in the `/openai/deployments/{deployment}/chat/completions` path.
-- `AZURE_OPENAI_API_VERSION`: Azure OpenAI API version for chat completions.
 
 No `NEXT_PUBLIC_` secret variables are required.
 
@@ -57,7 +52,7 @@ Quote uploads must be stored in private server-side storage. For local demos, se
 
 ## 6. AI provider setup
 
-The current extractor defaults to deterministic local parsing. Hosted extraction supports OpenAI and Azure OpenAI. For Azure, set `AI_PROVIDER=azure` and configure the Azure endpoint, deployment name, API key, and API version. The implementation uses the configured Azure deployment in the chat completions URL and validates the response against the same structured quote schema used by local/OpenAI extraction. Keep strict JSON parsing, field-level confidence, source traceability, raw-response safety controls, and human review before approval.
+The current extractor is deterministic and local. When enabling a hosted AI provider, keep strict JSON parsing, field-level confidence, source traceability, raw-response safety controls, and human review before approval.
 
 ## 7. Security checklist
 
