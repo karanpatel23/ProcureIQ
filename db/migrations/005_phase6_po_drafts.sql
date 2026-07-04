@@ -1,0 +1,18 @@
+ALTER TABLE purchase_order_drafts ADD COLUMN po_number TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN po_date DATE;
+ALTER TABLE purchase_order_drafts ADD COLUMN buyer_company TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN supplier_id TEXT REFERENCES suppliers(id) ON DELETE SET NULL;
+ALTER TABLE purchase_order_drafts ADD COLUMN supplier_name TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN supplier_contact TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN ship_to TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN billing_contact TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN lines JSONB NOT NULL DEFAULT '[]'::jsonb;
+ALTER TABLE purchase_order_drafts ADD COLUMN taxes NUMERIC(14, 4) NOT NULL DEFAULT 0;
+ALTER TABLE purchase_order_drafts ADD COLUMN freight NUMERIC(14, 4) NOT NULL DEFAULT 0;
+ALTER TABLE purchase_order_drafts ADD COLUMN total NUMERIC(14, 4) NOT NULL DEFAULT 0;
+ALTER TABLE purchase_order_drafts ADD COLUMN payment_terms TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN delivery_date TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN lead_time TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN notes TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN internal_approval_note TEXT;
+ALTER TABLE purchase_order_drafts ADD COLUMN quote_reference TEXT;
