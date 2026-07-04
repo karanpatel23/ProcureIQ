@@ -61,3 +61,12 @@ const envSchema = z.object({
     }
   }
 });
+
+export const env = envSchema.parse(process.env);
+
+export const uploadPolicy = {
+  maxBytes: env.MAX_UPLOAD_BYTES,
+  allowedMimeTypes: env.ALLOWED_UPLOAD_MIME_TYPES.split(',')
+    .map((type: string) => type.trim())
+    .filter(Boolean),
+};
