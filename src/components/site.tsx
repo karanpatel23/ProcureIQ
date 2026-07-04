@@ -53,3 +53,12 @@ export function PricingSection() {
 export function FinalCta() {
   return <section className="final-cta"><p className="eyebrow">ProcureIQ</p><h2>Ready to modernize your purchasing workflow?</h2><div className="hero-actions"><Link className="button primary" href="/demo">Book a Demo</Link><Link className="button secondary" href="/contact">Contact Us</Link></div></section>;
 }
+export {
+  DecisionMatrix,
+  EvidencePin,
+  PODraftPreview,
+  QuoteStack,
+  RFQPacket,
+  SupplierMemoryCard,
+  WorkflowRail,
+} from './procurement-visuals';
