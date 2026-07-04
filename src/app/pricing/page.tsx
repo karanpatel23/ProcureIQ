@@ -1,4 +1,7 @@
 import { FinalCta, PricingSection } from '@/components/site';
 
-export const metadata = { title: 'Pricing | ProcureIQ', description: 'Starter, Growth, Pro, and Enterprise pricing for ProcureIQ procurement workflows.' };
-export default function PricingPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Pricing</p><h1>Published starting points for serious purchasing workflows.</h1><p>Plans scale by quote volume, users, workflow depth, and onboarding needs. Billing is not active yet; teams start with a guided rollout.</p></section><PricingSection /><section className="section-shell compact-section"><h2>Implementation starts from $500.</h2><p>Implementation covers workflow setup, RFQ templates, supplier import support, and a guided review of quote extraction controls.</p></section><FinalCta /></main>; }
+export const metadata = { title: 'Pricing | ProcureIQ', description: 'Starter, Growth, Pro, and Enterprise pricing previews for quote comparison, RFQs, PO drafts, and supplier memory.' };
+
+export default function PricingPage() {
+  return <main><section className="page-hero section-shell compact"><p className="eyebrow">Pricing</p><h1>Pricing for teams turning supplier quotes into purchasing clarity.</h1><p>Choose a sales-guided plan based on RFQ volume, quote complexity, approval needs, and supplier visibility goals. Billing is not active yet, so every plan starts with a consultative setup conversation.</p></section><PricingSection /><FinalCta /></main>;
+}

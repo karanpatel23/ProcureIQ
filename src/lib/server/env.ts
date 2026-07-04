@@ -14,27 +14,50 @@ const envSchema = z.object({
   INTERNAL_ADMIN_EMAILS: z.string().default(''),
   AI_PROVIDER: z.enum(['local', 'openai', 'azure']).default('local'),
   OPENAI_API_KEY: z.string().optional(),
-  OPENAI_MODEL: z.string().default('gpt-4.1-mini'),
   AZURE_OPENAI_API_KEY: z.string().optional(),
   AZURE_OPENAI_ENDPOINT: z.string().url().optional(),
   AZURE_OPENAI_DEPLOYMENT: z.string().optional(),
   AZURE_OPENAI_API_VERSION: z.string().optional(),
 }).superRefine((value, ctx) => {
-  if (value.NODE_ENV === 'production' && value.AUTH_SECRET === 'development-auth-secret-change-before-production') ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['AUTH_SECRET'], message: 'Set a unique AUTH_SECRET before production deploys.' });
-  if (value.NODE_ENV === 'production' && !value.DATABASE_URL) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['DATABASE_URL'], message: 'DATABASE_URL is required for production deploys.' });
-  if (value.BILLING_PROVIDER === 'stripe' && !value.STRIPE_SECRET_KEY) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['STRIPE_SECRET_KEY'], message: 'STRIPE_SECRET_KEY is required when BILLING_PROVIDER=stripe.' });
-  if (value.AI_PROVIDER === 'openai' && !value.OPENAI_API_KEY) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['OPENAI_API_KEY'], message: 'OPENAI_API_KEY is required when AI_PROVIDER=openai.' });
+  if (value.AI_PROVIDER === 'openai' && !value.OPENAI_API_KEY) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['OPENAI_API_KEY'],
+      message: 'OPENAI_API_KEY is required when AI_PROVIDER=openai.',
+    });
+  }
+
   if (value.AI_PROVIDER === 'azure') {
-    if (!value.AZURE_OPENAI_API_KEY) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['AZURE_OPENAI_API_KEY'], message: 'AZURE_OPENAI_API_KEY is required when AI_PROVIDER=azure.' });
-    if (!value.AZURE_OPENAI_ENDPOINT) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['AZURE_OPENAI_ENDPOINT'], message: 'AZURE_OPENAI_ENDPOINT is required when AI_PROVIDER=azure.' });
-    if (!value.AZURE_OPENAI_DEPLOYMENT) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['AZURE_OPENAI_DEPLOYMENT'], message: 'AZURE_OPENAI_DEPLOYMENT is required when AI_PROVIDER=azure.' });
-    if (!value.AZURE_OPENAI_API_VERSION) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['AZURE_OPENAI_API_VERSION'], message: 'AZURE_OPENAI_API_VERSION is required when AI_PROVIDER=azure.' });
+    if (!value.AZURE_OPENAI_API_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['AZURE_OPENAI_API_KEY'],
+        message: 'AZURE_OPENAI_API_KEY is required when AI_PROVIDER=azure.',
+      });
+    }
+
+    if (!value.AZURE_OPENAI_ENDPOINT) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['AZURE_OPENAI_ENDPOINT'],
+        message: 'AZURE_OPENAI_ENDPOINT is required when AI_PROVIDER=azure.',
+      });
+    }
+
+    if (!value.AZURE_OPENAI_DEPLOYMENT) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['AZURE_OPENAI_DEPLOYMENT'],
+        message: 'AZURE_OPENAI_DEPLOYMENT is required when AI_PROVIDER=azure.',
+      });
+    }
+
+    if (!value.AZURE_OPENAI_API_VERSION) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['AZURE_OPENAI_API_VERSION'],
+        message: 'AZURE_OPENAI_API_VERSION is required when AI_PROVIDER=azure.',
+      });
+    }
   }
 });
-
-export const env = envSchema.parse(process.env);
-
-export const uploadPolicy = {
-  maxBytes: env.MAX_UPLOAD_BYTES,
-  allowedMimeTypes: env.ALLOWED_UPLOAD_MIME_TYPES.split(',').map((type: string) => type.trim()).filter(Boolean),
-};
