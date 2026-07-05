@@ -23,8 +23,8 @@ export function Header() {
       <div className="header-actions">
         <Link href="/login">Log in</Link>
         <Link href="/signup">Sign up</Link>
-        <Link className="button secondary" href="/demo-workflow">Live demo</Link>
-        <Link className="button primary" href="/demo">Book a demo</Link>
+        <Link className="button secondary" href="/demo-workflow" data-track="nav_live_demo">Live demo</Link>
+        <Link className="button primary" href="/demo" data-track="nav_book_demo">Book a demo</Link>
       </div>
     </header>
   );
@@ -123,8 +123,8 @@ export function Hero() {
           human-controlled decision workflow — so purchasing teams act with confidence, not guesswork.
         </p>
         <div className="hero-actions">
-          <Link className="button primary" href="/demo-workflow">Explore the live demo</Link>
-          <Link className="button secondary" href="/demo">Book a demo</Link>
+          <Link className="button primary" href="/demo-workflow" data-track="hero_live_demo">Explore the live demo</Link>
+          <Link className="button secondary" href="/demo" data-track="hero_book_demo">Book a demo</Link>
           <Link className="text-link" href="/platform">View the platform →</Link>
         </div>
         <p className="hero-note">Source-aware review · exception visibility · no autonomous purchasing</p>
@@ -286,8 +286,8 @@ export function FinalCta({ title = 'See your next supplier decision, before you 
       <h2>{title}</h2>
       <p>Explore the live demo workflow with sample data — no account required.</p>
       <div className="hero-actions">
-        <Link className="button primary" href="/demo-workflow">Explore the live demo</Link>
-        <Link className="button secondary" href="/demo">Book a demo</Link>
+        <Link className="button primary" href="/demo-workflow" data-track="cta_live_demo">Explore the live demo</Link>
+        <Link className="button secondary" href="/demo" data-track="cta_book_demo">Book a demo</Link>
       </div>
     </section>
   );
@@ -465,7 +465,7 @@ export function PricingSection() {
             <strong>{price}</strong>
             <p>{body}</p>
             <ul>{features.map((feature) => <li key={feature}>{feature}</li>)}</ul>
-            <Link className={featured ? 'button primary' : 'button secondary'} href="/demo">Talk to sales</Link>
+            <Link className={featured ? 'button primary' : 'button secondary'} href="/demo" data-track="pricing_talk_to_sales">Talk to sales</Link>
           </article>
         ))}
       </div>
