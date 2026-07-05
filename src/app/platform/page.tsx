@@ -1,7 +1,23 @@
 import { FinalCta, PlatformModules, PlatformSystemMap } from '@/components/site';
 
-export const metadata = { title: 'Platform | ProcureIQ', description: 'A product architecture tour of ProcureIQ RFQ, quote intake, extraction review, comparison, supplier memory, PO draft, analytics, and audit workflows.' };
+export const metadata = {
+  title: 'Platform',
+  description: 'A tour of the ProcureIQ decision layer: RFQ workspace, quote intake, extraction review, comparison, supplier context, PO drafts, and audit trail.',
+};
 
 export default function PlatformPage() {
-  return <main><section className="page-hero section-shell"><div><p className="eyebrow">Platform</p><h1>ProcureIQ operating layer.</h1><p>One controlled procurement record for RFQs, supplier quote evidence, comparison decisions, supplier memory, and draft purchase orders.</p></div><PlatformSystemMap /></section><PlatformModules /><FinalCta /></main>;
+  return (
+    <main>
+      <section className="page-hero section-shell">
+        <div>
+          <p className="eyebrow">Platform</p>
+          <h1>One decision layer for the whole quote lifecycle.</h1>
+          <p>A controlled procurement record for RFQs, supplier quote evidence, comparison decisions, supplier context, and draft purchase orders.</p>
+        </div>
+        <PlatformSystemMap />
+      </section>
+      <PlatformModules />
+      <FinalCta />
+    </main>
+  );
 }

@@ -2,8 +2,9 @@ node_modules
 .next
 out
 coverage
+.env
+.env.local
 .env*.local
 tsconfig.tsbuildinfo
+*.tsbuildinfo
 .DS_Store
-.env.local
-.env.localSECRET=*

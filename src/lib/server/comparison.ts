@@ -22,6 +22,8 @@ export function buildRfqComparison(db: Database, rfq: Rfq) {
     const risks: Risk[] = [];
     if (!paymentTerms) risks.push(risk('missing_payment_terms', 'Missing payment terms'));
     if (!freightTerms) risks.push(risk('missing_freight', 'Missing freight/shipping'));
+    if (!leadTime) risks.push(risk('missing_lead_time', 'Missing lead time'));
+    if (!totalPrice) risks.push(risk('missing_total_price', 'Missing total price', 'high'));
     if (!validUntil) risks.push(risk('missing_validity', 'Quote validity missing'));
     if (dateExpired(validUntil)) risks.push(risk('expired_quote', 'Quote appears expired', 'high'));
     if ((quote.confidenceScore ?? 0) < 60) risks.push(risk('low_confidence', 'Low extraction confidence', 'high'));
@@ -37,7 +39,7 @@ export function buildRfqComparison(db: Database, rfq: Rfq) {
   for (const item of compared) {
     if (avgPrice && item.totalPrice && Math.abs(item.totalPrice - avgPrice) / avgPrice > 0.2) item.risks.push(risk('price_variance', 'Significant price variance'));
     const priceScore = minPrice && item.totalPrice ? (minPrice / item.totalPrice) * 40 : 15;
-    const leadScore = daysFromLead(item.leadTime) === minLead ? 20 : Math.max(5, 20 - daysFromLead(item.leadTime) / 5);
+    const leadScore = !item.leadTime ? 5 : daysFromLead(item.leadTime) === minLead ? 20 : Math.max(5, 20 - daysFromLead(item.leadTime) / 5);
     const completenessScore = Math.max(0, 25 - item.risks.length * 4);
     const confidenceScore = Math.min(15, item.confidence / 100 * 15);
     item.score = Math.round(priceScore + leadScore + completenessScore + confidenceScore);
@@ -45,5 +47,6 @@ export function buildRfqComparison(db: Database, rfq: Rfq) {
   const lowestCost = compared.reduce((best, item) => (!best || (item.totalPrice ?? Infinity) < (best.totalPrice ?? Infinity) ? item : best), compared[0]);
   const fastest = compared.reduce((best, item) => (!best || daysFromLead(item.leadTime) < daysFromLead(best.leadTime) ? item : best), compared[0]);
   const overall = compared.reduce((best, item) => (!best || item.score > best.score ? item : best), compared[0]);
-  return { quotes: compared, recommendation: overall ? { lowestCost, fastest, overall, confidence: Math.min(95, Math.max(35, overall.score)), reasons: [`${overall.supplierName} has the strongest combined score for price, lead time, completeness, and extraction confidence.`, 'Review all risk flags before approving a supplier.'], tradeoffs: overall.risks.map((risk) => risk.label) } : null };
+  const needsReview = overall ? overall.risks.some((item) => item.severity === 'high') || overall.confidence < 60 : false;
+  return { quotes: compared, recommendation: overall ? { lowestCost, fastest, overall, needsReview, confidence: Math.min(95, Math.max(35, overall.score)), reasons: [`${overall.supplierName} has the strongest combined score for price, lead time, completeness, and extraction confidence.`, 'Review all risk flags before approving a supplier.'], tradeoffs: overall.risks.map((risk) => risk.label) } : null };
 }

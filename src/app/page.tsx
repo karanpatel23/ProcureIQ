@@ -1,5 +1,25 @@
-import { FinalCta, Hero, ProblemSection, ProofMetricsStrip, TrustSection, WorkflowPreview } from '@/components/site';
+import {
+  FinalCta,
+  Hero,
+  ProblemSection,
+  ProductStorySection,
+  ProofMetricsStrip,
+  TrustSection,
+  UseCasesSection,
+  WorkflowPreview,
+} from '@/components/site';
 
 export default function Home() {
-  return <main><Hero /><ProofMetricsStrip /><ProblemSection /><WorkflowPreview /><TrustSection /><FinalCta /></main>;
+  return (
+    <main>
+      <Hero />
+      <ProofMetricsStrip />
+      <ProblemSection />
+      <ProductStorySection />
+      <WorkflowPreview />
+      <UseCasesSection />
+      <TrustSection />
+      <FinalCta />
+    </main>
+  );
 }
