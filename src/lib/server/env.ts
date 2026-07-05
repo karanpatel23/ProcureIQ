@@ -3,7 +3,7 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   AUTH_SECRET: z.string().min(32).default('development-auth-secret-change-before-production'),
-  DATABASE_URL: z.string().url().optional(),
+  DATABASE_URL: z.string().url().optional().or(z.literal('').transform(() => undefined)),
   PROCUREIQ_DATA_PATH: z.string().default('/tmp/procureiq-data.json'),
   QUOTE_STORAGE_PATH: z.string().default('/tmp/procureiq-quotes'),
   MAX_UPLOAD_BYTES: z.coerce.number().int().positive().max(25_000_000).default(10_000_000),

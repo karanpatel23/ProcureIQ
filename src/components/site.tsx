@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { MobileNav } from '@/components/mobile-nav';
 
 export const navItems = [
   { href: '/platform', label: 'Platform' },
@@ -11,6 +12,7 @@ export const navItems = [
 export function Header() {
   return (
     <header className="site-header">
+      <MobileNav items={navItems} />
       <nav aria-label="Primary navigation">
         {navItems.map((item) => (
           <Link key={item.href} href={item.href}>{item.label}</Link>
