@@ -1,4 +1,5 @@
 import {
+  FilmShowcase,
   FinalCta,
   Hero,
   ProblemSection,
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <FilmShowcase />
       <ProofMetricsStrip />
       <ProblemSection />
       <ProductStorySection />

@@ -11,19 +11,14 @@ export const navItems = [
 export function Header() {
   return (
     <header className="site-header">
-      <Link className="brand" href="/" aria-label="ProcureIQ home">
-        <span>ProcureIQ</span>
-        <small>The AI decision layer for procurement</small>
-      </Link>
       <nav aria-label="Primary navigation">
         {navItems.map((item) => (
           <Link key={item.href} href={item.href}>{item.label}</Link>
         ))}
       </nav>
+      <Link className="brand" href="/" aria-label="ProcureIQ home">ProcureIQ</Link>
       <div className="header-actions">
         <Link href="/login">Log in</Link>
-        <Link href="/signup">Sign up</Link>
-        <Link className="button secondary" href="/demo-workflow" data-track="nav_live_demo">Live demo</Link>
         <Link className="button primary" href="/demo" data-track="nav_book_demo">Book a demo</Link>
       </div>
     </header>
@@ -114,20 +109,39 @@ export function ProductFilm() {
 
 export function Hero() {
   return (
-    <section className="hero section-shell">
-      <div className="hero-copy">
-        <p className="eyebrow">The AI decision layer for procurement</p>
-        <h1>Every supplier quote, ready for a confident decision.</h1>
-        <p className="hero-subhead">
-          ProcureIQ turns supplier quotes, procurement context, exceptions, and approval needs into a clear,
-          human-controlled decision workflow — so purchasing teams act with confidence, not guesswork.
-        </p>
-        <div className="hero-actions">
+    <section className="cine-hero">
+      <div className="cine-bg" aria-hidden="true">
+        <i className="cine-fog fog-a" />
+        <i className="cine-fog fog-b" />
+        <i className="cine-fog fog-c" />
+        <i className="cine-beam" />
+        <span className="cine-card card-1" />
+        <span className="cine-card card-2" />
+        <span className="cine-card card-3" />
+        <span className="cine-card card-4" />
+        <i className="cine-grain" />
+      </div>
+      <div className="cine-center">
+        <p className="cine-kicker">The AI decision layer for procurement</p>
+        <h1 className="cine-title">Procurement without guesswork.</h1>
+        <p className="cine-sub">Supplier quotes, exceptions, and approvals — turned into decisions your team can stand behind.</p>
+        <div className="hero-actions cine-actions">
           <Link className="button primary" href="/demo-workflow" data-track="hero_live_demo">Explore the live demo</Link>
           <Link className="button secondary" href="/demo" data-track="hero_book_demo">Book a demo</Link>
-          <Link className="text-link" href="/platform">View the platform →</Link>
         </div>
-        <p className="hero-note">Source-aware review · exception visibility · no autonomous purchasing</p>
+      </div>
+      <a className="cine-scroll" href="#product-film" aria-label="Scroll to product preview"><span>Scroll</span><i /></a>
+    </section>
+  );
+}
+
+export function FilmShowcase() {
+  return (
+    <section id="product-film" className="section-shell film-showcase">
+      <div className="section-heading-block centered">
+        <p className="eyebrow">The decision workspace</p>
+        <h2>Watch a supplier decision come together.</h2>
+        <p className="lead">Quotes arrive, the decision layer normalizes them, exceptions surface, and the recommendation waits for a person.</p>
       </div>
       <ProductFilm />
     </section>
