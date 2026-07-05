@@ -209,20 +209,7 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
   padding: 96px var(--pad-x) 110px;
 }
 .cine-bg { position: absolute; inset: 0; pointer-events: none; }
-.cine-fog { position: absolute; width: 130vmax; height: 130vmax; border-radius: 50%; will-change: transform; }
-.fog-a { left: -55vmax; top: -60vmax; background: radial-gradient(circle, rgba(107, 124, 152, 0.26) 0%, transparent 58%); animation: fog-a 52s ease-in-out infinite alternate; }
-.fog-b { right: -65vmax; bottom: -70vmax; background: radial-gradient(circle, rgba(171, 151, 140, 0.16) 0%, transparent 55%); animation: fog-b 64s ease-in-out infinite alternate; }
-.fog-c { left: 8vw; top: -45vmax; background: radial-gradient(circle, rgba(183, 196, 214, 0.13) 0%, transparent 52%); animation: fog-c 41s ease-in-out infinite alternate; }
-@keyframes fog-a { to { transform: translate3d(9vw, 6vh, 0) scale(1.12); } }
-@keyframes fog-b { to { transform: translate3d(-8vw, -7vh, 0) scale(1.08); } }
-@keyframes fog-c { to { transform: translate3d(-6vw, 5vh, 0) scale(1.15); } }
-.cine-beam {
-  position: absolute;
-  inset: -20%;
-  background: linear-gradient(108deg, transparent 44%, rgba(233, 230, 231, 0.045) 50%, transparent 56%);
-  animation: beam-sweep 26s ease-in-out infinite alternate;
-}
-@keyframes beam-sweep { from { transform: translateX(-14%); } to { transform: translateX(14%); } }
+.cine-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cine-card {
   position: absolute;
   border: 1px solid var(--line);
