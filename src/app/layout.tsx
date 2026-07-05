@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Footer, Header } from '@/components/site';
+import { SiteAnalytics } from '@/components/site-analytics';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -9,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><Header />{children}<Footer /></body></html>;
+  return <html lang="en"><body><Header />{children}<Footer /><SiteAnalytics /></body></html>;
 }
