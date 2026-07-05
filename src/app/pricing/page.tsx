@@ -1,0 +1,4 @@
+import { FinalCta, PricingSection } from '@/components/site';
+
+export const metadata = { title: 'Pricing | ProcureIQ', description: 'Premium pricing for ProcureIQ procurement intelligence plans.' };
+export default function PricingPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Pricing</p><h1>Start with the layer your purchasing team needs now.</h1><p>Clear starting points for teams bringing procurement intelligence, review, and approval visibility into quote-heavy work.</p></section><PricingSection /><section className="section-shell pricing-note"><h2>Implementation starts from $500.</h2><p>Rollout support can include workspace setup, templates, supplier context import, and team onboarding. Billing integrations remain safe placeholders until configured.</p></section><FinalCta /></main>; }
