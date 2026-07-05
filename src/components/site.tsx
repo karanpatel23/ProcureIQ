@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CinematicBackdrop } from '@/components/cinematic-backdrop';
 import { MobileNav } from '@/components/mobile-nav';
 
 export const navItems = [
@@ -113,10 +114,7 @@ export function Hero() {
   return (
     <section className="cine-hero">
       <div className="cine-bg" aria-hidden="true">
-        <i className="cine-fog fog-a" />
-        <i className="cine-fog fog-b" />
-        <i className="cine-fog fog-c" />
-        <i className="cine-beam" />
+        <CinematicBackdrop />
         <span className="cine-card card-1" />
         <span className="cine-card card-2" />
         <span className="cine-card card-3" />
