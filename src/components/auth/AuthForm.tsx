@@ -15,7 +15,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
     const payload = mode === 'signup'
       ? { name: String(form.get('name') ?? ''), email: String(form.get('email') ?? ''), password: String(form.get('password') ?? '') }
       : { email: String(form.get('email') ?? ''), password: String(form.get('password') ?? '') };
-    const response = await fetch(`/api/auth/${mode}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), credentials: 'include' });
+    const response = await fetch(`/api/auth/${mode}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const result = await response.json();
     setLoading(false);
     if (!result.ok) { setError(result.error?.message ?? 'Authentication failed.'); return; }

@@ -1,5 +1,17 @@
 import { FinalCta } from '@/components/site';
 
-export const metadata = { title: 'Security and Trust | ProcureIQ', description: 'ProcureIQ trust posture for responsible AI, permissions, workspace boundaries, and auditability.' };
-const sections = [['Human control', 'AI assistance remains draft-based. Purchasing action requires an authorized person.'], ['Workspace boundaries', 'Supplier information and purchasing context are scoped to the authenticated workspace.'], ['Approval visibility', 'Critical decisions remain visible to the teams responsible for them.'], ['Responsible AI posture', 'Uncertainty is not hidden, and customer data is not used for model training without explicit consent.'], ['Audit-ready foundation', 'Important activity can be recorded for operating visibility and review.'], ['Admin readiness', 'Role and admin foundations support controlled access as teams expand.']];
-export default function SecurityPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Security and trust</p><h1>Built for sensitive supplier decisions.</h1><p>ProcureIQ is designed around control, boundaries, permissions, and responsible AI. We do not claim certifications that are not yet in place.</p></section><section className="section-shell trust-grid-page">{sections.map(([title, body], index) => <article key={title}><span>0{index + 1}</span><h2>{title}</h2><p>{body}</p></article>)}</section><FinalCta /></main>; }
+export const metadata = { title: 'Security and Trust | ProcureIQ', description: 'ProcureIQ security model for human approval, source-backed extraction, workspace-scoped data, audit trails, and AI limitations.' };
+
+const sections = [
+  ['01', 'Human approval by design', 'AI recommendations are drafts. Purchase orders are never sent automatically, and purchasing decisions require an authorized human.'],
+  ['02', 'Source-backed extraction', 'Every extracted quote field carries confidence and source context so reviewers can verify pricing, terms, and exceptions.'],
+  ['03', 'Workspace-scoped data', 'Suppliers, RFQs, quote documents, comparison decisions, and PO drafts are scoped to the authenticated workspace.'],
+  ['04', 'Quote document handling', 'Original quote source is preserved for review and stored through the server-side storage abstraction.'],
+  ['05', 'Audit trails', 'Supplier changes, RFQs, quote uploads, reviews, selections, PO approvals, and exports write audit events.'],
+  ['06', 'AI limitations', 'Missing information, low confidence, and supplier exclusions remain visible. Customer quote documents are not used for model training unless explicitly allowed.'],
+  ['07', 'Admin controls', 'Admin-only views are protected by authentication and allowlist checks for internal readiness.'],
+] as const;
+
+export default function SecurityPage() {
+  return <main><section className="page-hero section-shell compact"><p className="eyebrow">Security and trust</p><h1>Controls for sensitive supplier pricing and purchasing decisions.</h1><p>ProcureIQ is built around reviewable drafts, source evidence, workspace boundaries, and auditability instead of autonomous purchasing.</p></section><section className="section-shell module-list">{sections.map(([num, title, body]) => <article className="numbered-module" key={title}><span>{num}</span><div><h2>{title}</h2><p>{body}</p></div></article>)}</section><FinalCta /></main>;
+}

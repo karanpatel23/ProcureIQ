@@ -1,18 +1,11 @@
 import type { Metadata } from 'next';
-import { Footer, Header, TAGLINE } from '@/components/site';
+import { Footer, Header } from '@/components/site';
 import './globals.css';
+import './control-room.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://procureiq.ai'),
-  title: { default: `ProcureIQ | ${TAGLINE}`, template: '%s | ProcureIQ' },
-  description: 'Procurement intelligence for high-stakes supplier decisions. ProcureIQ brings supplier context, decisions, and approvals into one intelligent layer.',
-  openGraph: {
-    title: `ProcureIQ | ${TAGLINE}`,
-    description: 'Where supplier complexity becomes decision-ready context.',
-    url: 'https://procureiq.ai',
-    siteName: 'ProcureIQ',
-    type: 'website',
-  },
+  title: { default: 'ProcureIQ | Procurement Control Room', template: '%s | ProcureIQ' },
+  description: 'ProcureIQ helps purchasing and operations teams review supplier quotes, compare tradeoffs, and draft purchase orders with source-backed confidence.',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

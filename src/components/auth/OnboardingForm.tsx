@@ -22,7 +22,7 @@ export function OnboardingForm() {
       mainPurchasingWorkflow: String(form.get('mainPurchasingWorkflow') ?? ''),
       currentTools: form.getAll('currentTools').map(String),
     };
-    const response = await fetch('/api/workspaces', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), credentials: 'include' });
+    const response = await fetch('/api/workspaces', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const result = await response.json();
     setLoading(false);
     if (!result.ok) { setError(result.error?.message ?? 'Could not create workspace.'); return; }
