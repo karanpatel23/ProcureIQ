@@ -63,7 +63,32 @@ The current extractor is deterministic and local. When enabling a hosted AI prov
 - Confirm API errors do not expose stack traces to users.
 - Confirm audit logs are written for supplier, RFQ, quote, comparison, PO, billing/settings, and export events.
 
-## 8. Core workflow smoke test
+## 8. Health check and pressure test
+
+After deploying, confirm the storage backend is reachable:
+
+```
+curl https://<your-domain>/api/health
+```
+
+A healthy response is `{"ok":true,"storage":{"ok":true,"backend":"postgres"},"authSecretConfigured":true}`.
+If `storage.ok` is false, the `error` field explains why (bad DATABASE_URL, unreachable
+host, TLS, or auth) — the most common cause is using Supabase's direct connection string
+instead of the pooler; Vercel functions need the pooler endpoint. If `authSecretConfigured`
+is false, set a real `AUTH_SECRET` (32+ characters).
+
+To pressure-test a running instance end to end (public routes, the full
+signup -> onboarding -> supplier -> RFQ -> quote + AI extraction -> approve ->
+compare -> decide -> PO draft -> export -> audit journey, authorization, tenant
+isolation, lead forms, and a 20-way concurrent-signup burst):
+
+```
+BASE=https://<your-domain> node scripts/pressure-test.mjs
+```
+
+It exits non-zero if any check fails.
+
+## 9. Core workflow smoke test
 
 Use a fresh account and verify:
 
