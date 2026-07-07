@@ -848,6 +848,20 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .loop-apply { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 1px solid rgba(157, 176, 204, 0.35); border-radius: var(--radius-md); padding: 10px 12px; background: rgba(107, 124, 152, 0.1); }
 .loop-apply span { color: var(--ink-soft); font-size: 0.86rem; }
 .loop-apply .button { min-height: 34px; padding: 6px 14px; font-size: 0.82rem; }
+
+/* ---------- AI comparison + PO panels ---------- */
+.comparison-ai { margin-bottom: 22px; }
+.tradeoff-list { list-style: none; margin: 4px 0; padding: 0; display: grid; gap: 8px; }
+.tradeoff { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 11px 13px; display: grid; gap: 4px; }
+.tradeoff.recommended { border-color: rgba(157, 176, 204, 0.5); background: rgba(107, 124, 152, 0.1); }
+.tradeoff-head { display: flex; align-items: center; gap: 10px; }
+.tradeoff-head b { color: var(--ink); }
+.tradeoff-badge { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mist); border: 1px solid rgba(183, 196, 214, 0.45); border-radius: 999px; padding: 2px 8px; }
+.tradeoff-summary { color: var(--ink-soft); font-size: 0.88rem; }
+.tradeoff-risks { color: var(--warm); font-size: 0.82rem; }
+.po-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; margin-top: 26px; }
+.po-actions { position: sticky; top: 84px; }
+@media (max-width: 1050px) { .po-layout { grid-template-columns: 1fr; } .po-actions { position: static; } }
 .recipient-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .recipient-list li { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 10px 12px; }
 .recipient-list li.no-email { opacity: 0.7; }
