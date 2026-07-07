@@ -20,7 +20,17 @@ export type AiExtractionRun = { id: string; workspaceId: string; quoteDocumentId
 export type Session = { id: string; userId: string; expiresAt: string; createdAt: string };
 export type LeadRequest = { id: string; type: LeadType; name: string; workEmail: string; company: string; industry?: string; mainPurchasingWorkflow?: string; estimatedSupplierQuotesPerMonth?: string; currentTools?: string; message?: string; sourcePath?: string; status: 'new' | 'reviewed' | 'closed'; createdAt: string; updatedAt: string };
 
-export type Database = { users: User[]; workspaces: Workspace[]; workspaceMembers: WorkspaceMember[]; suppliers: Supplier[]; rfqs: Rfq[]; rfqItems: RfqItem[]; quoteDocuments: QuoteDocument[]; supplierQuotes: SupplierQuote[]; quoteLineItems: QuoteLineItem[]; purchaseOrderDrafts: PurchaseOrderDraft[]; auditLogs: AuditLog[]; aiExtractionRuns: AiExtractionRun[]; sessions: Session[]; leadRequests: LeadRequest[] };
+// Bounded AI workflow loops. A run captures the full reasoning trace, the
+// working state, the open items a human must resolve, and the human decision —
+// so every AI action is traceable and no external action happens without approval.
+export type WorkflowType = 'rfq_builder' | 'supplier_selection' | 'quote_ingestion' | 'quote_comparison' | 'approval' | 'po_generation';
+export type WorkflowPhase = 'understand' | 'draft' | 'self_review' | 'refine' | 'await_approval' | 'finalize' | 'fallback';
+export type WorkflowRunStatus = 'running' | 'awaiting_approval' | 'approved' | 'rejected' | 'failed';
+export type WorkflowStep = { index: number; phase: WorkflowPhase; summary: string; confidence?: number; missingFields?: string[]; changed?: string[]; at: string };
+export type WorkflowDecision = { action: 'approve' | 'reject' | 'edit' | 'regenerate'; byUserId?: string; notes?: string; at: string };
+export type WorkflowRun = { id: string; workspaceId: string; type: WorkflowType; entityId?: string; status: WorkflowRunStatus; step: number; maxSteps: number; score?: number; state: unknown; steps: WorkflowStep[]; openItems: string[]; createdByUserId?: string; decision?: WorkflowDecision; createdAt: string; updatedAt: string };
+
+export type Database = { users: User[]; workspaces: Workspace[]; workspaceMembers: WorkspaceMember[]; suppliers: Supplier[]; rfqs: Rfq[]; rfqItems: RfqItem[]; quoteDocuments: QuoteDocument[]; supplierQuotes: SupplierQuote[]; quoteLineItems: QuoteLineItem[]; purchaseOrderDrafts: PurchaseOrderDraft[]; auditLogs: AuditLog[]; aiExtractionRuns: AiExtractionRun[]; sessions: Session[]; leadRequests: LeadRequest[]; workflowRuns: WorkflowRun[] };
 
 export const defaultWorkspaceUsage = (): WorkspaceUsage => ({ rfqsCreated: 0, quoteDocumentsUploaded: 0, aiExtractionRuns: 0, teamMembers: 1 });
-export const emptyDatabase = (): Database => ({ users: [], workspaces: [], workspaceMembers: [], suppliers: [], rfqs: [], rfqItems: [], quoteDocuments: [], supplierQuotes: [], quoteLineItems: [], purchaseOrderDrafts: [], auditLogs: [], aiExtractionRuns: [], sessions: [], leadRequests: [] });
+export const emptyDatabase = (): Database => ({ users: [], workspaces: [], workspaceMembers: [], suppliers: [], rfqs: [], rfqItems: [], quoteDocuments: [], supplierQuotes: [], quoteLineItems: [], purchaseOrderDrafts: [], auditLogs: [], aiExtractionRuns: [], sessions: [], leadRequests: [], workflowRuns: [] });
