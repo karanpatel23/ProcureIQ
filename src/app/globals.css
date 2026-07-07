@@ -830,6 +830,24 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .advisor-item b { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-bright); text-transform: none; }
 .advisor-item span { color: var(--ink-soft); font-size: 0.9rem; }
 .advisor-item em { color: var(--muted); font-size: 0.85rem; font-style: normal; }
+
+/* ---------- AI loop trace (RFQ Builder Loop) ---------- */
+.loop-working { display: flex; align-items: center; gap: 10px; color: var(--ink-soft); }
+.loop-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent-bright); box-shadow: 0 0 0 0 rgba(157, 176, 204, 0.5); animation: loop-pulse 1.3s ease-out infinite; }
+@keyframes loop-pulse { 0% { box-shadow: 0 0 0 0 rgba(157, 176, 204, 0.5); } 70% { box-shadow: 0 0 0 8px rgba(157, 176, 204, 0); } 100% { box-shadow: 0 0 0 0 rgba(157, 176, 204, 0); } }
+.loop-verdict { margin: 0; font-size: 0.92rem; font-weight: 600; }
+.loop-verdict.ready { color: var(--mist); }
+.loop-verdict.attention { color: var(--warm); }
+.loop-trace { list-style: none; margin: 4px 0; padding: 0; display: grid; gap: 8px; }
+.loop-step { position: relative; display: grid; gap: 2px; padding: 8px 10px 8px 26px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(148, 173, 226, 0.03); }
+.loop-step::before { content: ""; position: absolute; left: 11px; top: 13px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent-bright); }
+.loop-step:not(:last-child)::after { content: ""; position: absolute; left: 14px; top: 22px; bottom: -8px; width: 1px; background: var(--line-strong); }
+.loop-phase { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-bright); }
+.loop-summary { color: var(--ink-soft); font-size: 0.88rem; line-height: 1.5; }
+.loop-confidence { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+.loop-apply { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 1px solid rgba(157, 176, 204, 0.35); border-radius: var(--radius-md); padding: 10px 12px; background: rgba(107, 124, 152, 0.1); }
+.loop-apply span { color: var(--ink-soft); font-size: 0.86rem; }
+.loop-apply .button { min-height: 34px; padding: 6px 14px; font-size: 0.82rem; }
 .recipient-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .recipient-list li { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 10px 12px; }
 .recipient-list li.no-email { opacity: 0.7; }
