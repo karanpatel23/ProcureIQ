@@ -14,6 +14,7 @@ const envSchema = z.object({
   INTERNAL_ADMIN_EMAILS: z.string().default(''),
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().optional(),
+  APP_URL: z.string().url().optional().or(z.literal('').transform(() => undefined)),
   AI_PROVIDER: z.enum(['local', 'openai', 'azure']).default('local'),
   OPENAI_API_KEY: z.string().optional(),
   AZURE_OPENAI_API_KEY: z.string().optional(),

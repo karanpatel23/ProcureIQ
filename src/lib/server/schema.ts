@@ -4,7 +4,7 @@ export type BillingPlan = 'starter' | 'growth' | 'pro' | 'enterprise';
 export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'paused' | 'cancelled' | 'not_configured';
 export type LeadType = 'demo' | 'contact';
 
-export type User = { id: string; email: string; name: string; passwordHash: string; createdAt: string; updatedAt: string };
+export type User = { id: string; email: string; name: string; passwordHash: string; emailVerified?: boolean; verificationToken?: string; verificationTokenExpiresAt?: string; createdAt: string; updatedAt: string };
 export type WorkspaceUsage = { rfqsCreated: number; quoteDocumentsUploaded: number; aiExtractionRuns: number; teamMembers: number };
 export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
 export type WorkspaceMember = { id: string; workspaceId: string; userId: string; role: Role; createdAt: string };
