@@ -815,6 +815,47 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .workflow-visual { justify-content: center; padding: 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: radial-gradient(ellipse 55% 90% at 50% 0%, rgba(107, 124, 152, 0.13), transparent 70%), var(--glass); }
 .workflow-visual span, .status-strip span { border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; background: var(--glass); color: var(--ink); font-size: 0.9rem; }
 .workflow-visual i { width: 44px; height: 1px; background: linear-gradient(90deg, var(--line-strong), var(--accent)); }
+.status-strip span.active { border-color: rgba(157, 176, 204, 0.55); background: linear-gradient(180deg, rgba(107, 124, 152, 0.28), rgba(107, 124, 152, 0.12)); color: var(--ink); }
+
+/* ---------- Phase 1: RFQ side (advisor + send), supplier directory ---------- */
+.rfq-side { display: grid; gap: 18px; align-content: start; }
+.advisor-card, .send-panel { border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--glass); padding: 22px; display: grid; gap: 12px; }
+.advisor-score { font-family: var(--font-mono); font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line-strong); }
+.advisor-score.ready { color: var(--mist); border-color: rgba(183, 196, 214, 0.45); }
+.advisor-score.attention { color: var(--warm); border-color: rgba(196, 178, 166, 0.5); }
+.advisor-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.advisor-item { display: grid; gap: 3px; border-left: 2px solid var(--line-strong); padding: 4px 0 4px 12px; }
+.advisor-item.warning { border-left-color: var(--warm); }
+.advisor-item.info { border-left-color: var(--accent-bright); }
+.advisor-item b { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-bright); text-transform: none; }
+.advisor-item span { color: var(--ink-soft); font-size: 0.9rem; }
+.advisor-item em { color: var(--muted); font-size: 0.85rem; font-style: normal; }
+.recipient-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.recipient-list li { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 10px 12px; }
+.recipient-list li.no-email { opacity: 0.7; }
+.recipient-list .check-row span { display: grid; gap: 1px; }
+.recipient-list b { color: var(--ink); }
+.recipient-list em { font-style: normal; font-size: 0.82rem; color: var(--muted); }
+.recipient-list em.muted { color: var(--warm); }
+
+.supplier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 6px 0 26px; }
+.supplier-card { display: grid; gap: 6px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--glass); padding: 18px; transition: border-color var(--speed), transform var(--speed) var(--ease-out); }
+.supplier-card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.supplier-card-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.supplier-card strong { color: var(--ink); font-size: 1.02rem; }
+.supplier-meta { color: var(--muted); font-size: 0.85rem; }
+.chip { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
+.chip.active { color: var(--mist); border-color: rgba(183, 196, 214, 0.4); }
+.empty-state { border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); padding: 40px; text-align: center; margin: 6px 0 26px; }
+.empty-state h2 { margin-bottom: 6px; }
+.add-supplier { border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--glass); padding: 0 22px; }
+.add-supplier > summary { cursor: pointer; padding: 18px 0; font-weight: 600; color: var(--ink); list-style: none; }
+.add-supplier > summary::-webkit-details-marker { display: none; }
+.add-supplier > summary::before { content: "＋ "; color: var(--accent-bright); }
+.add-supplier[open] > summary::before { content: "− "; }
+.add-supplier > .auth-form { padding-bottom: 22px; }
+@media (max-width: 1100px) { .supplier-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .supplier-grid { grid-template-columns: 1fr; } }
 
 .settings-card dl { display: grid; gap: 16px; margin: 0 0 24px; }
 .settings-card div { display: grid; grid-template-columns: 180px 1fr; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 13px; }

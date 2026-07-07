@@ -2,5 +2,69 @@ import Link from 'next/link';
 import { SupplierForm } from '@/components/auth/SupplierForm';
 import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
+
 export const metadata = { title: 'Suppliers | ProcureIQ' };
-export default async function SuppliersPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string }> }) { const { workspace } = await requirePageWorkspace(); const filters = await searchParams; const db = await readDb(); const q = (filters.q ?? '').toLowerCase(); const status = filters.status ?? 'all'; const suppliers = db.suppliers.filter((item) => item.workspaceId === workspace.id && !item.archivedAt).filter((item: any) => (!q || [item.name, item.category, item.email].some((value) => String(value ?? '').toLowerCase().includes(q))) && (status === 'all' || item.status === status)).slice(0, 50); return <main><section className="app-shell"><div className="app-top"><div><p className="eyebrow">Suppliers</p><h1>Supplier management.</h1><p>Create and maintain the supplier memory that powers quote comparison.</p></div></div><form className="filter-bar"><input name="q" placeholder="Search suppliers" defaultValue={filters.q ?? ''} /><select name="status" defaultValue={status}><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select><button className="button secondary">Apply filters</button></form><div className="split-grid"><SupplierForm /><div className="list-panel">{suppliers.map((supplier) => <Link className="list-row" href={`/app/suppliers/${supplier.id}`} key={supplier.id}><strong>{supplier.name}</strong><span>{supplier.category || 'General supplier'} · {supplier.status}</span></Link>)}{suppliers.length === 0 && <p>Add suppliers to start building your supplier memory and RFQ workflow.</p>}</div></div></section></main>; }
+
+export default async function SuppliersPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; add?: string }> }) {
+  const { workspace } = await requirePageWorkspace();
+  const filters = await searchParams;
+  const db = await readDb();
+  const q = (filters.q ?? '').toLowerCase();
+  const status = filters.status ?? 'all';
+  const all = db.suppliers.filter((item) => item.workspaceId === workspace.id && !item.archivedAt);
+  const suppliers = all
+    .filter((item) => (!q || [item.name, item.category, item.email].some((value) => String(value ?? '').toLowerCase().includes(q))) && (status === 'all' || item.status === status))
+    .slice(0, 100);
+  const activeCount = all.filter((s) => s.status === 'active').length;
+
+  return (
+    <main>
+      <section className="app-shell">
+        <div className="app-top">
+          <div>
+            <p className="eyebrow">Suppliers</p>
+            <h1>Supplier directory</h1>
+            <p>{all.length} supplier{all.length === 1 ? '' : 's'} · {activeCount} active. This directory powers RFQ recipients and quote comparison.</p>
+          </div>
+          <a className="button primary" href="?add=1#add-supplier">Add supplier</a>
+        </div>
+
+        <form className="filter-bar">
+          <input name="q" placeholder="Search by name, category, or email" defaultValue={filters.q ?? ''} />
+          <select name="status" defaultValue={status}>
+            <option value="all">All statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <button className="button secondary">Search</button>
+        </form>
+
+        {suppliers.length > 0 ? (
+          <div className="supplier-grid">
+            {suppliers.map((supplier) => (
+              <Link className="supplier-card" href={`/app/suppliers/${supplier.id}`} key={supplier.id}>
+                <div className="supplier-card-head">
+                  <strong>{supplier.name}</strong>
+                  <span className={`chip ${supplier.status}`}>{supplier.status}</span>
+                </div>
+                <span className="supplier-meta">{supplier.category || 'General supplier'}</span>
+                <span className="supplier-meta">{supplier.email || 'No email on file'}</span>
+                {supplier.paymentTerms && <span className="supplier-meta">Terms: {supplier.paymentTerms}</span>}
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">
+            <h2>{all.length === 0 ? 'No suppliers yet' : 'No matches'}</h2>
+            <p>{all.length === 0 ? 'Add your first supplier to start building the directory that powers RFQs and quote comparison.' : 'Try a different search or status filter.'}</p>
+          </div>
+        )}
+
+        <details id="add-supplier" className="add-supplier" open={filters.add === '1' || all.length === 0}>
+          <summary>Add a supplier</summary>
+          <SupplierForm />
+        </details>
+      </section>
+    </main>
+  );
+}
