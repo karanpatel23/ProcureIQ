@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const signupSchema = z.object({ name: z.string().min(2).max(120), email: z.string().email().max(255), password: z.string().min(12).max(128) });
 export const loginSchema = z.object({ email: z.string().email().max(255), password: z.string().min(1).max(128) });
+export const forgotPasswordSchema = z.object({ email: z.string().email().max(255) });
+export const resetPasswordSchema = z.object({ token: z.string().min(16).max(256), password: z.string().min(12).max(128) });
 export const workspaceSchema = z.object({
   companyName: z.string().min(2).max(160),
   industryCategory: z.string().min(2).max(120),

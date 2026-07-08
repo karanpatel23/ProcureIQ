@@ -771,6 +771,36 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .check-row input { width: auto; min-height: auto; accent-color: var(--accent); }
 .form-error { color: var(--danger); margin: 0; font-size: 0.9rem; }
 .auth-switch a { color: var(--accent-bright); font-weight: 700; }
+.form-success { color: var(--accent-bright); margin: 0; font-size: 0.9rem; }
+/* Auth panel wraps the form + OAuth options in one card; nested .auth-form drops its own card chrome. */
+.auth-panel {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(26, 31, 40, 0.88), rgba(16, 19, 25, 0.92));
+  box-shadow: var(--shadow-panel);
+  padding: clamp(22px, 3.5vw, 34px);
+  backdrop-filter: blur(16px);
+  display: grid;
+  gap: 18px;
+}
+.auth-panel .auth-form { border: none; background: none; box-shadow: none; padding: 0; backdrop-filter: none; }
+.auth-meta { margin: 0; font-size: 0.9rem; }
+.auth-meta a { color: var(--accent-bright); font-weight: 600; }
+.oauth-block { display: grid; gap: 14px; }
+.oauth-divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.09em; }
+.oauth-divider::before, .oauth-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.oauth-buttons { display: grid; gap: 10px; }
+.oauth-button {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 44px; padding: 11px 14px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  background: var(--glass); color: var(--ink); font: inherit; font-weight: 600;
+  cursor: pointer; transition: background var(--speed), border-color var(--speed), transform var(--speed);
+}
+.oauth-button:hover:not(:disabled) { background: var(--glass-strong); border-color: var(--line-strong); transform: translateY(-1px); }
+.oauth-button:disabled { opacity: 0.6; cursor: not-allowed; }
+.oauth-button svg { flex: none; }
+.oauth-soon { margin-left: 4px; font-style: normal; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 7px; }
 .onboarding-shell { align-items: start; }
 
 /* ---------- App shell ---------- */
