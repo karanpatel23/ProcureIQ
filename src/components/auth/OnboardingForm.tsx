@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 
 const workflowOptions = ['materials', 'parts', 'equipment', 'subcontractors', 'packaging', 'services', 'other'];
 const toolOptions = ['Email', 'Excel', 'QuickBooks', 'ERP/MRP', 'Other'];
+const personaOptions = ['Procurement manager', 'Finance approver', 'Operations', 'Admin', 'Supplier manager', 'Approver', 'Viewer', 'Other'];
 
 export function OnboardingForm() {
   const [error, setError] = useState('');
@@ -21,6 +22,7 @@ export function OnboardingForm() {
       procurementEmail: String(form.get('procurementEmail') ?? ''),
       mainPurchasingWorkflow: String(form.get('mainPurchasingWorkflow') ?? ''),
       currentTools: form.getAll('currentTools').map(String),
+      ownerTitle: String(form.get('ownerTitle') ?? 'Procurement manager'),
     };
     try {
       const response = await fetch('/api/workspaces', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -33,5 +35,5 @@ export function OnboardingForm() {
     }
   }
 
-  return <form className="auth-form onboarding-form" onSubmit={onSubmit}><label>Company name<input name="companyName" required minLength={2} /></label><label>Industry category<input name="industryCategory" placeholder="Manufacturing, construction, distribution…" required /></label><label>Team size <span>Optional</span><input name="teamSize" placeholder="25 purchasing and operations users" /></label><label>Website <span>Optional</span><input name="website" type="url" placeholder="https://company.com" /></label><label>Procurement email <span>Optional</span><input name="procurementEmail" type="email" placeholder="purchasing@company.com" /></label><label>Main purchasing workflow<select name="mainPurchasingWorkflow" required defaultValue="materials">{workflowOptions.map((option) => <option key={option} value={option}>{option[0].toUpperCase() + option.slice(1)}</option>)}</select></label><fieldset><legend>Current tools</legend>{toolOptions.map((tool) => <label className="check-row" key={tool}><input type="checkbox" name="currentTools" value={tool} defaultChecked={tool === 'Email'} />{tool}</label>)}</fieldset>{error && <p className="form-error" role="alert">{error}</p>}<button className="button primary" disabled={loading}>{loading ? 'Creating workspace…' : 'Create workspace'}</button></form>;
+  return <form className="auth-form onboarding-form" onSubmit={onSubmit}><label>Company name<input name="companyName" required minLength={2} /></label><label>Industry category<input name="industryCategory" placeholder="Manufacturing, construction, distribution…" required /></label><label>Team size <span>Optional</span><input name="teamSize" placeholder="25 purchasing and operations users" /></label><label>Website <span>Optional</span><input name="website" type="url" placeholder="https://company.com" /></label><label>Procurement email <span>Optional</span><input name="procurementEmail" type="email" placeholder="purchasing@company.com" /></label><label>Your role<span>How you’ll use ProcureIQ. You can add teammates with their own roles later.</span><select name="ownerTitle" required defaultValue="Procurement manager">{personaOptions.map((option) => <option key={option} value={option}>{option}</option>)}</select></label><label>Main purchasing workflow<select name="mainPurchasingWorkflow" required defaultValue="materials">{workflowOptions.map((option) => <option key={option} value={option}>{option[0].toUpperCase() + option.slice(1)}</option>)}</select></label><fieldset><legend>Current tools</legend>{toolOptions.map((tool) => <label className="check-row" key={tool}><input type="checkbox" name="currentTools" value={tool} defaultChecked={tool === 'Email'} />{tool}</label>)}</fieldset>{error && <p className="form-error" role="alert">{error}</p>}<button className="button primary" disabled={loading}>{loading ? 'Creating workspace…' : 'Create workspace'}</button></form>;
 }

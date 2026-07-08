@@ -10,6 +10,19 @@ export const workspaceSchema = z.object({
   procurementEmail: z.string().email().optional().or(z.literal('')),
   mainPurchasingWorkflow: z.enum(['materials', 'parts', 'equipment', 'subcontractors', 'packaging', 'services', 'other']),
   currentTools: z.array(z.enum(['Email', 'Excel', 'QuickBooks', 'ERP/MRP', 'Other'])).min(1),
+  ownerTitle: z.enum(['Procurement manager', 'Finance approver', 'Operations', 'Admin', 'Supplier manager', 'Approver', 'Viewer', 'Other']).optional(),
+});
+
+export const personaEnum = z.enum(['Procurement manager', 'Finance approver', 'Operations', 'Admin', 'Supplier manager', 'Approver', 'Viewer', 'Other']);
+export const memberInviteSchema = z.object({
+  name: z.string().min(2).max(120),
+  email: z.string().email().max(255),
+  role: z.enum(['admin', 'member', 'viewer']),
+  title: personaEnum,
+});
+export const memberUpdateSchema = z.object({
+  role: z.enum(['admin', 'member', 'viewer']).optional(),
+  title: personaEnum.optional(),
 });
 export const supplierSchema = z.object({
   name: z.string().min(2).max(160), contactPerson: z.string().max(120).optional().or(z.literal('')), email: z.string().email().optional().or(z.literal('')), phone: z.string().max(60).optional().or(z.literal('')), website: z.string().url().optional().or(z.literal('')), category: z.string().max(120).optional().or(z.literal('')), typicalItems: z.string().max(800).optional().or(z.literal('')), paymentTerms: z.string().max(160).optional().or(z.literal('')), notes: z.string().max(1200).optional().or(z.literal('')), status: z.enum(['active', 'inactive']).default('active'),

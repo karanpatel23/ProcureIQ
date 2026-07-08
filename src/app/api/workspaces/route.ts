@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       const timestamp = now();
       const workspace = { id: createId('wsp'), name: input.companyName, industryCategory: input.industryCategory, teamSize: input.teamSize || undefined, website: input.website || undefined, procurementEmail: input.procurementEmail || undefined, mainPurchasingWorkflow: input.mainPurchasingWorkflow, currentTools: input.currentTools, plan: 'starter' as const, subscriptionStatus: 'not_configured' as const, usage: { rfqsCreated: 0, quoteDocumentsUploaded: 0, aiExtractionRuns: 0, teamMembers: 1 }, createdAt: timestamp, updatedAt: timestamp };
       db.workspaces.push(workspace);
-      db.workspaceMembers.push({ id: createId('wmem'), workspaceId: workspace.id, userId: user.id, role: 'owner', createdAt: timestamp });
+      db.workspaceMembers.push({ id: createId('wmem'), workspaceId: workspace.id, userId: user.id, role: 'owner', title: input.ownerTitle ?? 'Procurement manager', status: 'active', createdAt: timestamp });
       return workspace;
     });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'workspace.created', entityType: 'workspace', entityId: workspace.id });
