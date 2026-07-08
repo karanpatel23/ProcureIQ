@@ -4,7 +4,14 @@ export type BillingPlan = 'starter' | 'growth' | 'pro' | 'enterprise';
 export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'paused' | 'cancelled' | 'not_configured';
 export type LeadType = 'demo' | 'contact';
 
-export type User = { id: string; email: string; name: string; passwordHash: string; emailVerified?: boolean; verificationToken?: string; verificationTokenExpiresAt?: string; createdAt: string; updatedAt: string };
+// passwordHash is '' for accounts created purely through an OAuth provider
+// (they authenticate with Google/Microsoft, not a password). resetToken powers
+// the forgot-password flow and mirrors the verification-token mechanism.
+export type User = { id: string; email: string; name: string; passwordHash: string; emailVerified?: boolean; verificationToken?: string; verificationTokenExpiresAt?: string; resetToken?: string; resetTokenExpiresAt?: string; createdAt: string; updatedAt: string };
+// Links a user to an external identity provider. Present so Google and Microsoft
+// sign-in can be enabled by setting credentials — the architecture is in place.
+export type OAuthProvider = 'google' | 'microsoft';
+export type OAuthAccount = { id: string; userId: string; provider: OAuthProvider; providerAccountId: string; email: string; createdAt: string };
 export type WorkspaceUsage = { rfqsCreated: number; quoteDocumentsUploaded: number; aiExtractionRuns: number; teamMembers: number };
 export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
 // A member links a person to a workspace. `role` governs permissions
@@ -35,7 +42,7 @@ export type WorkflowStep = { index: number; phase: WorkflowPhase; summary: strin
 export type WorkflowDecision = { action: 'approve' | 'reject' | 'edit' | 'regenerate'; byUserId?: string; notes?: string; at: string };
 export type WorkflowRun = { id: string; workspaceId: string; type: WorkflowType; entityId?: string; status: WorkflowRunStatus; step: number; maxSteps: number; score?: number; state: unknown; steps: WorkflowStep[]; openItems: string[]; createdByUserId?: string; decision?: WorkflowDecision; createdAt: string; updatedAt: string };
 
-export type Database = { users: User[]; workspaces: Workspace[]; workspaceMembers: WorkspaceMember[]; suppliers: Supplier[]; rfqs: Rfq[]; rfqItems: RfqItem[]; quoteDocuments: QuoteDocument[]; supplierQuotes: SupplierQuote[]; quoteLineItems: QuoteLineItem[]; purchaseOrderDrafts: PurchaseOrderDraft[]; auditLogs: AuditLog[]; aiExtractionRuns: AiExtractionRun[]; sessions: Session[]; leadRequests: LeadRequest[]; workflowRuns: WorkflowRun[] };
+export type Database = { users: User[]; oauthAccounts: OAuthAccount[]; workspaces: Workspace[]; workspaceMembers: WorkspaceMember[]; suppliers: Supplier[]; rfqs: Rfq[]; rfqItems: RfqItem[]; quoteDocuments: QuoteDocument[]; supplierQuotes: SupplierQuote[]; quoteLineItems: QuoteLineItem[]; purchaseOrderDrafts: PurchaseOrderDraft[]; auditLogs: AuditLog[]; aiExtractionRuns: AiExtractionRun[]; sessions: Session[]; leadRequests: LeadRequest[]; workflowRuns: WorkflowRun[] };
 
 export const defaultWorkspaceUsage = (): WorkspaceUsage => ({ rfqsCreated: 0, quoteDocumentsUploaded: 0, aiExtractionRuns: 0, teamMembers: 1 });
-export const emptyDatabase = (): Database => ({ users: [], workspaces: [], workspaceMembers: [], suppliers: [], rfqs: [], rfqItems: [], quoteDocuments: [], supplierQuotes: [], quoteLineItems: [], purchaseOrderDrafts: [], auditLogs: [], aiExtractionRuns: [], sessions: [], leadRequests: [], workflowRuns: [] });
+export const emptyDatabase = (): Database => ({ users: [], oauthAccounts: [], workspaces: [], workspaceMembers: [], suppliers: [], rfqs: [], rfqItems: [], quoteDocuments: [], supplierQuotes: [], quoteLineItems: [], purchaseOrderDrafts: [], auditLogs: [], aiExtractionRuns: [], sessions: [], leadRequests: [], workflowRuns: [] });

@@ -64,7 +64,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
       {mode === 'signup' && <label>Full name<input name="name" autoComplete="name" required minLength={2} /></label>}
       <label>Work email<input name="email" type="email" autoComplete="email" required /></label>
       <label>Password<input name="password" type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} required minLength={mode === 'signup' ? 12 : 1} /></label>
-      {mode === 'signup' && <p className="form-hint">Use at least 12 characters. OAuth-ready architecture is prepared for Google and Microsoft sign-in later.</p>}
+      {mode === 'signup' && <p className="form-hint">Use at least 12 characters.</p>}
       {error && <p className="form-error" role="alert">{error}</p>}
       {pendingEmail && mode === 'login' && (
         <>

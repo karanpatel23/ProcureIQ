@@ -139,6 +139,7 @@ export const createId = (prefix: string) => `${prefix}_${randomUUID().replaceAll
 function normalizeDatabase(db: Database): Database {
   db.leadRequests ??= [];
   db.workflowRuns ??= [];
+  db.oauthAccounts ??= [];
   db.workspaces = db.workspaces.map((workspace) => ({
     ...workspace,
     plan: workspace.plan ?? 'starter',

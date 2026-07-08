@@ -15,6 +15,14 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().optional(),
   APP_URL: z.string().url().optional().or(z.literal('').transform(() => undefined)),
+  // OAuth (optional). A provider's button becomes a live sign-in flow the moment
+  // its client id + secret are set; until then the UI honestly shows it as coming
+  // soon. MICROSOFT_OAUTH_TENANT defaults to 'common' (any work/personal account).
+  GOOGLE_OAUTH_CLIENT_ID: z.string().optional(),
+  GOOGLE_OAUTH_CLIENT_SECRET: z.string().optional(),
+  MICROSOFT_OAUTH_CLIENT_ID: z.string().optional(),
+  MICROSOFT_OAUTH_CLIENT_SECRET: z.string().optional(),
+  MICROSOFT_OAUTH_TENANT: z.string().default('common'),
   AI_PROVIDER: z.enum(['local', 'openai', 'azure']).default('local'),
   OPENAI_API_KEY: z.string().optional(),
   AZURE_OPENAI_API_KEY: z.string().optional(),
