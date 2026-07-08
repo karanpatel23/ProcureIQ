@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react';
 
 export function ForgotPasswordForm() {
   const [sent, setSent] = useState(false);
+  const [emailConfigured, setEmailConfigured] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -15,6 +16,7 @@ export function ForgotPasswordForm() {
       const response = await fetch('/api/auth/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
       const result = await response.json();
       if (!result.ok) { setError(result.error?.message ?? 'Could not start the reset.'); setLoading(false); return; }
+      setEmailConfigured(result.data?.emailConfigured !== false);
       setSent(true);
     } catch {
       setError('Unable to reach the server. Please try again in a moment.');
@@ -24,11 +26,17 @@ export function ForgotPasswordForm() {
   }
 
   if (sent) {
-    return (
+    return emailConfigured ? (
       <div className="auth-form" role="status">
         <h2>Check your email</h2>
         <p>If an account exists for that email, a reset link is on its way. The link expires in one hour.</p>
         <p className="form-hint">Didn’t get it? Check spam, or try again in a few minutes.</p>
+      </div>
+    ) : (
+      <div className="auth-form" role="status">
+        <h2>Email delivery isn’t set up yet</h2>
+        <p>Your reset link was created, but this deployment isn’t configured to send email, so it couldn’t be delivered.</p>
+        <p className="form-hint">If you’re the administrator, add an email provider (RESEND_API_KEY + EMAIL_FROM) and try again — the link will then arrive by email. The reset link is also written to the server logs.</p>
       </div>
     );
   }
