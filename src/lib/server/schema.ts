@@ -7,7 +7,12 @@ export type LeadType = 'demo' | 'contact';
 export type User = { id: string; email: string; name: string; passwordHash: string; emailVerified?: boolean; verificationToken?: string; verificationTokenExpiresAt?: string; createdAt: string; updatedAt: string };
 export type WorkspaceUsage = { rfqsCreated: number; quoteDocumentsUploaded: number; aiExtractionRuns: number; teamMembers: number };
 export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
-export type WorkspaceMember = { id: string; workspaceId: string; userId: string; role: Role; createdAt: string };
+// A member links a person to a workspace. `role` governs permissions
+// (owner/admin/member/viewer); `title` is their job persona (e.g. "Procurement
+// manager"). Invited members exist before the person signs up: userId is empty
+// and status is 'invited' until an account with invitedEmail joins.
+export type WorkspacePersona = 'Procurement manager' | 'Finance approver' | 'Operations' | 'Admin' | 'Supplier manager' | 'Approver' | 'Viewer' | 'Other';
+export type WorkspaceMember = { id: string; workspaceId: string; userId: string; role: Role; title?: WorkspacePersona; invitedEmail?: string; invitedName?: string; status?: 'active' | 'invited'; createdAt: string };
 export type Supplier = { id: string; workspaceId: string; name: string; contactPerson?: string; email?: string; phone?: string; website?: string; category?: string; typicalItems?: string; paymentTerms?: string; notes?: string; status: 'active' | 'inactive'; archivedAt?: string; createdAt: string; updatedAt: string };
 export type Rfq = { id: string; workspaceId: string; createdByUserId: string; title: string; description?: string; neededBy?: string; deliveryLocation?: string; internalReference?: string; supplierIds: string[]; emailDraft?: string; status: 'draft' | 'sent' | 'quotes_received' | 'approved' | 'archived'; sentAt?: string; selectedSupplierQuoteId?: string; decisionNotes?: string; recommendationOverridden?: boolean; createdAt: string; updatedAt: string };
 export type RfqItem = { id: string; workspaceId: string; rfqId: string; itemName: string; description?: string; quantity: number; unit?: string; requiredDate?: string; notes?: string; createdAt: string };
