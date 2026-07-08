@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import { env } from './env';
-import { sendEmail } from './email';
+import { emailProviderConfigured, sendEmail } from './email';
 
 /*
  * Password reset, real and provider-aware.
@@ -29,6 +29,13 @@ function baseUrl(request: Request): string {
 
 export async function sendPasswordResetEmail(request: Request, to: string, token: string) {
   const url = `${baseUrl(request)}/reset-password?token=${token}`;
+  // Without a configured provider the email cannot actually be delivered, so
+  // surface the reset link in the server log where the deployment operator can
+  // retrieve it. This only ever exposes the link to the deployment's own logs —
+  // never over the network — and only in the honest no-provider fallback.
+  if (!emailProviderConfigured()) {
+    console.warn(JSON.stringify({ level: 'warn', event: 'password_reset.link_logged', to, url }));
+  }
   return sendEmail({
     to,
     subject: 'Reset your ProcureIQ password',

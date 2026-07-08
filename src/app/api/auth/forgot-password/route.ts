@@ -1,5 +1,6 @@
 import { handleApiError, jsonOk, parseJson } from '@/lib/server/api';
 import { mutateDb, now } from '@/lib/server/db';
+import { emailProviderConfigured } from '@/lib/server/email';
 import { issueResetToken, sendPasswordResetEmail } from '@/lib/server/password-reset';
 import { forgotPasswordSchema } from '@/lib/server/validation';
 
@@ -8,7 +9,10 @@ import { forgotPasswordSchema } from '@/lib/server/validation';
 export async function POST(request: Request) {
   try {
     const input = await parseJson(request, forgotPasswordSchema);
-    const generic = { message: 'If an account exists for that email, a reset link is on its way.' };
+    // emailConfigured reflects deployment configuration only (not whether the
+    // account exists), so returning it cannot be used to enumerate users.
+    const emailConfigured = emailProviderConfigured();
+    const generic = { emailConfigured, message: 'If an account exists for that email, a reset link is on its way.' };
 
     const result = await mutateDb((db) => {
       const user = db.users.find((item) => item.email.toLowerCase() === input.email.toLowerCase());
