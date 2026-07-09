@@ -31,6 +31,7 @@ export function Header() {
 export function Footer() {
   const links = [
     ...navItems,
+    { href: '/faq', label: 'FAQ' },
     { href: '/demo-workflow', label: 'Live demo' },
     { href: '/demo', label: 'Book a demo' },
     { href: '/login', label: 'Log in' },
