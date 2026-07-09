@@ -49,48 +49,81 @@ export function TeamManager({ initialMembers, canManage }: { initialMembers: Mem
 
   return (
     <div className="team-manager">
-      <div className="settings-card">
-        <h2>People &amp; roles</h2>
-        <p className="form-hint">Each person has a permission role (what they can do) and a persona (their job function). {members.length} profile{members.length === 1 ? '' : 's'} in this workspace.</p>
+      <section className="settings-card">
+        <header className="settings-card-head">
+          <div>
+            <h2>People &amp; roles</h2>
+            <p className="form-hint">A <b>permission role</b> controls what a person can do; a <b>persona</b> describes their job function.</p>
+          </div>
+          <span className="count-pill">{members.length} {members.length === 1 ? 'profile' : 'profiles'}</span>
+        </header>
+
         <ul className="member-list">
           {members.map((m) => (
             <li key={m.id} className="member-row">
               <span className="member-avatar" aria-hidden="true">{(m.name[0] ?? '?').toUpperCase()}</span>
-              <div className="member-id"><b>{m.name}</b><em>{m.email}</em></div>
-              <span className="member-persona">{m.title ?? '—'}</span>
-              {canManage && m.role !== 'owner' ? (
-                <select className="member-role-select" value={m.role} onChange={(e) => updateRole(m.id, e.target.value)} aria-label={`Role for ${m.name}`}>
-                  {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
-                </select>
-              ) : (
-                <span className={`member-role ${m.role}`}>{m.role}</span>
-              )}
-              <span className={`member-status ${m.status}`}>{m.status}</span>
-              {canManage && m.role !== 'owner' ? <button type="button" className="member-remove" onClick={() => remove(m.id)} aria-label={`Remove ${m.name}`}>Remove</button> : <span />}
+              <div className="member-id">
+                <b>{m.name}</b>
+                <em>{m.email}</em>
+              </div>
+              <span className={`member-persona ${m.title ? '' : 'is-empty'}`}>{m.title ?? 'No persona set'}</span>
+              <div className="member-controls">
+                {canManage && m.role !== 'owner' ? (
+                  <select className="member-role-select" value={m.role} onChange={(e) => updateRole(m.id, e.target.value)} aria-label={`Permission role for ${m.name}`}>
+                    {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                  </select>
+                ) : (
+                  <span className={`role-tag ${m.role}`}>{m.role}</span>
+                )}
+                <span className={`status-tag ${m.status}`}>{m.status}</span>
+                {canManage && m.role !== 'owner' && (
+                  <button type="button" className="member-remove" onClick={() => remove(m.id)} aria-label={`Remove ${m.name}`}>Remove</button>
+                )}
+              </div>
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
       {canManage && (
-        <div className="settings-card">
-          <h2>Add a teammate</h2>
-          <p className="form-hint">Give a colleague their own role profile. If they don’t have an account yet, they’ll join this workspace automatically when they sign up with this email.</p>
+        <section className="settings-card">
+          <header className="settings-card-head">
+            <div>
+              <h2>Add a teammate</h2>
+              <p className="form-hint">Give a colleague their own role profile. If they don’t have an account yet, they’ll join this workspace automatically when they sign up with this email.</p>
+            </div>
+          </header>
+
           <form className="member-form" onSubmit={addMember}>
-            <div className="form-grid">
-              <label>Full name<input name="name" required minLength={2} /></label>
-              <label>Work email<input name="email" type="email" required /></label>
+            <div className="field-grid">
+              <label className="field">
+                <span className="field-label">Full name</span>
+                <input name="name" required minLength={2} placeholder="Alex Rivera" autoComplete="off" />
+              </label>
+              <label className="field">
+                <span className="field-label">Work email</span>
+                <input name="email" type="email" required placeholder="alex@company.com" autoComplete="off" />
+              </label>
+              <label className="field">
+                <span className="field-label">Persona <span className="field-sub">job function</span></span>
+                <select name="title" defaultValue="Procurement manager">{PERSONAS.map((p) => <option key={p} value={p}>{p}</option>)}</select>
+              </label>
+              <label className="field">
+                <span className="field-label">Permission role <span className="field-sub">what they can do</span></span>
+                <select name="role" defaultValue="member">{ROLES.map((r) => <option key={r} value={r}>{r}</option>)}</select>
+              </label>
             </div>
-            <div className="form-grid">
-              <label>Persona<select name="title" defaultValue="Procurement manager">{PERSONAS.map((p) => <option key={p} value={p}>{p}</option>)}</select></label>
-              <label>Permission role<select name="role" defaultValue="member">{ROLES.map((r) => <option key={r} value={r}>{r}</option>)}</select></label>
-            </div>
+
             {error && <p className="form-error" role="alert">{error}</p>}
-            {notice && <p className="form-hint" role="status">{notice}</p>}
-            <div className="form-actions"><button className="button primary" disabled={adding}>{adding ? 'Adding…' : 'Add teammate'}</button></div>
+            {notice && <p className="form-success" role="status">{notice}</p>}
+
+            <div className="form-actions">
+              <button className="button primary" disabled={adding}>{adding ? 'Adding…' : 'Add teammate'}</button>
+            </div>
           </form>
-        </div>
+        </section>
       )}
+
       {!canManage && error && <p className="form-error" role="alert">{error}</p>}
     </div>
   );

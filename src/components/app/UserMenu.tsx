@@ -33,6 +33,7 @@ export function UserMenu({ email, role, persona }: { email: string; role: string
           <Link role="menuitem" href="/app/settings/company" onClick={() => setOpen(false)}>Company settings</Link>
           <Link role="menuitem" href="/app/settings/team" onClick={() => setOpen(false)}>Team &amp; roles</Link>
           <Link role="menuitem" href="/app/settings/security" onClick={() => setOpen(false)}>Security</Link>
+          <Link role="menuitem" href="/app/settings/account" onClick={() => setOpen(false)}>Account</Link>
           <button type="button" role="menuitem" className="user-menu-signout" onClick={signOut} disabled={signingOut}>{signingOut ? 'Signing out…' : 'Sign out'}</button>
         </div>
       )}

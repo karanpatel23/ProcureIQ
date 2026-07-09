@@ -857,25 +857,77 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .page-head { display: grid; gap: 8px; max-width: 720px; margin-bottom: 32px; }
 .page-head p { margin: 0; }
 
+/* ---------- Settings: shared form fields ---------- */
+/* A single field primitive used across Team, Company, and Account forms so
+   labels and inputs are consistently aligned and spaced. */
+.field { display: grid; gap: 7px; min-width: 0; }
+.field-label { color: var(--ink); font-weight: 600; font-size: 0.86rem; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.field-sub { color: var(--muted); font-weight: 400; font-size: 0.76rem; }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 44px; padding: 11px 13px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  background: rgba(10, 12, 16, 0.72); color: var(--ink); font: inherit;
+  transition: border-color var(--speed), box-shadow var(--speed);
+}
+.field input::placeholder { color: var(--muted); opacity: 0.7; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(107, 124, 152, 0.3); }
+.field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
+.field-grid .field-wide { grid-column: 1 / -1; }
+
+.settings-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.settings-card-head h2 { margin: 0 0 4px; font-size: 1.15rem; }
+.settings-card-head .form-hint { margin: 0; max-width: 60ch; }
+.count-pill { flex: none; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: 5px 11px; white-space: nowrap; }
+
 /* ---------- Team & roles ---------- */
-.team-manager { display: grid; gap: 20px; max-width: 860px; }
-.team-manager .settings-card { display: grid; gap: 14px; }
-.member-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.member-row { display: grid; grid-template-columns: 34px minmax(0, 1.6fr) minmax(0, 1fr) auto auto auto; gap: 14px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--glass); }
-.member-avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(160deg, var(--accent), var(--accent-bright)); color: #0e1116; font-weight: 800; font-size: 0.9rem; }
-.member-id { display: grid; gap: 1px; min-width: 0; }
-.member-id b { color: var(--ink); font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.member-id em { color: var(--muted); font-size: 0.78rem; font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.member-persona { color: var(--ink-soft); font-size: 0.86rem; }
-.member-role, .member-status { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); text-align: center; }
-.member-role.owner { color: var(--accent-bright); border-color: rgba(157, 176, 204, 0.5); }
-.member-status.active { color: var(--mist); border-color: rgba(183, 196, 214, 0.4); }
-.member-status.invited { color: var(--warm); border-color: rgba(196, 178, 166, 0.5); }
-.member-role-select { min-height: 34px; padding: 4px 10px; font-size: 0.8rem; width: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: rgba(4, 6, 13, 0.72); color: var(--ink); font-family: inherit; }
-.member-remove { background: none; border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--muted); font-size: 0.78rem; padding: 5px 10px; cursor: pointer; font-family: inherit; }
+.team-manager { display: grid; gap: 22px; max-width: 900px; }
+.team-manager .settings-card { display: grid; gap: 18px; }
+.member-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.member-row {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-md);
+  background: var(--glass); transition: border-color var(--speed), background var(--speed);
+}
+.member-row:hover { border-color: var(--line-strong); background: var(--glass-strong); }
+.member-avatar { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(160deg, var(--accent), var(--accent-bright)); color: #0e1116; font-weight: 800; font-size: 0.95rem; }
+.member-id { display: grid; gap: 2px; min-width: 0; flex: 1 1 200px; }
+.member-id b { color: var(--ink); font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.member-id em { color: var(--muted); font-size: 0.8rem; font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.member-persona { flex: none; font-size: 0.82rem; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; background: rgba(10, 12, 16, 0.4); }
+.member-persona.is-empty { color: var(--muted); font-style: italic; border-style: dashed; }
+.member-controls { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.role-tag, .status-tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); text-align: center; white-space: nowrap; }
+.role-tag.owner { color: var(--accent-bright); border-color: rgba(157, 176, 204, 0.5); background: rgba(157, 176, 204, 0.08); }
+.status-tag.active { color: var(--mist); border-color: rgba(183, 196, 214, 0.4); }
+.status-tag.invited { color: var(--warm); border-color: rgba(196, 178, 166, 0.5); background: rgba(196, 178, 166, 0.08); }
+.member-role-select { min-height: 36px; padding: 6px 12px; font-size: 0.82rem; width: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: rgba(10, 12, 16, 0.72); color: var(--ink); font-family: inherit; text-transform: capitalize; cursor: pointer; }
+.member-remove { background: none; border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--muted); font-size: 0.78rem; padding: 6px 12px; cursor: pointer; font-family: inherit; transition: color var(--speed), border-color var(--speed); }
 .member-remove:hover { border-color: rgba(217, 159, 151, 0.5); color: var(--danger); }
-.member-form { display: grid; gap: 14px; }
-@media (max-width: 720px) { .member-row { grid-template-columns: 34px 1fr; gap: 8px 12px; } .member-row > .member-persona, .member-row > .member-role, .member-row > .member-role-select, .member-row > .member-status, .member-row > .member-remove { grid-column: 2; justify-self: start; } }
+.member-form { display: grid; gap: 20px; }
+
+/* ---------- Company profile form ---------- */
+.company-form { display: grid; gap: 22px; max-width: 900px; }
+.tools-fieldset { border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px; margin: 0; }
+.tools-fieldset legend { color: var(--muted); padding: 0 8px; font-size: 0.84rem; }
+.check-grid { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+
+/* ---------- Account danger zone ---------- */
+.danger-zone { border: 1px solid rgba(217, 159, 151, 0.35); border-radius: var(--radius-lg); background: rgba(217, 159, 151, 0.05); padding: clamp(20px, 3vw, 28px); display: grid; gap: 18px; max-width: 900px; }
+.danger-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.danger-head h2 { margin: 0 0 4px; font-size: 1.12rem; color: var(--ink); }
+.button.danger { background: rgba(217, 159, 151, 0.14); border: 1px solid rgba(217, 159, 151, 0.5); color: #e8b7af; }
+.button.danger:hover:not(:disabled) { background: rgba(217, 159, 151, 0.24); border-color: rgba(217, 159, 151, 0.7); }
+.button.danger:disabled { opacity: 0.5; cursor: not-allowed; }
+.danger-confirm { display: grid; gap: 16px; border-top: 1px solid rgba(217, 159, 151, 0.25); padding-top: 18px; }
+.danger-list { margin: 0; padding-left: 20px; display: grid; gap: 7px; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+.danger-list b { color: var(--ink-soft); }
+
+@media (max-width: 720px) {
+  .field-grid { grid-template-columns: 1fr; }
+  .member-controls { margin-left: 0; width: 100%; flex-wrap: wrap; }
+  .member-persona { order: 3; }
+  .settings-card-head, .danger-head { flex-direction: column; }
+}
 
 .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 30px 0; }
 .dashboard-grid.compact { grid-template-columns: repeat(3, 1fr); margin: 18px 0 0; }

@@ -1,7 +1,7 @@
 import { ApiError, handleApiError, jsonOk, parseJson } from '@/lib/server/api';
-import { requireUser } from '@/lib/server/auth';
+import { canManageWorkspace, requireUser, requireWorkspace } from '@/lib/server/auth';
 import { createId, mutateDb, now } from '@/lib/server/db';
-import { workspaceSchema } from '@/lib/server/validation';
+import { workspaceSchema, workspaceUpdateSchema } from '@/lib/server/validation';
 import { writeAuditLog } from '@/lib/server/audit';
 
 export async function POST(request: Request) {
@@ -18,5 +18,39 @@ export async function POST(request: Request) {
     });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'workspace.created', entityType: 'workspace', entityId: workspace.id });
     return jsonOk({ workspace, next: '/app/dashboard' }, { status: 201 });
+  } catch (error) { return handleApiError(error); }
+}
+
+// Update the company profile. Owners and admins only. Empty strings clear an
+// optional field; only provided keys are touched.
+export async function PATCH(request: Request) {
+  try {
+    const { user, workspace, membership } = await requireWorkspace();
+    if (!canManageWorkspace(membership.role)) throw new ApiError(403, 'FORBIDDEN', 'Only owners and admins can edit the company profile.');
+    const input = await parseJson(request, workspaceUpdateSchema);
+    const clean = <T>(value: T | '' | undefined) => (value === '' || value === undefined ? undefined : value);
+
+    const updated = await mutateDb((db) => {
+      const target = db.workspaces.find((w) => w.id === workspace.id);
+      if (!target) throw new ApiError(404, 'NOT_FOUND', 'Workspace not found.');
+      if (input.name !== undefined) target.name = input.name;
+      if (input.industryCategory !== undefined) target.industryCategory = input.industryCategory;
+      if (input.mainPurchasingWorkflow !== undefined) target.mainPurchasingWorkflow = input.mainPurchasingWorkflow;
+      if (input.currentTools !== undefined) target.currentTools = input.currentTools;
+      if (input.teamSize !== undefined) target.teamSize = clean(input.teamSize);
+      if (input.website !== undefined) target.website = clean(input.website);
+      if (input.procurementEmail !== undefined) target.procurementEmail = clean(input.procurementEmail);
+      if (input.country !== undefined) target.country = clean(input.country);
+      if (input.currency !== undefined) target.currency = clean(input.currency);
+      if (input.annualSpendBand !== undefined) target.annualSpendBand = clean(input.annualSpendBand);
+      if (input.supplierCountBand !== undefined) target.supplierCountBand = clean(input.supplierCountBand);
+      if (input.taxId !== undefined) target.taxId = clean(input.taxId);
+      if (input.approvalThreshold !== undefined) target.approvalThreshold = clean(input.approvalThreshold) as number | undefined;
+      target.updatedAt = now();
+      return target;
+    });
+
+    await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'workspace.updated', entityType: 'workspace', entityId: workspace.id });
+    return jsonOk({ workspace: updated });
   } catch (error) { return handleApiError(error); }
 }
