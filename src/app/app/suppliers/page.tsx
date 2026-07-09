@@ -45,7 +45,10 @@ export default async function SuppliersPage({ searchParams }: { searchParams: Pr
               <Link className="supplier-card" href={`/app/suppliers/${supplier.id}`} key={supplier.id}>
                 <div className="supplier-card-head">
                   <strong>{supplier.name}</strong>
-                  <span className={`chip ${supplier.status}`}>{supplier.status}</span>
+                  <span className="supplier-chips">
+                    {supplier.preferred && <span className="chip preferred">Preferred</span>}
+                    <span className={`chip ${supplier.status}`}>{supplier.status}</span>
+                  </span>
                 </div>
                 <span className="supplier-meta">{supplier.category || 'General supplier'}</span>
                 <span className="supplier-meta">{supplier.email || 'No email on file'}</span>

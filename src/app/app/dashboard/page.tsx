@@ -9,6 +9,19 @@ export default async function DashboardPage() {
   const db = await readDb();
   const scopedRfqs = db.rfqs.filter((item) => item.workspaceId === workspace.id);
   const scopedQuotes = db.supplierQuotes.filter((item) => item.workspaceId === workspace.id);
+
+  // Decision queue: comparison runs awaiting a human, split by policy verdict.
+  // In-policy decisions are one click; exceptions are the only ones that need thought.
+  const awaiting = db.workflowRuns.filter((run) => run.workspaceId === workspace.id && run.type === 'quote_comparison' && run.status === 'awaiting_approval');
+  const policyOf = (run: (typeof awaiting)[number]) => (run.state as { policy?: { status?: string; exceptions?: unknown[] } } | null)?.policy;
+  const inPolicy = awaiting.filter((run) => policyOf(run)?.status === 'in_policy');
+  const withExceptions = awaiting.filter((run) => policyOf(run)?.status === 'exceptions');
+  const latestExceptions = withExceptions.slice(-3).reverse().flatMap((run) => {
+    const policy = policyOf(run) as { exceptions?: Array<{ title?: string }> } | undefined;
+    const rfq = scopedRfqs.find((item) => item.id === run.entityId);
+    return (policy?.exceptions ?? []).slice(0, 2).map((exception, index) => ({ key: `${run.id}-${index}`, rfqId: run.entityId, rfqTitle: rfq?.title ?? 'RFQ', title: exception.title ?? 'Exception' }));
+  });
+
   const cards = [
     ['Active RFQs', scopedRfqs.filter((rfq) => rfq.status !== 'archived').length],
     ['Quotes received', scopedQuotes.length],
@@ -29,6 +42,28 @@ export default async function DashboardPage() {
           </div>
           <Link className="button primary" href="/app/rfqs/new">Create RFQ</Link>
         </div>
+        {awaiting.length > 0 && (
+          <section className="decision-queue" aria-label="Decision queue">
+            <div className="decision-queue-head">
+              <div>
+                <p className="eyebrow">Decision queue</p>
+                <h2>{awaiting.length} decision{awaiting.length === 1 ? '' : 's'} waiting</h2>
+                <p>{inPolicy.length} in policy — one click to approve · {withExceptions.length} with exceptions that need your judgment. Everything else was checked for you.</p>
+              </div>
+            </div>
+            {latestExceptions.length > 0 && (
+              <ul className="decision-queue-list">
+                {latestExceptions.map((item) => (
+                  <li key={item.key}>
+                    <span className="status-tag invited">exception</span>
+                    <span className="dq-title">{item.rfqTitle}: {item.title}</span>
+                    {item.rfqId && <Link href={`/app/rfqs/${item.rfqId}/compare`}>Review →</Link>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
         <div className="dashboard-grid">
           {cards.map(([label, value]) => (
             <article key={label}><strong>{value}</strong><span>{label}</span></article>

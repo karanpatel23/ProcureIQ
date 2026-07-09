@@ -1,7 +1,7 @@
 import { ApiError, handleApiError, jsonOk } from '@/lib/server/api';
 import { writeAuditLog } from '@/lib/server/audit';
 import { requireWorkspace } from '@/lib/server/auth';
-import { buildRfqComparison } from '@/lib/server/comparison';
+import { buildRfqComparison, evaluateComparisonPolicy } from '@/lib/server/comparison';
 import { mutateDb, readDb } from '@/lib/server/db';
 import { runQuoteComparisonLoop, type ComparisonView } from '@/lib/server/quote-loop';
 
@@ -27,6 +27,11 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
 
     const output = runQuoteComparisonLoop({ workspaceId: workspace.id, rfqId: rfq.id, createdByUserId: user.id, comparison: view });
 
+    // Evaluate the recommended decision against workspace purchasing policy and
+    // persist the verdict on the run — this is what powers exception-only review.
+    const policy = evaluateComparisonPolicy(db, rfq, workspace, comparison);
+    if (policy) output.run.state = { ...(output.run.state as Record<string, unknown>), policy };
+
     await mutateDb((draft) => { draft.workflowRuns.push(output.run); });
     await writeAuditLog({
       workspaceId: workspace.id,
@@ -34,7 +39,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
       action: 'quote_comparison.completed',
       entityType: 'workflow_run',
       entityId: output.run.id,
-      metadata: { rfqId: rfq.id, needsReview: output.needsReview, openItems: output.openItems.length },
+      metadata: { rfqId: rfq.id, needsReview: output.needsReview, openItems: output.openItems.length, policyStatus: policy?.status ?? 'none', policyExceptions: policy?.exceptions.length ?? 0 },
     });
 
     return jsonOk({
@@ -44,6 +49,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
       tradeoffs: output.tradeoffs,
       openItems: output.openItems,
       needsReview: output.needsReview,
+      policy,
       trace: output.run.steps,
     }, { status: 201 });
   } catch (error) {
