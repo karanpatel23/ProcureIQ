@@ -3,6 +3,7 @@ import { createSession } from '@/lib/server/auth';
 import { createId, mutateDb, now } from '@/lib/server/db';
 import { callbackUrl, exchangeCodeForProfile, isOAuthProvider, isProviderConfigured } from '@/lib/server/oauth';
 import { logServerError } from '@/lib/server/observability';
+import { sendWelcomeEmail } from '@/lib/server/welcome-email';
 import type { OAuthProvider } from '@/lib/server/schema';
 
 const STATE_COOKIE = 'procureiq_oauth_state';
@@ -32,14 +33,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
     return fail('exchange');
   }
 
-  const { userId, hasWorkspace } = await mutateDb((db) => {
+  const result = await mutateDb((db) => {
     // 1) Existing link → same account.
     const link = db.oauthAccounts.find((a) => a.provider === provider && a.providerAccountId === profile!.providerAccountId);
     let user = link ? db.users.find((u) => u.id === link.userId) : undefined;
     // 2) Existing account with the same verified email → link it.
     if (!user) user = db.users.find((u) => u.email.toLowerCase() === profile!.email);
     // 3) Brand-new user (no password — they sign in via the provider).
+    let createdNew = false;
     if (!user) {
+      createdNew = true;
       const timestamp = now();
       user = { id: createId('usr'), email: profile!.email, name: profile!.name, passwordHash: '', emailVerified: true, createdAt: timestamp, updatedAt: timestamp };
       db.users.push(user);
@@ -56,9 +59,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ prov
       db.oauthAccounts.push({ id: createId('oau'), userId: user.id, provider: provider as OAuthProvider, providerAccountId: profile!.providerAccountId, email: profile!.email, createdAt: now() });
     }
     const hasWorkspace = db.workspaceMembers.some((m) => m.userId === user!.id);
-    return { userId: user.id, hasWorkspace };
+    return { userId: user.id, hasWorkspace, isNew: createdNew, email: user.email, name: user.name };
   });
 
+  // First-time sign-in with this provider that created an account → welcome them.
+  if (result.isNew) await sendWelcomeEmail(request, result.email, result.name).catch(() => undefined);
+  const { userId, hasWorkspace } = result;
   await createSession(userId);
   const response = NextResponse.redirect(`${origin}${hasWorkspace ? '/app/dashboard' : '/onboarding'}`);
   response.cookies.delete(STATE_COOKIE);

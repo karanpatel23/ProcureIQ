@@ -8,7 +8,7 @@ import { env } from './env';
  * honest in the UI about whether mail actually left the building. Delivery is
  * never silently faked.
  */
-export type EmailMessage = { to: string; subject: string; text: string; replyTo?: string };
+export type EmailMessage = { to: string; subject: string; text: string; html?: string; replyTo?: string };
 export type EmailResult = { to: string; delivery: 'sent' | 'logged' | 'failed'; id?: string; error?: string };
 
 export function emailProviderConfigured(): boolean {
@@ -24,7 +24,7 @@ export async function sendEmail(message: EmailMessage): Promise<EmailResult> {
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ from: env.EMAIL_FROM, to: message.to, subject: message.subject, text: message.text, reply_to: message.replyTo }),
+      body: JSON.stringify({ from: env.EMAIL_FROM, to: message.to, subject: message.subject, text: message.text, html: message.html, reply_to: message.replyTo }),
     });
     if (!response.ok) {
       const detail = await response.text().catch(() => '');

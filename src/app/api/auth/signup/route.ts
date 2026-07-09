@@ -2,6 +2,7 @@ import { ApiError, handleApiError, jsonOk, parseJson } from '@/lib/server/api';
 import { createSession, hashPassword, safeUser } from '@/lib/server/auth';
 import { createId, mutateDb, now } from '@/lib/server/db';
 import { issueVerificationToken, sendVerificationEmail, verificationRequired } from '@/lib/server/email-verification';
+import { sendWelcomeEmail } from '@/lib/server/welcome-email';
 import { signupSchema } from '@/lib/server/validation';
 
 export async function POST(request: Request) {
@@ -43,6 +44,10 @@ export async function POST(request: Request) {
       return jsonOk({ user: safeUser(user), requiresVerification: true, next: null, message: 'Account created. Check your email to verify your address before logging in.' }, { status: 201 });
     }
 
+    // Auto-verified (no provider required verification): the account is active
+    // now, so send the welcome email. When verification IS required, the welcome
+    // is deferred until the address is confirmed (see the verify route).
+    await sendWelcomeEmail(request, user.email, user.name).catch(() => undefined);
     await createSession(user.id);
     return jsonOk({ user: safeUser(user), requiresVerification: false, next: '/onboarding' }, { status: 201 });
   } catch (error) { return handleApiError(error); }

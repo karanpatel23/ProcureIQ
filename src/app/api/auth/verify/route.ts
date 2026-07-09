@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createSession } from '@/lib/server/auth';
 import { mutateDb, now } from '@/lib/server/db';
 import { tokenExpired } from '@/lib/server/email-verification';
+import { sendWelcomeEmail } from '@/lib/server/welcome-email';
 
 // Clicked from the verification email. Marks the address verified, signs the
 // user in, and sends them into onboarding. Failures redirect to /login.
@@ -24,6 +25,8 @@ export async function GET(request: Request) {
   if (!user) return NextResponse.redirect(`${origin}/login?verify=invalid`);
   if ('expired' in user) return NextResponse.redirect(`${origin}/login?verify=expired`);
 
+  // The address is now confirmed and the account is active — welcome them in.
+  await sendWelcomeEmail(request, user.email, user.name).catch(() => undefined);
   await createSession(user.id);
   return NextResponse.redirect(`${origin}/onboarding`);
 }
