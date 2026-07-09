@@ -16,8 +16,10 @@ export async function POST(request: Request) {
 
     const result = await mutateDb((db) => {
       const user = db.users.find((item) => item.email.toLowerCase() === input.email.toLowerCase());
-      // Skip password-less (OAuth-only) accounts — they have nothing to reset.
-      if (!user || !user.passwordHash) return null;
+      // OAuth-only accounts are included on purpose: for them this flow SETS a
+      // first password (proving inbox control), so email+password login starts
+      // working alongside the provider button instead of being impossible.
+      if (!user) return null;
       const { token, expiresAt } = issueResetToken();
       user.resetToken = token;
       user.resetTokenExpiresAt = expiresAt;
