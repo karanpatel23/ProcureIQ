@@ -1,0 +1,49 @@
+/**
+ * FAQ content, shared by the /faq page and its FAQPage structured data. Answers
+ * are written to be genuinely useful and honest (no overclaiming) while naturally
+ * covering the terms people search for ProcureIQ and procurement software.
+ */
+export type Faq = { q: string; a: string };
+
+export const faqs: Faq[] = [
+  {
+    q: 'What is ProcureIQ?',
+    a: 'ProcureIQ is an AI-native procurement platform that brings supplier quotes, RFQs, exceptions, and approvals into one clear, human-controlled decision workflow. It helps procurement and purchasing teams request quotes, compare suppliers, and turn the winning quote into a purchase order — with a person in control of every decision.',
+  },
+  {
+    q: 'How does ProcureIQ compare supplier quotes?',
+    a: 'ProcureIQ lines up quotes from multiple suppliers side by side and uses AI to surface the real best value — accounting for price, lead time, and line-item differences — not just the lowest headline number. The comparison is fully transparent: every figure traces back to the source quote, and the recommendation is a starting point you can review, adjust, or override.',
+  },
+  {
+    q: 'Can ProcureIQ create and send RFQs?',
+    a: 'Yes. ProcureIQ helps you build a structured request for quote and send it to multiple suppliers in minutes. An AI advisor suggests items and details, but you stay in control of exactly what goes out and to whom.',
+  },
+  {
+    q: 'Does ProcureIQ generate purchase orders?',
+    a: 'ProcureIQ turns an approved, winning quote into a purchase order draft that a person reviews and approves. Purchase orders are never issued autonomously — a human approves every one before it becomes final.',
+  },
+  {
+    q: 'Is ProcureIQ AI-powered — and is the AI autonomous?',
+    a: 'ProcureIQ uses AI to draft RFQs, extract quote data, and recommend the best-value supplier, but it is deliberately not autonomous. The AI works in bounded, reviewable steps and always stops at a human approval gate. You make the buying decisions; the AI removes the busywork around them.',
+  },
+  {
+    q: 'Who is ProcureIQ for?',
+    a: 'ProcureIQ is built for procurement managers, purchasing teams, finance approvers, and operations leaders at companies that buy from many suppliers — manufacturing, construction, distribution, and similar supplier-heavy industries.',
+  },
+  {
+    q: 'How is ProcureIQ different from spreadsheets or email?',
+    a: 'Spreadsheets and email scatter quotes across inboxes and files, making side-by-side comparison slow and error-prone. ProcureIQ centralizes RFQs, quotes, suppliers, and approvals in one place, adds AI-assisted comparison, and keeps a clear audit trail of who decided what.',
+  },
+  {
+    q: 'Does ProcureIQ replace my ERP?',
+    a: 'No. ProcureIQ is the decision layer that sits in front of purchasing — where quotes are gathered, compared, and approved. It complements ERP and accounting systems rather than replacing them, focusing on the sourcing and approval workflow that those systems handle poorly.',
+  },
+  {
+    q: 'Is my procurement data secure?',
+    a: 'Security is foundational. ProcureIQ keeps AI outputs in reviewable draft states, records workspace-scoped audit events for sensitive actions, and isolates each company’s data to its own workspace. You can read the details on the security page.',
+  },
+  {
+    q: 'How much does ProcureIQ cost?',
+    a: 'ProcureIQ offers Starter, Growth, and Pro plans, with a custom Enterprise tier for larger teams. See the pricing page for current plan details.',
+  },
+];

@@ -16,8 +16,13 @@ export const brand = {
 // Public pages worth putting in the sitemap, most-important first.
 export const publicRoutes = [
   '', 'platform', 'workflow', 'demo-workflow', 'pricing', 'security',
-  'about', 'contact', 'demo', 'login', 'signup', 'privacy', 'terms',
+  'about', 'faq', 'contact', 'demo', 'login', 'signup', 'privacy', 'terms',
 ];
+
+// Official brand profiles. Listed as schema.org `sameAs` so Google can connect
+// these accounts to the domain and strengthen the brand knowledge graph. Add
+// each URL as the profile goes live (LinkedIn, X, Crunchbase, etc.).
+export const socialProfiles: string[] = [];
 
 /**
  * Organization + WebSite + SoftwareApplication structured data. This is what
@@ -35,6 +40,7 @@ export function structuredData() {
         url: siteUrl,
         description: brand.description,
         logo: `${siteUrl}/icon.svg`,
+        ...(socialProfiles.length ? { sameAs: socialProfiles } : {}),
       },
       {
         '@type': 'WebSite',
