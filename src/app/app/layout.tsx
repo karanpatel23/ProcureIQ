@@ -11,6 +11,8 @@ const nav = [
   ['Analytics', '/app/analytics'],
 ] as const;
 
+export const metadata = { robots: { index: false, follow: false } };
+
 const settingsNav = [
   ['Team & roles', '/app/settings/team'],
   ['Company', '/app/settings/company'],
