@@ -15,6 +15,28 @@ export const workspaceSchema = z.object({
   ownerTitle: z.enum(['Procurement manager', 'Finance approver', 'Operations', 'Admin', 'Supplier manager', 'Approver', 'Viewer', 'Other']).optional(),
 });
 
+export const deleteAccountSchema = z.object({ confirm: z.string().min(1).max(255) });
+
+const currencyEnum = z.enum(['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'INR', 'JPY', 'CNY', 'Other']);
+const annualSpendEnum = z.enum(['Under $100K', '$100K–$1M', '$1M–$10M', '$10M–$50M', '$50M+']);
+const supplierCountEnum = z.enum(['1–10', '11–50', '51–200', '201–1000', '1000+']);
+export const companyProfileFields = { currencyEnum, annualSpendEnum, supplierCountEnum };
+export const workspaceUpdateSchema = z.object({
+  name: z.string().min(2).max(160).optional(),
+  industryCategory: z.string().min(2).max(120).optional(),
+  teamSize: z.string().max(80).optional().or(z.literal('')),
+  website: z.string().url().optional().or(z.literal('')),
+  procurementEmail: z.string().email().optional().or(z.literal('')),
+  mainPurchasingWorkflow: z.enum(['materials', 'parts', 'equipment', 'subcontractors', 'packaging', 'services', 'other']).optional(),
+  currentTools: z.array(z.enum(['Email', 'Excel', 'QuickBooks', 'ERP/MRP', 'Other'])).min(1).optional(),
+  country: z.string().max(80).optional().or(z.literal('')),
+  currency: currencyEnum.optional().or(z.literal('')),
+  annualSpendBand: annualSpendEnum.optional().or(z.literal('')),
+  supplierCountBand: supplierCountEnum.optional().or(z.literal('')),
+  taxId: z.string().max(60).optional().or(z.literal('')),
+  approvalThreshold: z.coerce.number().nonnegative().max(1_000_000_000).optional().or(z.literal('')),
+});
+
 export const personaEnum = z.enum(['Procurement manager', 'Finance approver', 'Operations', 'Admin', 'Supplier manager', 'Approver', 'Viewer', 'Other']);
 export const memberInviteSchema = z.object({
   name: z.string().min(2).max(120),

@@ -1,5 +1,28 @@
-import Link from 'next/link';
-import { requirePageWorkspace } from '@/lib/server/auth';
+import { CompanyForm } from '@/components/settings/CompanyForm';
+import { canManageWorkspace, requirePageWorkspace } from '@/lib/server/auth';
 
 export const metadata = { title: 'Company settings | ProcureIQ' };
-export default async function CompanySettingsPage() { const { workspace, membership } = await requirePageWorkspace(); return <main><section className="app-shell"><p className="eyebrow">Company settings</p><h1>{workspace.name}</h1><div className="settings-card"><dl><div><dt>Industry</dt><dd>{workspace.industryCategory}</dd></div><div><dt>Main workflow</dt><dd>{workspace.mainPurchasingWorkflow}</dd></div><div><dt>Tools</dt><dd>{workspace.currentTools.join(', ')}</dd></div><div><dt>Your role</dt><dd>{membership.role}</dd></div></dl><div className="form-actions"><Link className="button secondary" href="/app/settings/team">Team</Link><Link className="button secondary" href="/app/settings/security">Security</Link><Link className="button secondary" href="/app/settings/billing">Billing</Link></div></div></section></main>; }
+
+export default async function CompanySettingsPage() {
+  const { workspace, membership } = await requirePageWorkspace();
+  const profile = {
+    name: workspace.name, industryCategory: workspace.industryCategory, teamSize: workspace.teamSize,
+    website: workspace.website, procurementEmail: workspace.procurementEmail, mainPurchasingWorkflow: workspace.mainPurchasingWorkflow,
+    currentTools: workspace.currentTools ?? [], country: workspace.country, currency: workspace.currency,
+    annualSpendBand: workspace.annualSpendBand, supplierCountBand: workspace.supplierCountBand,
+    taxId: workspace.taxId, approvalThreshold: workspace.approvalThreshold,
+  };
+
+  return (
+    <main>
+      <section className="app-shell">
+        <div className="page-head">
+          <p className="eyebrow">Company settings</p>
+          <h1>{workspace.name}</h1>
+          <p>The details ProcureIQ uses to tailor RFQs, approvals, and supplier workflows to how your company buys.</p>
+        </div>
+        <CompanyForm profile={profile} canManage={canManageWorkspace(membership.role)} />
+      </section>
+    </main>
+  );
+}

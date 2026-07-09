@@ -13,7 +13,11 @@ export type User = { id: string; email: string; name: string; passwordHash: stri
 export type OAuthProvider = 'google' | 'microsoft';
 export type OAuthAccount = { id: string; userId: string; provider: OAuthProvider; providerAccountId: string; email: string; createdAt: string };
 export type WorkspaceUsage = { rfqsCreated: number; quoteDocumentsUploaded: number; aiExtractionRuns: number; teamMembers: number };
-export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
+// Company profile. Core fields are captured at onboarding; the enrichment
+// fields (country, currency, spend/supplier bands, tax id, approval threshold)
+// are what leading procurement platforms collect to tailor workflows, and are
+// filled in progressively from Company settings.
+export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; country?: string; currency?: string; annualSpendBand?: string; supplierCountBand?: string; taxId?: string; approvalThreshold?: number; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
 // A member links a person to a workspace. `role` governs permissions
 // (owner/admin/member/viewer); `title` is their job persona (e.g. "Procurement
 // manager"). Invited members exist before the person signs up: userId is empty

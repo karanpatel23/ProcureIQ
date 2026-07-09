@@ -15,6 +15,7 @@ const settingsNav = [
   ['Team & roles', '/app/settings/team'],
   ['Company', '/app/settings/company'],
   ['Billing', '/app/settings/billing'],
+  ['Account', '/app/settings/account'],
 ] as const;
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
