@@ -15,6 +15,9 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().optional(),
   APP_URL: z.string().url().optional().or(z.literal('').transform(() => undefined)),
+  // Google Search Console verification token (the content of the meta tag Google
+  // gives you). Set it to prove domain ownership and submit the sitemap.
+  GOOGLE_SITE_VERIFICATION: z.string().optional(),
   // OAuth (optional). A provider's button becomes a live sign-in flow the moment
   // its client id + secret are set; until then the UI honestly shows it as coming
   // soon. MICROSOFT_OAUTH_TENANT defaults to 'common' (any work/personal account).

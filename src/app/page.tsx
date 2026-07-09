@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import {
   FilmShowcase,
   FinalCta,
@@ -9,6 +10,8 @@ import {
   UseCasesSection,
   WorkflowPreview,
 } from '@/components/site';
+
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default function Home() {
   return (
