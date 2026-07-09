@@ -1,4 +1,5 @@
-import type { Database, Rfq, SupplierQuote } from './schema';
+import { evaluatePolicy, leadTimeToDays, type PolicyResult } from './policy';
+import type { Database, Rfq, SupplierQuote, Workspace } from './schema';
 
 type Risk = { code: string; label: string; severity: 'low' | 'medium' | 'high' };
 type ComparedQuote = { quote: SupplierQuote & Record<string, any>; supplierName: string; totalPrice: number | null; leadTime: string | null; paymentTerms: string | null; freightTerms: string | null; validUntil: string | null; taxes: number | null; notes: string | null; confidence: number; risks: Risk[]; score: number; lineItems: Array<Record<string, any>> };
@@ -49,4 +50,37 @@ export function buildRfqComparison(db: Database, rfq: Rfq) {
   const overall = compared.reduce((best, item) => (!best || item.score > best.score ? item : best), compared[0]);
   const needsReview = overall ? overall.risks.some((item) => item.severity === 'high') || overall.confidence < 60 : false;
   return { quotes: compared, recommendation: overall ? { lowestCost, fastest, overall, needsReview, confidence: Math.min(95, Math.max(35, overall.score)), reasons: [`${overall.supplierName} has the strongest combined score for price, lead time, completeness, and extraction confidence.`, 'Review all risk flags before approving a supplier.'], tradeoffs: overall.risks.map((risk) => risk.label) } : null };
+}
+
+/**
+ * Evaluate the recommended quote against the workspace purchasing policy.
+ * Returns null when there is no recommendation to judge. This is what powers
+ * the "in policy — one click" vs "N exceptions need your judgment" split.
+ */
+export function evaluateComparisonPolicy(
+  db: Database,
+  rfq: Rfq,
+  workspace: Workspace,
+  comparison: ReturnType<typeof buildRfqComparison>,
+): PolicyResult | null {
+  const winner = comparison.recommendation?.overall;
+  if (!winner) return null;
+  const supplier = db.suppliers.find((item) => item.id === winner.quote.supplierId);
+  const rfqItemCount = db.rfqItems.filter((item) => item.rfqId === rfq.id && item.workspaceId === rfq.workspaceId).length;
+  return evaluatePolicy({
+    approvalThreshold: workspace.approvalThreshold,
+    currency: workspace.currency,
+    workspaceHasPreferredSuppliers: db.suppliers.some((item) => item.workspaceId === rfq.workspaceId && item.preferred && !item.archivedAt),
+    neededBy: rfq.neededBy,
+    rfqItemCount,
+    winner: {
+      supplierName: winner.supplierName,
+      supplierPreferred: Boolean(supplier?.preferred),
+      totalPrice: winner.totalPrice,
+      leadTimeDays: leadTimeToDays(winner.leadTime),
+      itemsQuoted: winner.lineItems.length,
+      confidence: winner.confidence,
+    },
+    competingPrices: comparison.quotes.map((item) => item.totalPrice).filter((price): price is number => typeof price === 'number' && price > 0),
+  });
 }

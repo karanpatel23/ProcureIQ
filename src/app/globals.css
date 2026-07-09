@@ -1142,6 +1142,33 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
   .settings-card div { grid-template-columns: 1fr; }
 }
 
+/* ---------- Purchasing policy panel ---------- */
+.policy-panel { border: 1px solid var(--line-strong); border-radius: var(--radius-lg); padding: clamp(20px, 3vw, 28px); display: grid; gap: 16px; background: var(--glass); }
+.policy-panel.in_policy { border-color: rgba(151, 191, 168, 0.45); background: rgba(151, 191, 168, 0.06); }
+.policy-panel.exceptions { border-color: rgba(196, 178, 166, 0.5); background: rgba(196, 178, 166, 0.06); }
+.policy-head h2 { margin: 4px 0 8px; font-size: 1.25rem; }
+.policy-head p { margin: 0; }
+.policy-exceptions { margin: 0; padding-left: 20px; display: grid; gap: 10px; color: var(--ink-soft); line-height: 1.6; font-size: 0.94rem; }
+.policy-exceptions b { color: var(--ink); }
+.policy-checks summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+.policy-checks ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 7px; font-size: 0.86rem; }
+.policy-checks li.pass { color: var(--ink-soft); }
+.policy-checks li.fail { color: var(--warm); }
+.policy-checks li.skipped { color: var(--muted); opacity: 0.75; }
+
+/* ---------- Decision queue (dashboard) ---------- */
+.decision-queue { border: 1px solid var(--line-strong); border-radius: var(--radius-lg); padding: clamp(20px, 3vw, 26px); display: grid; gap: 14px; background: linear-gradient(160deg, rgba(26, 31, 40, 0.85), rgba(16, 19, 25, 0.9)); }
+.decision-queue-head h2 { margin: 4px 0 6px; font-size: 1.2rem; }
+.decision-queue-head p { margin: 0; }
+.decision-queue-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.decision-queue-list li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--glass); font-size: 0.9rem; }
+.decision-queue-list .dq-title { color: var(--ink-soft); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.decision-queue-list a { color: var(--accent-bright); font-weight: 600; white-space: nowrap; }
+
+/* ---------- Supplier chips ---------- */
+.supplier-chips { display: inline-flex; gap: 6px; align-items: center; }
+.chip.preferred { color: var(--accent-bright); border-color: rgba(157, 176, 204, 0.55); background: rgba(157, 176, 204, 0.1); }
+
 /* ---------- FAQ ---------- */
 .faq-list { display: grid; gap: 12px; max-width: 820px; margin: 40px auto 0; }
 .faq-item { border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--glass); overflow: hidden; transition: border-color var(--speed); }
