@@ -46,6 +46,7 @@ export async function PATCH(request: Request) {
       if (input.supplierCountBand !== undefined) target.supplierCountBand = clean(input.supplierCountBand);
       if (input.taxId !== undefined) target.taxId = clean(input.taxId);
       if (input.approvalThreshold !== undefined) target.approvalThreshold = clean(input.approvalThreshold) as number | undefined;
+      if (input.autopilot !== undefined) target.autopilot = input.autopilot;
       target.updatedAt = now();
       return target;
     });

@@ -1165,6 +1165,13 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .decision-queue-list .dq-title { color: var(--ink-soft); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .decision-queue-list a { color: var(--accent-bright); font-weight: 600; white-space: nowrap; }
 
+/* ---------- Autonomous intake panel ---------- */
+.intake-panel { border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(26, 31, 40, 0.85), rgba(16, 19, 25, 0.9)); padding: clamp(20px, 3vw, 26px); display: grid; gap: 12px; margin-bottom: 6px; }
+.intake-panel h2 { margin: 0; font-size: 1.15rem; }
+.intake-panel textarea { width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: rgba(10, 12, 16, 0.72); color: var(--ink); padding: 12px 14px; font: inherit; }
+.intake-panel textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(107, 124, 152, 0.3); }
+.intake-panel.done { border-color: rgba(151, 191, 168, 0.45); background: rgba(151, 191, 168, 0.06); }
+
 /* ---------- Supplier chips ---------- */
 .supplier-chips { display: inline-flex; gap: 6px; align-items: center; }
 .chip.preferred { color: var(--accent-bright); border-color: rgba(157, 176, 204, 0.55); background: rgba(157, 176, 204, 0.1); }

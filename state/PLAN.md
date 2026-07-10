@@ -28,3 +28,20 @@ COMPETITIVE.md gaps. Status: SHIPPED / IN PROGRESS / OPEN._
   claim-honest (current copy is).
 - Resend config still pending → welcome/reset/RFQ emails log-only in prod until set.
 - Email-in intake (#6) needs an inbound-email provider decision (Resend inbound / Postmark) = spend.
+
+---
+
+# Cycle 2 — AI Does The Work (2026-07-10)
+
+| # | Change | Status |
+|---|---|---|
+| A | Workspace `autopilot` mode ('off' default / 'exceptions_only') + Company settings toggle | SHIPPED |
+| B | Autopilot chain (`autopilot.ts`): quote self-verify → auto-accept → all-answered comparison + policy → auto-select winner → PO draft + reconcile; halts become named queued exceptions; every action = workflow run + audit event | SHIPPED |
+| C | Wired into quote upload and quote review routes (human clearing an exception resumes the chain) | SHIPPED |
+| D | Autonomous intake: free-text/email → parsed items/date/location → supplier matching → RFQ created (`/api/intake` + RFQs-page panel + parser tests) | SHIPPED |
+| E | Dashboard "Autopilot actions" counter (audit-backed) | SHIPPED |
+| F | AI_AUTOMATION.md full 14-step map with honest statuses + extraction-layer design | SHIPPED |
+| G | Inbound email intake (quotes forwarded to an address) | OPEN — needs inbound provider (spend, Karan) |
+| H | QuickBooks connector (accounting.ts abstraction, OAuth) | OPEN — needs Intuit app registration (Karan) |
+| I | Negotiation: AI-drafted counter-offers from quote deltas | OPEN — next build cycle |
+| J | Receiving + invoice entities → 3-way match | OPEN — after real PO usage |

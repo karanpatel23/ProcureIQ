@@ -17,7 +17,12 @@ export type WorkspaceUsage = { rfqsCreated: number; quoteDocumentsUploaded: numb
 // fields (country, currency, spend/supplier bands, tax id, approval threshold)
 // are what leading procurement platforms collect to tailor workflows, and are
 // filled in progressively from Company settings.
-export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; country?: string; currency?: string; annualSpendBand?: string; supplierCountBand?: string; taxId?: string; approvalThreshold?: number; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
+// autopilot: 'off' = every step waits for a human (legacy behavior);
+// 'exceptions_only' = AI executes the whole quote→decision→PO chain on its own
+// wherever the purchasing policy passes, and humans are pulled in only for
+// named exceptions. Off by default — each workspace opts in deliberately.
+export type AutopilotMode = 'off' | 'exceptions_only';
+export type Workspace = { id: string; name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string; mainPurchasingWorkflow?: MainPurchasingWorkflow; currentTools: string[]; country?: string; currency?: string; annualSpendBand?: string; supplierCountBand?: string; taxId?: string; approvalThreshold?: number; autopilot?: AutopilotMode; plan: BillingPlan; subscriptionStatus: SubscriptionStatus; billingCustomerId?: string; usage: WorkspaceUsage; createdAt: string; updatedAt: string };
 // A member links a person to a workspace. `role` governs permissions
 // (owner/admin/member/viewer); `title` is their job persona (e.g. "Procurement
 // manager"). Invited members exist before the person signs up: userId is empty

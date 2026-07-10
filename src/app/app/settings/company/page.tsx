@@ -10,7 +10,7 @@ export default async function CompanySettingsPage() {
     website: workspace.website, procurementEmail: workspace.procurementEmail, mainPurchasingWorkflow: workspace.mainPurchasingWorkflow,
     currentTools: workspace.currentTools ?? [], country: workspace.country, currency: workspace.currency,
     annualSpendBand: workspace.annualSpendBand, supplierCountBand: workspace.supplierCountBand,
-    taxId: workspace.taxId, approvalThreshold: workspace.approvalThreshold,
+    taxId: workspace.taxId, approvalThreshold: workspace.approvalThreshold, autopilot: workspace.autopilot,
   };
 
   return (

@@ -48,12 +48,14 @@ export type QuoteExtractionResult = {
   rawAiResponse: string;
 };
 
-const money = (text: string) =>
-  Number(
-    (
-      text.match(/(?:total|amount|price)\D{0,20}\$?([0-9,]+(?:\.\d{2})?)/i)?.[1] ?? '0'
-    ).replaceAll(',', ''),
-  ) || null;
+// Prefer an explicitly "total"-labeled amount over the first price-like number —
+// otherwise "Unit price $921.00 ... Total: $18,420.00" extracts the unit price
+// as the quote total, and every downstream comparison/policy check inherits it.
+const money = (text: string) => {
+  const total = text.match(/\btotal(?:\s+(?:price|amount|cost|due))?\s*:?\D{0,10}\$?([0-9,]+(?:\.\d{2})?)/i)?.[1];
+  const fallback = text.match(/(?:amount|price)\D{0,20}\$?([0-9,]+(?:\.\d{2})?)/i)?.[1];
+  return Number((total ?? fallback ?? '0').replaceAll(',', '')) || null;
+};
 
 const ref = (text: string) =>
   text.match(/(?:quote|ref|reference)\s*#?:?\s*([A-Z0-9-]+)/i)?.[1] ?? null;

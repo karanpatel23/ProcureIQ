@@ -22,7 +22,9 @@ export default async function DashboardPage() {
     return (policy?.exceptions ?? []).slice(0, 2).map((exception, index) => ({ key: `${run.id}-${index}`, rfqId: run.entityId, rfqTitle: rfq?.title ?? 'RFQ', title: exception.title ?? 'Exception' }));
   });
 
+  const autopilotActions = db.auditLogs.filter((item) => item.workspaceId === workspace.id && item.action.startsWith('autopilot.')).length;
   const cards = [
+    ['Autopilot actions', autopilotActions],
     ['Active RFQs', scopedRfqs.filter((rfq) => rfq.status !== 'archived').length],
     ['Quotes received', scopedQuotes.length],
     ['Quotes pending review', scopedQuotes.filter((quote) => quote.status === 'needs_review' || quote.extractionStatus === 'needs_review').length],

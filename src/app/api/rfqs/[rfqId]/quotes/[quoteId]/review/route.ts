@@ -1,6 +1,7 @@
 import { ApiError, handleApiError, jsonOk } from '@/lib/server/api';
 import { writeAuditLog } from '@/lib/server/audit';
 import { requireWorkspace } from '@/lib/server/auth';
+import { runAutopilotForRfq } from '@/lib/server/autopilot';
 import { createId, mutateDb, now } from '@/lib/server/db';
 
 export async function POST(request: Request, { params }: { params: Promise<{ rfqId: string; quoteId: string }> }) {
@@ -25,6 +26,13 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
       return quote;
     });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: approve ? 'quote.approved' : 'quote.review_saved', entityType: 'supplier_quote', entityId: quote.id });
-    return jsonOk({ quote });
+    // A human just cleared an exception — let autopilot carry the chain forward
+    // (comparison → decision → PO) if the workspace runs exceptions-only mode.
+    let autopilot;
+    if (approve) {
+      autopilot = await runAutopilotForRfq({ workspaceId: workspace.id, rfqId, actorUserId: user.id });
+      for (const action of autopilot.actions) await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: action.action, entityType: action.entityType, entityId: action.entityId, metadata: { summary: action.summary, ...action.metadata } });
+    }
+    return jsonOk({ quote, autopilot: autopilot?.enabled ? autopilot : undefined });
   } catch (error) { return handleApiError(error); }
 }
