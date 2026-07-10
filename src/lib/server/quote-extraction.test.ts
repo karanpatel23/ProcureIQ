@@ -23,3 +23,12 @@ it('reports low overall confidence when the supplier cannot be identified', () =
   expect(result.parsed.supplierName.value).toBeNull();
   expect(result.parsed.quoteConfidence).toBeLessThan(60);
 });
+
+// Regression: a "Unit price $..." line before "Total: $..." must not be
+// mistaken for the quote total (caught by the autopilot end-to-end test).
+import { it as regressionIt, expect as regressionExpect } from 'vitest';
+import { runQuoteExtraction as extractForRegression } from './quote-extraction';
+regressionIt('prefers the labeled total over an earlier unit price', () => {
+  const text = 'Supplier: Acme Metals\nItem: Bracket, Qty 10, Unit price $2,000.00, Extended $20,000.00\nTotal: $20,000.00\nLead time: 10 days';
+  regressionExpect(extractForRegression(text).parsed.totalPrice.value).toBe(20000);
+});

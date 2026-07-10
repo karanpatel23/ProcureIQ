@@ -6,6 +6,7 @@ export type CompanyProfile = {
   name: string; industryCategory: string; teamSize?: string; website?: string; procurementEmail?: string;
   mainPurchasingWorkflow?: string; currentTools: string[]; country?: string; currency?: string;
   annualSpendBand?: string; supplierCountBand?: string; taxId?: string; approvalThreshold?: number;
+  autopilot?: string;
 };
 
 const WORKFLOWS = ['materials', 'parts', 'equipment', 'subcontractors', 'packaging', 'services', 'other'];
@@ -42,6 +43,7 @@ export function CompanyForm({ profile, canManage }: { profile: CompanyProfile; c
       supplierCountBand: String(form.get('supplierCountBand') ?? ''),
       taxId: String(form.get('taxId') ?? ''),
       approvalThreshold: threshold === '' ? '' : Number(threshold),
+      autopilot: String(form.get('autopilot') ?? 'off'),
     };
     try {
       const response = await fetch('/api/workspaces', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -86,6 +88,18 @@ export function CompanyForm({ profile, canManage }: { profile: CompanyProfile; c
         <label className="field"><span className="field-label">Website <span className="field-sub">optional</span></span><input name="website" type="url" defaultValue={profile.website ?? ''} placeholder="https://company.com" /></label>
         <label className="field"><span className="field-label">Procurement email <span className="field-sub">optional</span></span><input name="procurementEmail" type="email" defaultValue={profile.procurementEmail ?? ''} placeholder="purchasing@company.com" /></label>
       </div>
+
+      <fieldset className="tools-fieldset">
+        <legend>Autopilot</legend>
+        <label className="field">
+          <span className="field-label">How much should AI execute on its own?</span>
+          <select name="autopilot" defaultValue={profile.autopilot ?? 'off'}>
+            <option value="off">Off — every step waits for a person</option>
+            <option value="exceptions_only">Exceptions-only — AI verifies quotes, compares, selects the winner, and drafts the PO whenever purchasing policy passes; you only see the exceptions</option>
+          </select>
+        </label>
+        <p className="form-hint">Autopilot acts only inside your purchasing policy (approval threshold, preferred suppliers, coverage, dates, price sanity). Sending a PO to a supplier always remains a human action, and every autonomous step is written to the audit trail.</p>
+      </fieldset>
 
       <fieldset className="tools-fieldset">
         <legend>Current tools</legend>

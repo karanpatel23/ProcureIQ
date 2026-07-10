@@ -72,3 +72,23 @@ Measure all three against the first 10 real workspaces.
 - Catalog/punchout buying (Vroozi's sport), invoice/AP (Stampli's sport), supplier network
   (Ariba's sport) — different games; do not drift.
 - A workflow builder — opinionated defaults win at our stage.
+
+---
+
+# Human-required boundaries (AI Does The Work cycle, 2026-07-10)
+
+Kept deliberately short. Each entry names the specific legal/financial-control reason —
+"to be safe" is not on this list. AI pushes to the edge of each boundary: it drafts the
+final artifact, verifies it's ready, and leaves exactly one confirming action.
+
+| Step | Why a human, exactly | AI's role right up to the edge |
+|---|---|---|
+| **Sending an RFQ or PO to a supplier** | Outward contact that commits the company commercially to an external party; a wrong send is unrecallable and legally attributable. Also explicitly flagged as requiring Karan's sign-off for real-transaction use. | Email fully drafted, recipients resolved, PO reconciled against the approved quote; one click sends. |
+| **Releasing payment** (when built) | Financial control: disbursing funds requires an authorized approver under any audit regime (SOX-style segregation of duties). | AI will schedule per terms, 3-way-match, and queue the release; human releases. |
+| **Signing a contract** (when built) | A binding signature must come from a legally authorized person; AI cannot substitute. | AI drafts/redlines against standard terms and declares readiness; human signs. |
+| **Turning autopilot on** | Consent: the workspace owner decides AI executes on their behalf. Off by default; one setting, not a review process. | Everything after the toggle. |
+
+Explicitly NOT on this list (automated once policy passes): quote acceptance, supplier
+selection, PO drafting, approval routing, requisition creation, intake. Prior product
+copy said "a human approves every decision" — that is now workspace policy (`autopilot:
+off`), not an architectural constraint. Marketing must describe both modes honestly.

@@ -3,6 +3,7 @@ import { writeAuditLog } from '@/lib/server/audit';
 import { requireWorkspace } from '@/lib/server/auth';
 import { createId, mutateDb, now, readDb } from '@/lib/server/db';
 import { runQuoteExtraction } from '@/lib/server/quote-extraction';
+import { runAutopilotForRfq } from '@/lib/server/autopilot';
 import { storeQuoteSource } from '@/lib/server/storage';
 
 export async function POST(request: Request, { params }: { params: Promise<{ rfqId: string }> }) {
@@ -32,6 +33,13 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
     });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.uploaded', entityType: 'quote_document', entityId: result.document.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.extraction_started', entityType: 'ai_extraction_run', entityId: result.run.id, metadata: { status: result.run.status } });
-    return jsonOk({ quote: result.quote, next: `/app/rfqs/${rfqId}/quotes/${result.quote.id}/review` }, { status: 201 });
+
+    // Autopilot: self-verify, accept, compare, decide, and draft the PO — as far
+    // as policy allows — with no human action. Halts become queued exceptions.
+    const autopilot = await runAutopilotForRfq({ workspaceId: workspace.id, rfqId, actorUserId: user.id });
+    for (const action of autopilot.actions) await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: action.action, entityType: action.entityType, entityId: action.entityId, metadata: { summary: action.summary, ...action.metadata } });
+
+    const next = autopilot.enabled && autopilot.next ? autopilot.next : `/app/rfqs/${rfqId}/quotes/${result.quote.id}/review`;
+    return jsonOk({ quote: result.quote, autopilot: autopilot.enabled ? autopilot : undefined, next }, { status: 201 });
   } catch (error) { return handleApiError(error); }
 }

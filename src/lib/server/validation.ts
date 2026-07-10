@@ -35,7 +35,10 @@ export const workspaceUpdateSchema = z.object({
   supplierCountBand: supplierCountEnum.optional().or(z.literal('')),
   taxId: z.string().max(60).optional().or(z.literal('')),
   approvalThreshold: z.coerce.number().nonnegative().max(1_000_000_000).optional().or(z.literal('')),
+  autopilot: z.enum(['off', 'exceptions_only']).optional(),
 });
+
+export const intakeSchema = z.object({ text: z.string().min(10).max(8000) });
 
 export const personaEnum = z.enum(['Procurement manager', 'Finance approver', 'Operations', 'Admin', 'Supplier manager', 'Approver', 'Viewer', 'Other']);
 export const memberInviteSchema = z.object({
