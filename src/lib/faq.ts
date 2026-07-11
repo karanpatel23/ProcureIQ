@@ -24,7 +24,11 @@ export const faqs: Faq[] = [
   },
   {
     q: 'Is ProcureIQ AI-powered — and is the AI autonomous?',
-    a: 'ProcureIQ uses AI to draft RFQs, extract quote data, and recommend the best-value supplier, but it is deliberately not autonomous. The AI works in bounded, reviewable steps and always stops at a human approval gate. You make the buying decisions; the AI removes the busywork around them.',
+    a: 'Both, on your terms. By default every AI step stops at a human approval gate. If you enable Autopilot in Company settings, the AI executes the chain itself — verifying quotes, comparing, selecting the winner, and drafting the PO — but only where your purchasing policy passes, and it halts with a named exception the moment anything fails a check. Sending a PO to a supplier always remains a human action.',
+  },
+  {
+    q: 'How is ProcureIQ different from enterprise AI agents or easy purchasing apps?',
+    a: 'Enterprise agent platforms automate deeply but are opaque, priced for the Fortune 1000, and take months to roll out. Easy purchasing apps are quick to adopt but leave the actual work — comparing quotes, deciding, negotiating — to you. ProcureIQ is auditable autonomy at self-serve speed: the AI does the work, every action it takes is visible in your Activity feed with the policy reasons attached, and you can be running the same afternoon you sign up.',
   },
   {
     q: 'Who is ProcureIQ for?',

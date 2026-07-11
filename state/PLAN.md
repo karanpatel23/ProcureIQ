@@ -45,3 +45,17 @@ COMPETITIVE.md gaps. Status: SHIPPED / IN PROGRESS / OPEN._
 | H | QuickBooks connector (accounting.ts abstraction, OAuth) | OPEN — needs Intuit app registration (Karan) |
 | I | Negotiation: AI-drafted counter-offers from quote deltas | OPEN — next build cycle |
 | J | Receiving + invoice entities → 3-way match | OPEN — after real PO usage |
+
+---
+
+# Cycle 3 — Beat procure.ai + Procurify (2026-07-11)
+
+| # | Change | Counters | Status |
+|---|---|---|---|
+| K | Activity feed (/app/activity): human-readable, filtered log of every AI + human action with entity links; sidebar nav | procure.ai black-box agents; Procurify post-hoc reports | SHIPPED |
+| L | Decision brief on compare page: 5 plain-language lines (winner, price context, terms, policy verdict, next step) + one-click copy for the approval thread | Procurify reporting complaints; procure.ai analyst-speak | SHIPPED |
+| M | Negotiation assist: AI-drafted counter-offer email built from real quote deltas (named leverage), human-gated copy/send | procure.ai "autonomous negotiations" flagship | SHIPPED |
+| N | FAQ updated with the auditable-autonomy USP | positioning | SHIPPED |
+| O | QuickBooks/NetSuite connector | Procurify's integration moat | OPEN — Intuit app reg (Karan) |
+| P | Receiving + invoice + 3-way match entities | Procurify AP depth | OPEN — after real PO usage |
+| Q | Mobile-first pass on core app screens | Procurify mobile praise | OPEN |

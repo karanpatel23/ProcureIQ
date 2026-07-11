@@ -1165,6 +1165,34 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .decision-queue-list .dq-title { color: var(--ink-soft); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .decision-queue-list a { color: var(--accent-bright); font-weight: 600; white-space: nowrap; }
 
+/* ---------- Decision brief + negotiation ---------- */
+.brief-panel { border: 1px solid rgba(157, 176, 204, 0.4); border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(26, 31, 40, 0.9), rgba(16, 19, 25, 0.92)); padding: clamp(20px, 3vw, 28px); display: grid; gap: 16px; }
+.brief-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brief-head h2 { margin: 4px 0 0; font-size: 1.2rem; }
+.brief-lines { margin: 0; padding-left: 22px; display: grid; gap: 10px; color: var(--ink-soft); line-height: 1.6; font-size: 0.96rem; }
+.brief-lines li::marker { color: var(--accent-bright); font-weight: 700; }
+.negotiation-block { border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--glass); }
+.negotiation-block summary { list-style: none; cursor: pointer; padding: 14px 18px; color: var(--accent-bright); font-weight: 600; font-size: 0.92rem; }
+.negotiation-block summary::-webkit-details-marker { display: none; }
+.negotiation-body { padding: 0 18px 18px; display: grid; gap: 12px; }
+.negotiation-meta { margin: 0; color: var(--ink-soft); font-size: 0.88rem; }
+.negotiation-body pre { margin: 0; white-space: pre-wrap; font-family: inherit; font-size: 0.9rem; line-height: 1.6; color: var(--muted); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; background: rgba(10, 12, 16, 0.5); }
+
+/* ---------- Activity feed ---------- */
+.activity-filters { display: flex; gap: 8px; margin-bottom: 4px; }
+.chip-link { border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 14px; font-size: 0.84rem; color: var(--muted); }
+.chip-link.active { color: var(--ink); border-color: var(--accent-bright); background: rgba(157, 176, 204, 0.1); }
+.activity-feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-width: 880px; }
+.activity-row { display: flex; gap: 14px; align-items: flex-start; padding: 13px 16px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--glass); }
+.activity-actor { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; font-weight: 800; font-size: 0.72rem; letter-spacing: 0.03em; }
+.activity-row.ai .activity-actor { background: rgba(157, 176, 204, 0.16); color: var(--accent-bright); border: 1px solid rgba(157, 176, 204, 0.4); }
+.activity-row.human .activity-actor { background: linear-gradient(160deg, var(--accent), var(--accent-bright)); color: #0e1116; border-radius: 50%; }
+.activity-body { display: grid; gap: 3px; min-width: 0; }
+.activity-body b { color: var(--ink); font-size: 0.94rem; }
+.activity-summary { color: var(--ink-soft); font-size: 0.87rem; line-height: 1.5; }
+.activity-body em { color: var(--muted); font-style: normal; font-size: 0.78rem; }
+.activity-body em a { color: var(--accent-bright); font-weight: 600; }
+
 /* ---------- Autonomous intake panel ---------- */
 .intake-panel { border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(26, 31, 40, 0.85), rgba(16, 19, 25, 0.9)); padding: clamp(20px, 3vw, 26px); display: grid; gap: 12px; margin-bottom: 6px; }
 .intake-panel h2 { margin: 0; font-size: 1.15rem; }
