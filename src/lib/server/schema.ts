@@ -7,7 +7,9 @@ export type LeadType = 'demo' | 'contact';
 // passwordHash is '' for accounts created purely through an OAuth provider
 // (they authenticate with Google/Microsoft, not a password). resetToken powers
 // the forgot-password flow and mirrors the verification-token mechanism.
-export type User = { id: string; email: string; name: string; passwordHash: string; emailVerified?: boolean; verificationToken?: string; verificationTokenExpiresAt?: string; resetToken?: string; resetTokenExpiresAt?: string; createdAt: string; updatedAt: string };
+// failedLoginAttempts/lockedUntil implement DB-backed brute-force lockout —
+// counted in the database (not process memory) so it holds across serverless instances.
+export type User = { id: string; email: string; name: string; passwordHash: string; emailVerified?: boolean; verificationToken?: string; verificationTokenExpiresAt?: string; resetToken?: string; resetTokenExpiresAt?: string; failedLoginAttempts?: number; lockedUntil?: string; createdAt: string; updatedAt: string };
 // Links a user to an external identity provider. Present so Google and Microsoft
 // sign-in can be enabled by setting credentials — the architecture is in place.
 export type OAuthProvider = 'google' | 'microsoft';
