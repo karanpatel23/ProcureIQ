@@ -8,6 +8,7 @@ const nav = [
   ['Suppliers', '/app/suppliers'],
   ['Quotes', '/app/quotes'],
   ['Purchase Orders', '/app/purchase-orders'],
+  ['Activity', '/app/activity'],
   ['Analytics', '/app/analytics'],
 ] as const;
 

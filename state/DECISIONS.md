@@ -92,3 +92,38 @@ Explicitly NOT on this list (automated once policy passes): quote acceptance, su
 selection, PO drafting, approval routing, requisition creation, intake. Prior product
 copy said "a human approves every decision" — that is now workspace policy (`autopilot:
 off`), not an architectural constraint. Marketing must describe both modes honestly.
+
+---
+
+# USP vs procure.ai / Procurify (benchmark cycle, 2026-07-11)
+
+## The resolved tension
+procure.ai = autonomy without adoptability (enterprise, opaque agents, contact-sales).
+Procurify = adoptability without autonomy (great forms, humans still do the work).
+ProcureIQ takes the unoccupied square: **auditable autonomy at self-serve speed.**
+
+## The USP, in the buyer's words
+> "It actually does the buying work like the enterprise agent platforms — but I can see the
+> reason for every action it took, it's bounded by my own policy, and I had it running the
+> afternoon I signed up, for $99."
+
+Three legs, each verifiable in-product, none an adjective:
+1. **It executes** — intake→verify→compare→select→PO runs itself in policy (autopilot, shipped).
+2. **It shows its work** — every AI action is a persisted run + audit event with named policy
+   checks; the new Activity feed makes the glass box a first-class screen. procure.ai cannot show
+   this publicly; Procurify has nothing to show.
+3. **It's adoptable in an afternoon** — self-serve, public pricing, suppliers stay on email,
+   PO exports to CSV for any accounting system.
+
+## AI-integration approach (vs their approaches)
+- procure.ai's "autonomous negotiation" → ours: **negotiation drafts computed from real quote
+  deltas** (the leverage is named: "competitor is $X / N days better"), human-gated send. Honest
+  version of their flagship at 1/100th the price point.
+- Procurify's "reporting" complaints → ours: **decision brief** — five plain-language lines that
+  answer "what should I do and why," copyable into the approval email thread.
+- Both cycles' rule stands: deterministic + explainable first, LLM-swappable by contract.
+
+## Kill criterion
+If pilot buyers say the Activity feed and briefs don't increase their willingness to enable
+autopilot (i.e., transparency doesn't convert to trust), the "auditable" leg is decoration and
+the USP collapses to price — rethink.
