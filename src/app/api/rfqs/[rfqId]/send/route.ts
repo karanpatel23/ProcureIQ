@@ -3,7 +3,7 @@ import { ApiError, handleApiError, jsonOk, parseJson } from '@/lib/server/api';
 import { writeAuditLog } from '@/lib/server/audit';
 import { requireWorkspace } from '@/lib/server/auth';
 import { mutateDb, now, readDb } from '@/lib/server/db';
-import { emailProviderConfigured, sendEmails, type EmailMessage } from '@/lib/server/email';
+import { applyOutboundSandbox, emailProviderConfigured, sendEmails, type EmailMessage } from '@/lib/server/email';
 import { generateRfqEmailDraft } from '@/lib/server/rfq-email';
 
 const sendSchema = z.object({
@@ -36,8 +36,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
     const subject = input.subject ?? `RFQ — ${rfq.title}`;
     const replyTo = workspace.procurementEmail || user.email;
 
-    const messages: EmailMessage[] = withEmail.map((supplier) => ({ to: supplier.email as string, subject, text: bodyText, replyTo }));
-    const results = await sendEmails(messages);
+    const rawMessages: EmailMessage[] = withEmail.map((supplier) => ({ to: supplier.email as string, subject, text: bodyText, replyTo }));
+    // Sandbox: supplier-facing mail never reaches real suppliers unless SANDBOX_MODE=off.
+    const sandbox = applyOutboundSandbox(rawMessages);
+    const results = await sendEmails(sandbox.messages);
 
     const sentCount = results.filter((r) => r.delivery === 'sent').length;
     const loggedCount = results.filter((r) => r.delivery === 'logged').length;
@@ -63,13 +65,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
     });
 
     return jsonOk({
+      sandbox: sandbox.sandboxed ? { active: true, suppressed: sandbox.suppressed, originalRecipients: sandbox.originalRecipients } : undefined,
       delivery: emailProviderConfigured() ? 'sent' : 'logged',
       sentCount,
       loggedCount,
       results,
       skippedNoEmail: withoutEmail.map((supplier) => ({ id: supplier.id, name: supplier.name })),
       message: emailProviderConfigured()
-        ? `RFQ sent to ${sentCount} supplier(s).`
+        ? (sandbox.sandboxed ? `SANDBOX MODE: ${sandbox.suppressed ? 'delivery suppressed (no SANDBOX_EMAIL_TO set)' : `redirected to ${process.env.SANDBOX_EMAIL_TO}`} — real suppliers were NOT emailed. Set SANDBOX_MODE=off to send for real.` : `RFQ sent to ${sentCount} supplier(s).`)
         : `Email provider is not configured, so the RFQ was recorded for ${loggedCount} supplier(s) but not delivered. The RFQ stays in draft — configure RESEND_API_KEY and EMAIL_FROM to send for real, or email it yourself and use “Mark as sent”.`,
     });
   } catch (error) {

@@ -21,6 +21,8 @@ const LABELS: Record<string, string> = {
   'rfq.sent': 'RFQ sent to suppliers',
   'quote.uploaded': 'Supplier quote received',
   'quote.extraction_started': 'AI extraction ran on a quote document',
+  'extraction.fallback': 'Claude unreachable — local parser handled the extraction',
+  'supplier.imported': 'Suppliers imported from CSV',
   'quote.approved': 'Quote approved',
   'quote.review_saved': 'Quote review saved',
   'quote_comparison.completed': 'Quote comparison completed',
