@@ -8,7 +8,7 @@ import { memberInviteSchema } from '@/lib/server/validation';
 export async function GET() {
   try {
     const { workspace } = await requireWorkspace();
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
     const members = db.workspaceMembers
       .filter((m) => m.workspaceId === workspace.id)
       .map((m) => {
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       };
       db.workspaceMembers.push(member);
       return member;
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'team_member.added', entityType: 'workspace_member', entityId: member.id, metadata: { role: member.role, title: member.title, status: member.status } });
     return jsonOk({ member }, { status: 201 });
   } catch (error) { return handleApiError(error); }

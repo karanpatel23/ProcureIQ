@@ -1,6 +1,6 @@
 import { ApiError, handleApiError, jsonOk, parseJson } from '@/lib/server/api';
 import { createSession, hashPassword, safeUser } from '@/lib/server/auth';
-import { createId, mutateDb, now } from '@/lib/server/db';
+import { createId, findWorkspaceIdsByInvitedEmail, mutateDb, now } from '@/lib/server/db';
 import { issueVerificationToken, sendVerificationEmail, verificationRequired } from '@/lib/server/email-verification';
 import { sendWelcomeEmail } from '@/lib/server/welcome-email';
 import { signupSchema } from '@/lib/server/validation';
@@ -27,15 +27,21 @@ export async function POST(request: Request) {
         updatedAt: timestamp,
       };
       db.users.push(user);
-      // Link any pending team invitations for this email so the person joins
-      // the workspace they were invited to instead of starting a new one.
-      for (const member of db.workspaceMembers) {
-        if (!member.userId && (member.invitedEmail ?? '').toLowerCase() === user.email) {
-          member.userId = user.id; member.status = 'active'; member.invitedEmail = undefined; member.invitedName = undefined;
-        }
-      }
       return user;
     });
+
+    // Link any pending team invitations for this email so the person joins the
+    // workspace they were invited to — scoped per-workspace mutations, found via
+    // an indexed lookup instead of scanning every tenant.
+    for (const workspaceId of await findWorkspaceIdsByInvitedEmail(user.email)) {
+      await mutateDb((db) => {
+        for (const member of db.workspaceMembers) {
+          if (!member.userId && (member.invitedEmail ?? '').toLowerCase() === user.email) {
+            member.userId = user.id; member.status = 'active'; member.invitedEmail = undefined; member.invitedName = undefined;
+          }
+        }
+      }, { workspaceId });
+    }
 
     if (requireVerify) {
       // Send the verification email; failure to send does not fail signup (the

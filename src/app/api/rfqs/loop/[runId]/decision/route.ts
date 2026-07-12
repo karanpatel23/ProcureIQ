@@ -35,7 +35,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ run
       target.decision = { action: input.action, byUserId: user.id, notes: input.notes, at: now() };
       target.updatedAt = now();
       return target;
-    });
+    }, { workspaceId: workspace.id });
 
     await writeAuditLog({
       workspaceId: workspace.id,

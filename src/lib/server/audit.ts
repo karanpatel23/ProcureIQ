@@ -5,5 +5,5 @@ export async function writeAuditLog(input: { workspaceId: string; actorUserId?: 
     const auditLog = { id: createId('aud'), workspaceId: input.workspaceId, actorUserId: input.actorUserId, action: input.action, entityType: input.entityType, entityId: input.entityId, metadata: input.metadata ?? {}, createdAt: now() };
     db.auditLogs.push(auditLog);
     return auditLog;
-  });
+  }, { workspaceId: input.workspaceId });
 }

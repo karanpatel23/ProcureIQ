@@ -6,7 +6,7 @@ export const metadata = { title: 'Dashboard', description: 'ProcureIQ workspace 
 
 export default async function DashboardPage() {
   const { user, workspace, membership } = await requirePageWorkspace();
-  const db = await readDb();
+  const db = await readDb({ workspaceId: workspace.id });
   const scopedRfqs = db.rfqs.filter((item) => item.workspaceId === workspace.id);
   const scopedQuotes = db.supplierQuotes.filter((item) => item.workspaceId === workspace.id);
 

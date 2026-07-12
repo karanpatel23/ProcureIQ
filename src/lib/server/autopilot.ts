@@ -146,5 +146,5 @@ export async function runAutopilotForRfq(input: { workspaceId: string; rfqId: st
     }
 
     return { enabled: true, actions };
-  });
+  }, { workspaceId: input.workspaceId });
 }

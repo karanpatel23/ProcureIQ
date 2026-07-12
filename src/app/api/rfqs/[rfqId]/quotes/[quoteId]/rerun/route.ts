@@ -8,7 +8,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
   try {
     const { user, workspace } = await requireWorkspace(['owner', 'admin', 'member']);
     const { rfqId, quoteId } = await params;
-    const current = await readDb();
+    const current = await readDb({ workspaceId: workspace.id });
     const quote = current.supplierQuotes.find((item) => item.id === quoteId && item.rfqId === rfqId && item.workspaceId === workspace.id) as any;
     if (!quote) throw new ApiError(404, 'QUOTE_NOT_FOUND', 'Supplier quote was not found.');
     const document = current.quoteDocuments.find((item) => item.id === quote.quoteDocumentId && item.workspaceId === workspace.id) as any;

@@ -10,7 +10,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
   try {
     const { user, workspace } = await requireWorkspace(['owner', 'admin', 'member']);
     const { rfqId } = await params;
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
     const rfq = db.rfqs.find((item) => item.id === rfqId && item.workspaceId === workspace.id);
     if (!rfq) throw new ApiError(404, 'RFQ_NOT_FOUND', 'RFQ was not found.');
     const form = await request.formData();
@@ -35,7 +35,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
       const quote = { id: createId('squote'), workspaceId: workspace.id, rfqId, supplierId, quoteDocumentId: document.id, status: 'needs_review' as const, currency: extraction.parsed.currency.value ?? 'USD', confidenceScore: extraction.parsed.quoteConfidence, extractedFields: extraction.parsed, createdAt: timestamp, updatedAt: timestamp } as any;
       draft.quoteDocuments.push(document); draft.aiExtractionRuns.push(run); draft.supplierQuotes.push(quote); const w = draft.workspaces.find((item) => item.id === workspace.id) as any; if (w) w.usage = { rfqsCreated: w.usage?.rfqsCreated ?? draft.rfqs.filter((rfq) => rfq.workspaceId === workspace.id).length, quoteDocumentsUploaded: (w.usage?.quoteDocumentsUploaded ?? 0) + 1, aiExtractionRuns: (w.usage?.aiExtractionRuns ?? 0) + 1, teamMembers: draft.workspaceMembers.filter((member) => member.workspaceId === workspace.id).length };
       return { document, run, quote };
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.uploaded', entityType: 'quote_document', entityId: result.document.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.extraction_started', entityType: 'ai_extraction_run', entityId: result.run.id, metadata: { status: result.run.status } });
 

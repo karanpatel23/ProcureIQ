@@ -45,7 +45,7 @@ function hrefFor(log: AuditLog): string | null {
 export default async function ActivityPage({ searchParams }: { searchParams: Promise<{ actor?: string }> }) {
   const { workspace } = await requirePageWorkspace();
   const { actor } = await searchParams;
-  const db = await readDb();
+  const db = await readDb({ workspaceId: workspace.id });
   const users = new Map(db.users.map((user) => [user.id, user.name]));
 
   const all = db.auditLogs

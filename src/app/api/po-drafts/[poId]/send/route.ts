@@ -21,7 +21,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ poId: str
   try {
     const { user, workspace } = await requireWorkspace(['owner', 'admin']);
     const { poId } = await params;
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
     const po = db.purchaseOrderDrafts.find((item) => item.id === poId && item.workspaceId === workspace.id) as unknown as PoDraft | undefined;
     if (!po) throw new ApiError(404, 'PO_NOT_FOUND', 'PO draft was not found.');
     if (po.status === 'draft_requires_human_approval') throw new ApiError(400, 'PO_NOT_APPROVED', 'Approve the PO before sending it.');
@@ -35,7 +35,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ poId: str
     await mutateDb((store) => {
       const target = store.purchaseOrderDrafts.find((item) => item.id === poId && item.workspaceId === workspace.id) as unknown as PoDraft | undefined;
       if (target) { target.status = 'exported'; target.sentAt = now(); target.updatedAt = now(); }
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'po.sent', entityType: 'purchase_order_draft', entityId: po.id, metadata: { to: supplier.email, delivery: result.delivery } });
 
     return jsonOk({

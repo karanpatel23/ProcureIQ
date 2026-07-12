@@ -9,7 +9,7 @@ export const metadata = { title: 'RFQ detail | ProcureIQ' };
 export default async function RfqDetailPage({ params }: { params: Promise<{ rfqId: string }> }) {
   const { workspace } = await requirePageWorkspace();
   const { rfqId } = await params;
-  const db = await readDb();
+  const db = await readDb({ workspaceId: workspace.id });
   const rfq = db.rfqs.find((item) => item.id === rfqId && item.workspaceId === workspace.id);
   if (!rfq) notFound();
   const items = db.rfqItems.filter((item) => item.rfqId === rfq.id && item.workspaceId === workspace.id);

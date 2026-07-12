@@ -18,7 +18,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
     const { user, workspace } = await requireWorkspace(['owner', 'admin', 'member']);
     const { rfqId } = await params;
     const input = await parseJson(request, sendSchema);
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
 
     const rfq = db.rfqs.find((item) => item.id === rfqId && item.workspaceId === workspace.id);
     if (!rfq) throw new ApiError(404, 'RFQ_NOT_FOUND', 'RFQ was not found.');
@@ -50,7 +50,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
       await mutateDb((draft) => {
         const target = draft.rfqs.find((item) => item.id === rfq.id && item.workspaceId === workspace.id);
         if (target) { target.status = 'sent'; target.sentAt = now(); target.updatedAt = now(); }
-      });
+      }, { workspaceId: workspace.id });
     }
 
     await writeAuditLog({

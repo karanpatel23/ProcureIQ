@@ -6,7 +6,7 @@ export const metadata = { title: 'Team & roles | ProcureIQ' };
 
 export default async function TeamSettingsPage() {
   const { workspace, membership } = await requirePageWorkspace();
-  const db = await readDb();
+  const db = await readDb({ workspaceId: workspace.id });
   const members = db.workspaceMembers
     .filter((m) => m.workspaceId === workspace.id)
     .map((m) => {
