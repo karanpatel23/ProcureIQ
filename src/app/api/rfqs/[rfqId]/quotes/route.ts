@@ -2,7 +2,7 @@ import { ApiError, handleApiError, jsonOk } from '@/lib/server/api';
 import { writeAuditLog } from '@/lib/server/audit';
 import { requireWorkspace } from '@/lib/server/auth';
 import { createId, mutateDb, now, readDb } from '@/lib/server/db';
-import { runQuoteExtraction } from '@/lib/server/quote-extraction';
+import { extractQuote } from '@/lib/server/quote-extraction';
 import { runAutopilotForRfq } from '@/lib/server/autopilot';
 import { storeQuoteSource } from '@/lib/server/storage';
 
@@ -26,12 +26,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
     // A PDF/image/spreadsheet is stored as the attachment and queued for a
     // human to paste/enter the figures — never "extracted" from a filename.
     const extraction = stored.textExtracted
-      ? runQuoteExtraction(stored.sourceText, supplier.name)
-      : { parsed: { supplierName: { value: supplier.name, confidence: 90 }, currency: { value: 'USD', confidence: 20 }, quoteConfidence: 0, lineItems: [], notes: { value: `Attachment stored (${stored.fileName}). Automatic extraction currently reads pasted or text quotes — open review and paste the quote text, or enter the figures manually.`, confidence: 90 } } as any, rawAiResponse: 'extraction skipped: non-text attachment' };
+      ? await extractQuote(stored.sourceText, supplier.name)
+      : { parsed: { supplierName: { value: supplier.name, confidence: 90 }, currency: { value: 'USD', confidence: 20 }, quoteConfidence: 0, lineItems: [], notes: { value: `Attachment stored (${stored.fileName}). Automatic extraction currently reads pasted or text quotes — open review and paste the quote text, or enter the figures manually.`, confidence: 90 } } as any, rawAiResponse: 'extraction skipped: non-text attachment', modelProvider: 'none' };
     const result = await mutateDb((draft) => {
       const timestamp = now();
       const document = { id: createId('qdoc'), workspaceId: workspace.id, rfqId, supplierId, fileName: stored.fileName, mimeType: stored.mimeType, byteSize: stored.byteSize, storageKey: stored.storageKey, uploadedByUserId: user.id, sourceText: stored.sourceText, createdAt: timestamp } as any;
-      const run = { id: createId('airun'), workspaceId: workspace.id, quoteDocumentId: document.id, status: (stored.textExtracted ? 'needs_review' : 'failed') as any, modelProvider: 'procureiq-local-extractor', confidenceScore: extraction.parsed.quoteConfidence, rawAiResponse: extraction.rawAiResponse, errorMessage: stored.textExtracted ? undefined : 'Non-text attachment — automatic extraction skipped; manual entry required.', createdAt: timestamp, updatedAt: timestamp } as any;
+      const run = { id: createId('airun'), workspaceId: workspace.id, quoteDocumentId: document.id, status: (stored.textExtracted ? 'needs_review' : 'failed') as any, modelProvider: (extraction as any).modelProvider ?? 'procureiq-local-extractor', confidenceScore: extraction.parsed.quoteConfidence, rawAiResponse: extraction.rawAiResponse, errorMessage: stored.textExtracted ? undefined : 'Non-text attachment — automatic extraction skipped; manual entry required.', createdAt: timestamp, updatedAt: timestamp } as any;
       const quote = { id: createId('squote'), workspaceId: workspace.id, rfqId, supplierId, quoteDocumentId: document.id, status: 'needs_review' as const, currency: extraction.parsed.currency.value ?? 'USD', confidenceScore: extraction.parsed.quoteConfidence, extractedFields: extraction.parsed, createdAt: timestamp, updatedAt: timestamp } as any;
       draft.quoteDocuments.push(document); draft.aiExtractionRuns.push(run); draft.supplierQuotes.push(quote); const w = draft.workspaces.find((item) => item.id === workspace.id) as any; if (w) w.usage = { rfqsCreated: w.usage?.rfqsCreated ?? draft.rfqs.filter((rfq) => rfq.workspaceId === workspace.id).length, quoteDocumentsUploaded: (w.usage?.quoteDocumentsUploaded ?? 0) + 1, aiExtractionRuns: (w.usage?.aiExtractionRuns ?? 0) + 1, teamMembers: draft.workspaceMembers.filter((member) => member.workspaceId === workspace.id).length };
       return { document, run, quote };

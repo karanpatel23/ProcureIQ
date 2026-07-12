@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { claudeConfigured, claudeExtractJson } from './ai';
 import type { Database, Supplier } from './schema';
 
 /*
@@ -113,4 +115,34 @@ export function matchSuppliers(db: Database, workspaceId: string, items: IntakeI
     const haystack = `${supplier.name} ${supplier.category ?? ''} ${supplier.typicalItems ?? ''}`.toLowerCase();
     return [...words].some((word) => haystack.includes(word));
   });
+}
+
+// ---------------------------------------------------------------------------
+// Claude-powered intake (AI_PROVIDER=anthropic) with the deterministic parser
+// as fallback. Output validated by zod; gaps stay named, never invented.
+// ---------------------------------------------------------------------------
+const claudeIntakeSchema = z.object({
+  title: z.string().min(2).max(120),
+  items: z.array(z.object({ itemName: z.string().min(2).max(120), quantity: z.number().positive().int(), unit: z.string().max(20).optional().nullable(), notes: z.string().max(300).optional().nullable() })).max(30),
+  neededBy: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
+  deliveryLocation: z.string().max(160).optional().nullable(),
+  missing: z.array(z.string().max(160)).max(6),
+});
+
+export async function parseIntakeSmart(text: string): Promise<IntakeParse & { parser: string }> {
+  if (claudeConfigured()) {
+    const result = await claudeExtractJson({
+      system: 'You turn raw purchase requests (emails, chat messages) into structured requisitions. Extract ONLY what is present; list gaps in "missing" instead of guessing. Dates ISO YYYY-MM-DD. Schema: {"title":string,"items":[{"itemName":string,"quantity":int,"unit":string|null,"notes":string|null}],"neededBy":string|null,"deliveryLocation":string|null,"missing":string[]}',
+      prompt: `Today is ${new Date().toISOString().slice(0, 10)}.\n\nRequest:\n${text.slice(0, 6000)}`,
+      maxTokens: 1024,
+    });
+    if (result.ok) {
+      const validated = claudeIntakeSchema.safeParse(result.json);
+      if (validated.success) {
+        const v = validated.data;
+        return { title: v.title, items: v.items.map((i) => ({ itemName: i.itemName, quantity: i.quantity, unit: i.unit ?? undefined, notes: i.notes ?? undefined })), neededBy: v.neededBy ?? undefined, deliveryLocation: v.deliveryLocation ?? undefined, missing: v.missing, parser: 'anthropic' };
+      }
+    }
+  }
+  return { ...parseIntakeRequest(text), parser: 'local' };
 }
