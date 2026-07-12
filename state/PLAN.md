@@ -59,3 +59,16 @@ COMPETITIVE.md gaps. Status: SHIPPED / IN PROGRESS / OPEN._
 | O | QuickBooks/NetSuite connector | Procurify's integration moat | OPEN — Intuit app reg (Karan) |
 | P | Receiving + invoice + 3-way match entities | Procurify AP depth | OPEN — after real PO usage |
 | Q | Mobile-first pass on core app screens | Procurify mobile praise | OPEN |
+
+---
+
+# Cycle 5 — Phase-1 completion vs Procure.ai wedge (2026-07-12)
+
+| # | Change | Status |
+|---|---|---|
+| R | Claude API provider (AI_PROVIDER=anthropic): extraction + intake via Claude, zod-validated, deterministic local fallback on any failure, raw responses audited | SHIPPED — needs ANTHROPIC_API_KEY in Vercel (Karan) |
+| S | Supplier CSV / QuickBooks-vendor-export import (row-level results, dedupe, preferred mapping) + suppliers-page UI | SHIPPED |
+| T | Supplier memory: explainable reliability score + last-paid prices + avg lead, surfaced on compare page | SHIPPED |
+| U | Exception-first dashboard: zero-value cards hidden | SHIPPED |
+| V | Forwarded-email inbox ingestion | OPEN — inbound provider decision (Karan, spend) |
+| W | QuickBooks two-way sync | OPEN — Intuit app registration (Karan) |

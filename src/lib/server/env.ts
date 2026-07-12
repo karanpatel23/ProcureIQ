@@ -26,13 +26,19 @@ const envSchema = z.object({
   MICROSOFT_OAUTH_CLIENT_ID: z.string().optional(),
   MICROSOFT_OAUTH_CLIENT_SECRET: z.string().optional(),
   MICROSOFT_OAUTH_TENANT: z.string().default('common'),
-  AI_PROVIDER: z.enum(['local', 'openai', 'azure']).default('local'),
+  AI_PROVIDER: z.enum(['local', 'anthropic', 'openai', 'azure']).default('local'),
+  ANTHROPIC_API_KEY: z.string().optional(),
+  ANTHROPIC_MODEL: z.string().default('claude-sonnet-5'),
   OPENAI_API_KEY: z.string().optional(),
   AZURE_OPENAI_API_KEY: z.string().optional(),
   AZURE_OPENAI_ENDPOINT: z.string().url().optional(),
   AZURE_OPENAI_DEPLOYMENT: z.string().optional(),
   AZURE_OPENAI_API_VERSION: z.string().optional(),
 }).superRefine((value, ctx) => {
+  if (value.AI_PROVIDER === 'anthropic' && !value.ANTHROPIC_API_KEY) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['ANTHROPIC_API_KEY'], message: 'ANTHROPIC_API_KEY is required when AI_PROVIDER=anthropic.' });
+  }
+
   if (value.AI_PROVIDER === 'openai' && !value.OPENAI_API_KEY) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,

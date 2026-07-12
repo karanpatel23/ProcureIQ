@@ -40,7 +40,7 @@ export const extractedQuoteSchema = z.object({
 
 export type ExtractedQuote = z.infer<typeof extractedQuoteSchema>;
 
-export type QuoteExtractionProvider = 'local' | 'openai' | 'azure';
+export type QuoteExtractionProvider = 'local' | 'openai' | 'azure' | 'anthropic';
 
 export type QuoteExtractionResult = {
   provider: QuoteExtractionProvider;
@@ -128,4 +128,35 @@ export function runQuoteExtraction(
     parsed,
     rawAiResponse: JSON.stringify(parsed),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Claude-powered extraction (AI_PROVIDER=anthropic) with deterministic fallback.
+// Claude's output is validated through the SAME zod schema as the local parser,
+// so a malformed model response can never leak into the data model — it just
+// falls back. The raw model response is preserved for the audit trail.
+// ---------------------------------------------------------------------------
+import { claudeExtractJson, claudeConfigured } from './ai';
+import { env as aiEnv } from './env';
+
+const CLAUDE_QUOTE_SYSTEM = `You extract structured data from supplier quotes for a procurement system.
+Every field is an object {"value": <string|number|null>, "confidence": <0-100 integer>, "source": <short quote from the text or null>}.
+Use null values (confidence <= 30) for anything not actually present — NEVER invent commercial values.
+Schema: {"supplierName":F,"quoteReference":F,"quoteDate":F,"validUntil":F,"currency":F,"paymentTerms":F,"freightTerms":F,"estimatedLeadTime":F,"deliveryDate":F,"taxes":F,"totalPrice":F,"notes":F,"quoteConfidence":<0-100>,"lineItems":[{"itemName":F,"description":F,"quantity":F,"unit":F,"unitPrice":F,"extendedPrice":F,"leadTime":F,"alternatives":F,"notes":F}]}
+Dates ISO YYYY-MM-DD. totalPrice/unitPrice/extendedPrice/quantity numeric values. quoteConfidence reflects overall extraction certainty.`;
+
+export async function extractQuote(sourceText: string, fallbackSupplierName?: string): Promise<QuoteExtractionResult & { modelProvider: string }> {
+  if (claudeConfigured()) {
+    const result = await claudeExtractJson({ system: CLAUDE_QUOTE_SYSTEM, prompt: `Supplier (if not stated in text): ${fallbackSupplierName ?? 'unknown'}\n\nQuote text:\n${sourceText.slice(0, 12_000)}` });
+    if (result.ok) {
+      try {
+        const parsed = extractedQuoteSchema.parse(result.json);
+        return { parsed, rawAiResponse: result.raw, provider: 'anthropic', modelProvider: `anthropic:${result.model}` };
+      } catch (error) {
+        console.error(JSON.stringify({ level: 'warn', event: 'claude.extraction_schema_mismatch', message: error instanceof Error ? error.message.slice(0, 200) : 'invalid' }));
+      }
+    }
+  }
+  const local = runQuoteExtraction(sourceText, fallbackSupplierName);
+  return { ...local, modelProvider: aiEnv.AI_PROVIDER === 'anthropic' ? 'procureiq-local-extractor (claude fallback)' : 'procureiq-local-extractor' };
 }

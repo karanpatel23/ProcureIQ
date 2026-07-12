@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SupplierForm } from '@/components/auth/SupplierForm';
+import { ImportSuppliers } from '@/components/rfq/ImportSuppliers';
 import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 
@@ -63,7 +64,7 @@ export default async function SuppliersPage({ searchParams }: { searchParams: Pr
           </div>
         )}
 
-        <details id="add-supplier" className="add-supplier" open={filters.add === '1' || all.length === 0}>
+        <ImportSuppliers /><details id="add-supplier" className="add-supplier" open={filters.add === '1' || all.length === 0}>
           <summary>Add a supplier</summary>
           <SupplierForm />
         </details>

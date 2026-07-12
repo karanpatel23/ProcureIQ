@@ -67,7 +67,7 @@ export default async function DashboardPage() {
           </section>
         )}
         <div className="dashboard-grid">
-          {cards.map(([label, value]) => (
+          {cards.filter(([, value]) => Number(value) > 0).map(([label, value]) => (
             <article key={label}><strong>{value}</strong><span>{label}</span></article>
           ))}
         </div>
