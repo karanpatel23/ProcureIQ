@@ -2,6 +2,18 @@ import { createId, now } from './db';
 import type { Database, Rfq, Workspace } from './schema';
 
 const value = (field: any) => field?.value ?? null;
+// Sequential, per-workspace PO references (PIQ-2026-0001, -0002…). Computed
+// inside the storage transaction, so concurrent creates cannot collide.
+function nextPoNumber(db: Database, workspaceId: string): string {
+  const year = new Date().getFullYear();
+  const prefix = `PIQ-${year}-`;
+  const existing = db.purchaseOrderDrafts.filter((po: any) => po.workspaceId === workspaceId);
+  let n = existing.length + 1;
+  const taken = new Set(existing.map((po: any) => po.poNumber));
+  while (taken.has(`${prefix}${String(n).padStart(4, '0')}`)) n += 1;
+  return `${prefix}${String(n).padStart(4, '0')}`;
+}
+
 export function buildPoDraftFromSelection(db: Database, input: { workspace: Workspace; rfq: Rfq & Record<string, any>; userId: string }) {
   const quote = db.supplierQuotes.find((item) => item.id === input.rfq.selectedSupplierQuoteId && item.workspaceId === input.workspace.id) as any;
   if (!quote) return null;
@@ -13,6 +25,6 @@ export function buildPoDraftFromSelection(db: Database, input: { workspace: Work
   const taxes = Number(value(fields.taxes) ?? 0);
   const freight = Number(String(value(fields.freightTerms) ?? '').match(/\$([0-9,.]+)/)?.[1]?.replaceAll(',', '') ?? 0);
   const timestamp = now();
-  return { id: createId('po'), workspaceId: input.workspace.id, rfqId: input.rfq.id, supplierQuoteId: quote.id, status: 'draft_requires_human_approval' as const, poNumber: `PIQ-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`, poDate: timestamp.slice(0, 10), buyerCompany: input.workspace.name, supplierId: supplier?.id, supplierName: supplier?.name ?? 'Selected supplier', supplierContact: supplier?.contactPerson ?? supplier?.email ?? '', shipTo: input.rfq.deliveryLocation ?? '', billingContact: 'Billing contact to be confirmed', lines, subtotal, taxes, freight, total: subtotal + taxes + freight, paymentTerms: value(fields.paymentTerms) ?? '', deliveryDate: value(fields.deliveryDate) ?? input.rfq.neededBy ?? '', leadTime: value(fields.estimatedLeadTime) ?? '', notes: value(fields.notes) ?? '', internalApprovalNote: '', quoteReference: value(fields.quoteReference) ?? quote.id, createdByUserId: input.userId, createdAt: timestamp, updatedAt: timestamp };
+  return { id: createId('po'), workspaceId: input.workspace.id, rfqId: input.rfq.id, supplierQuoteId: quote.id, status: 'draft_requires_human_approval' as const, poNumber: nextPoNumber(db, input.workspace.id), poDate: timestamp.slice(0, 10), buyerCompany: input.workspace.name, supplierId: supplier?.id, supplierName: supplier?.name ?? 'Selected supplier', supplierContact: supplier?.contactPerson ?? supplier?.email ?? '', shipTo: input.rfq.deliveryLocation ?? '', billingContact: 'Billing contact to be confirmed', lines, subtotal, taxes, freight, total: subtotal + taxes + freight, currency: quote.currency ?? 'USD', paymentTerms: value(fields.paymentTerms) ?? '', deliveryDate: value(fields.deliveryDate) ?? input.rfq.neededBy ?? '', leadTime: value(fields.estimatedLeadTime) ?? '', notes: value(fields.notes) ?? '', internalApprovalNote: '', quoteReference: value(fields.quoteReference) ?? quote.id, createdByUserId: input.userId, createdAt: timestamp, updatedAt: timestamp };
 }
 export function poStatusLabel(status: string) { return status === 'draft_requires_human_approval' ? 'draft' : status; }

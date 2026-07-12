@@ -43,8 +43,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
     const loggedCount = results.filter((r) => r.delivery === 'logged').length;
     const failed = results.filter((r) => r.delivery === 'failed');
 
-    // Advance status only if at least one recipient was reached (sent or logged).
-    if (sentCount + loggedCount > 0) {
+    // Advance status ONLY when email actually left the building. "Logged" means
+    // no provider is configured and nothing was delivered — marking the RFQ
+    // "sent" in that state would be a lie the product tells by default.
+    if (sentCount > 0) {
       await mutateDb((draft) => {
         const target = draft.rfqs.find((item) => item.id === rfq.id && item.workspaceId === workspace.id);
         if (target) { target.status = 'sent'; target.sentAt = now(); target.updatedAt = now(); }
@@ -68,7 +70,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
       skippedNoEmail: withoutEmail.map((supplier) => ({ id: supplier.id, name: supplier.name })),
       message: emailProviderConfigured()
         ? `RFQ sent to ${sentCount} supplier(s).`
-        : `Email provider is not configured, so the RFQ was recorded for ${loggedCount} supplier(s) but not delivered. Configure RESEND_API_KEY and EMAIL_FROM to send for real.`,
+        : `Email provider is not configured, so the RFQ was recorded for ${loggedCount} supplier(s) but not delivered. The RFQ stays in draft — configure RESEND_API_KEY and EMAIL_FROM to send for real, or email it yourself and use “Mark as sent”.`,
     });
   } catch (error) {
     return handleApiError(error);

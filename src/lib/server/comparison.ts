@@ -33,6 +33,16 @@ export function buildRfqComparison(db: Database, rfq: Rfq) {
     const supplier = db.suppliers.find((item) => item.id === quote.supplierId);
     return { quote, supplierName: supplier?.name ?? 'Unknown supplier', totalPrice, leadTime, paymentTerms, freightTerms, validUntil, taxes: Number(value(fields.taxes)) || null, notes, confidence: quote.confidenceScore ?? 0, risks, score: 0, lineItems };
   });
+  // Currency sanity: comparing a EUR total against a USD total as raw numbers
+  // is a financial error, not a preference. Flag any quote whose currency
+  // differs from the group's dominant currency as a high-severity risk — it
+  // forces human review and blocks autopilot from auto-selecting on bad math.
+  const currencies = quotes.map((quote) => (quote.currency || 'USD').toUpperCase());
+  const dominant = [...new Set(currencies)].map((code) => ({ code, count: currencies.filter((c) => c === code).length })).sort((a, b) => b.count - a.count)[0]?.code;
+  for (const item of compared) {
+    const code = (item.quote.currency || 'USD').toUpperCase();
+    if (dominant && code !== dominant) item.risks.push(risk('currency_mismatch', `Currency mismatch (${code} vs ${dominant}) — totals are not directly comparable`, 'high'));
+  }
   const prices = compared.map((item) => item.totalPrice).filter((price): price is number => Boolean(price));
   const minPrice = prices.length ? Math.min(...prices) : null;
   const minLead = Math.min(...compared.map((item) => daysFromLead(item.leadTime)));

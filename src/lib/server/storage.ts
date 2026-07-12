@@ -12,8 +12,12 @@ export async function storeQuoteSource(input: { workspaceId: string; file?: File
     const path = join(env.QUOTE_STORAGE_PATH, key);
     await fs.mkdir(join(env.QUOTE_STORAGE_PATH, input.workspaceId), { recursive: true });
     await fs.writeFile(path, Buffer.from(await input.file.arrayBuffer()));
-    const text = input.file.type.startsWith('text/') ? await input.file.text() : `Uploaded file: ${input.file.name}`;
-    return { storageKey: key, fileName: input.file.name, mimeType: input.file.type, byteSize: input.file.size, sourceText: text };
+    // Only text files yield real extractable content. For PDFs/images/sheets we
+    // store the attachment and say so honestly — pretending to extract from a
+    // placeholder string produces confidently wrong numbers downstream.
+    const textExtracted = input.file.type.startsWith('text/');
+    const text = textExtracted ? await input.file.text() : `Uploaded file: ${input.file.name}`;
+    return { storageKey: key, fileName: input.file.name, mimeType: input.file.type, byteSize: input.file.size, sourceText: text, textExtracted };
   }
   const text = input.pastedText?.trim();
   if (!text) throw new ApiError(400, 'SOURCE_REQUIRED', 'Upload a quote file or paste supplier quote text.');
@@ -21,5 +25,5 @@ export async function storeQuoteSource(input: { workspaceId: string; file?: File
   const path = join(env.QUOTE_STORAGE_PATH, key);
   await fs.mkdir(join(env.QUOTE_STORAGE_PATH, input.workspaceId), { recursive: true });
   await fs.writeFile(path, text);
-  return { storageKey: key, fileName: 'pasted-supplier-quote.txt', mimeType: 'text/plain', byteSize: Buffer.byteLength(text), sourceText: text };
+  return { storageKey: key, fileName: 'pasted-supplier-quote.txt', mimeType: 'text/plain', byteSize: Buffer.byteLength(text), sourceText: text, textExtracted: true };
 }
