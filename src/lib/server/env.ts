@@ -26,6 +26,11 @@ const envSchema = z.object({
   MICROSOFT_OAUTH_CLIENT_ID: z.string().optional(),
   MICROSOFT_OAUTH_CLIENT_SECRET: z.string().optional(),
   MICROSOFT_OAUTH_TENANT: z.string().default('common'),
+  // Sandbox for SUPPLIER-FACING outbound mail (RFQ/PO sends): 'on' (default)
+  // redirects those emails to SANDBOX_EMAIL_TO (or logs them if unset). Account
+  // emails to the user themselves (reset/verification) are never sandboxed.
+  SANDBOX_MODE: z.enum(['on', 'off']).default('on'),
+  SANDBOX_EMAIL_TO: z.string().email().optional(),
   AI_PROVIDER: z.enum(['local', 'anthropic', 'openai', 'azure']).default('local'),
   ANTHROPIC_API_KEY: z.string().optional(),
   ANTHROPIC_MODEL: z.string().default('claude-sonnet-5'),

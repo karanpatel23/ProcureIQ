@@ -49,3 +49,22 @@ export async function claudeExtractJson(input: { system: string; prompt: string;
     return { ok: false, error: error instanceof Error ? error.message : 'request failed' };
   }
 }
+
+/** Live 1-token ping to verify the Anthropic key actually works (integrations health). */
+export async function claudePing(): Promise<{ configured: boolean; live: boolean; error?: string; model?: string }> {
+  if (!claudeConfigured()) return { configured: false, live: false, error: env.AI_PROVIDER === 'anthropic' ? 'ANTHROPIC_API_KEY missing' : 'AI_PROVIDER is not anthropic' };
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10_000);
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'x-api-key': env.ANTHROPIC_API_KEY as string, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body: JSON.stringify({ model: env.ANTHROPIC_MODEL, max_tokens: 1, messages: [{ role: 'user', content: 'ping' }] }),
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timer));
+    if (!response.ok) return { configured: true, live: false, error: `Anthropic responded ${response.status}`, model: env.ANTHROPIC_MODEL };
+    return { configured: true, live: true, model: env.ANTHROPIC_MODEL };
+  } catch (error) {
+    return { configured: true, live: false, error: error instanceof Error ? error.message : 'unreachable' };
+  }
+}

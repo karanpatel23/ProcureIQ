@@ -37,7 +37,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
       return { document, run, quote };
     }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.uploaded', entityType: 'quote_document', entityId: result.document.id });
-    await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.extraction_started', entityType: 'ai_extraction_run', entityId: result.run.id, metadata: { status: result.run.status } });
+    await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'quote.extraction_started', entityType: 'ai_extraction_run', entityId: result.run.id, metadata: { status: result.run.status, modelProvider: (extraction as any).modelProvider } });
+    // Fail LOUDLY when Claude was expected but the local fallback ran: a
+    // first-class audit event, not a buried log line.
+    if (String((extraction as any).modelProvider ?? '').includes('fallback')) {
+      await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'extraction.fallback', entityType: 'ai_extraction_run', entityId: result.run.id, metadata: { summary: 'Claude extraction failed or was unreachable — the deterministic local parser handled this quote. Check /api/health/integrations.' } });
+    }
 
     // Autopilot: self-verify, accept, compare, decide, and draft the PO — as far
     // as policy allows — with no human action. Halts become queued exceptions.

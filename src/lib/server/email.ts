@@ -41,3 +41,25 @@ export async function sendEmail(message: EmailMessage): Promise<EmailResult> {
 export async function sendEmails(messages: EmailMessage[]): Promise<EmailResult[]> {
   return Promise.all(messages.map(sendEmail));
 }
+
+/*
+ * Sandbox for supplier-facing outbound mail. With SANDBOX_MODE=on (the
+ * default), RFQ/PO emails never reach real suppliers: they are redirected to
+ * SANDBOX_EMAIL_TO with the original recipient named in the subject, or
+ * downgraded to 'logged' when no sandbox address is set. Account emails to the
+ * user themselves are never sandboxed. Turn off deliberately with SANDBOX_MODE=off.
+ */
+export function sandboxActive(): boolean { return env.SANDBOX_MODE !== 'off'; }
+
+export function applyOutboundSandbox(messages: EmailMessage[]): { messages: EmailMessage[]; sandboxed: boolean; suppressed: boolean; originalRecipients: string[] } {
+  if (!sandboxActive()) return { messages, sandboxed: false, suppressed: false, originalRecipients: [] };
+  const originalRecipients = messages.map((m) => m.to);
+  if (!env.SANDBOX_EMAIL_TO) {
+    console.log(JSON.stringify({ level: 'info', event: 'email.sandbox_suppressed', recipients: originalRecipients }));
+    return { messages: [], sandboxed: true, suppressed: true, originalRecipients };
+  }
+  return {
+    messages: messages.map((m) => ({ ...m, to: env.SANDBOX_EMAIL_TO as string, subject: `[SANDBOX → ${m.to}] ${m.subject}` })),
+    sandboxed: true, suppressed: false, originalRecipients,
+  };
+}
