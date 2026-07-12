@@ -21,7 +21,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
       rfq.recommendationOverridden = input.overrideRecommendation;
       rfq.updatedAt = now();
       return rfq;
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'supplier_quote.selected', entityType: 'rfq', entityId: rfq.id, metadata: { supplierQuoteId: input.supplierQuoteId } });
     if (input.notes) await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'decision_note.added', entityType: 'rfq', entityId: rfq.id });
     if (input.overrideRecommendation) await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'recommendation.overridden', entityType: 'rfq', entityId: rfq.id });

@@ -11,7 +11,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
   try {
     const { user, workspace } = await requireWorkspace(['owner', 'admin', 'member']);
     const { rfqId } = await params;
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
     const rfq = db.rfqs.find((item) => item.id === rfqId && item.workspaceId === workspace.id);
     if (!rfq) throw new ApiError(404, 'RFQ_NOT_FOUND', 'RFQ was not found.');
 
@@ -32,7 +32,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
     const policy = evaluateComparisonPolicy(db, rfq, workspace, comparison);
     if (policy) output.run.state = { ...(output.run.state as Record<string, unknown>), policy };
 
-    await mutateDb((draft) => { draft.workflowRuns.push(output.run); });
+    await mutateDb((draft) => { draft.workflowRuns.push(output.run); }, { workspaceId: workspace.id });
     await writeAuditLog({
       workspaceId: workspace.id,
       actorUserId: user.id,

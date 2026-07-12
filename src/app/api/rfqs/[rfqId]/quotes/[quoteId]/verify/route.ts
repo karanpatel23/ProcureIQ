@@ -9,7 +9,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
   try {
     const { user, workspace } = await requireWorkspace(['owner', 'admin', 'member']);
     const { rfqId, quoteId } = await params;
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
 
     const quote = db.supplierQuotes.find((item) => item.id === quoteId && item.rfqId === rfqId && item.workspaceId === workspace.id) as (typeof db.supplierQuotes)[number] & { reviewedFields?: unknown; extractedFields?: unknown };
     if (!quote) throw new ApiError(404, 'QUOTE_NOT_FOUND', 'Supplier quote was not found for this RFQ.');
@@ -29,7 +29,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
       },
     });
 
-    await mutateDb((draft) => { draft.workflowRuns.push(output.run); });
+    await mutateDb((draft) => { draft.workflowRuns.push(output.run); }, { workspaceId: workspace.id });
     await writeAuditLog({
       workspaceId: workspace.id,
       actorUserId: user.id,

@@ -56,9 +56,14 @@ purely application-level `.filter(workspaceId)` — one missed filter is a cross
 leak; (d) row size grows unboundedly. Works at demo scale; dies at ~dozens of active
 workspaces. *This is the finding a competitor's sales engineer would lead with if they
 ever saw the schema.*
-→ OPEN — named migration plan: split to row-per-workspace state + global auth tables
-(same jsonb adapter semantics, `readDb(workspaceId)`), then normalize hot entities.
-Flagged to Karan as the next infra cycle; not honestly fixable inside this audit pass.
+→ **FIXED (follow-up cycle, 2026-07-12):** storage is now sharded — `procureiq_global`
+(users/sessions/oauth/leads) + one `procureiq_ws` row PER workspace. Workspace mutations
+lock only their own row (verified: 24 interleaved cross-tenant writes, zero lost updates),
+hot reads load one tenant, membership lookups use a GIN-indexed containment query, and
+tenant separation is physical rows. Legacy single-row data migrates automatically on first
+boot (old row kept as backup). Rare cross-cutting flows (signup linking, account deletion,
+admin) keep all-row locking for correctness. Next step when volume demands: normalize hot
+entities out of jsonb.
 
 **B-2 · CRITICAL · Unlimited password brute force.**
 `api/auth/login/route.ts`: no throttling, no lockout, no delay — an attacker can hammer
@@ -153,7 +158,7 @@ fine for one user, ambiguous for teams across zones. OPEN.
 |---|---|---|---|
 | 1 | C-1/U-4 PDF upload extracts nothing while UI implies it does | CRITICAL | **FIXED** |
 | 2 | B-2 no login throttling | CRITICAL | **FIXED** |
-| 3 | B-1 single-row multi-tenant store | CRITICAL | OPEN — infra cycle, flagged to Karan |
+| 3 | B-1 single-row multi-tenant store | CRITICAL | **FIXED** — sharded per-workspace storage |
 | 4 | C-2 RFQ marked "sent" on zero deliveries | MAJOR | **FIXED** |
 | 5 | B-3 cross-currency comparison unchecked | MAJOR | **FIXED** |
 | 6 | B-5 duplicate suppliers allowed | MAJOR | **FIXED** |

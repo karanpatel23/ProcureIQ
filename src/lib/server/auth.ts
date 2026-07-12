@@ -2,7 +2,7 @@ import { createHmac, randomBytes, scryptSync, timingSafeEqual } from 'node:crypt
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ApiError } from './api';
-import { createId, mutateDb, now, readDb } from './db';
+import { createId, findWorkspaceIdByUserId, mutateDb, now, readDb } from './db';
 import { env } from './env';
 import type { Role, User, Workspace } from './schema';
 
@@ -81,11 +81,13 @@ export async function requirePageUser() {
 }
 
 export async function getPrimaryWorkspace(userId: string) {
-  const db = await readDb();
-  const membership = db.workspaceMembers.find((item) => item.userId === userId);
-  if (!membership) return null;
-  const workspace = db.workspaces.find((item) => item.id === membership.workspaceId) ?? null;
-  return workspace ? { workspace, membership } : null;
+  // Indexed lookup + single workspace row — never loads other tenants.
+  const workspaceId = await findWorkspaceIdByUserId(userId);
+  if (!workspaceId) return null;
+  const db = await readDb({ workspaceId });
+  const membership = db.workspaceMembers.find((item) => item.userId === userId && item.workspaceId === workspaceId);
+  const workspace = db.workspaces.find((item) => item.id === workspaceId) ?? null;
+  return workspace && membership ? { workspace, membership } : null;
 }
 
 export async function requireWorkspace(requiredRoles: Role[] = roles) {

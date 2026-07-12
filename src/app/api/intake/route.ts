@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       const w = db.workspaces.find((item) => item.id === workspace.id);
       if (w) w.usage.rfqsCreated = (w.usage.rfqsCreated ?? 0) + 1;
       return { rfq, items, suppliers: suppliers.map((s) => ({ id: s.id, name: s.name })) };
-    });
+    }, { workspaceId: workspace.id });
 
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'autopilot.intake_rfq_created', entityType: 'rfq', entityId: result.rfq.id, metadata: { items: result.items.length, matchedSuppliers: result.suppliers.length, missing: parsed.missing } });
     return jsonOk({ rfq: result.rfq, items: result.items, matchedSuppliers: result.suppliers, missing: parsed.missing, next: `/app/rfqs/${result.rfq.id}` }, { status: 201 });

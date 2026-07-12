@@ -6,7 +6,7 @@ export const metadata = { title: 'Account | ProcureIQ' };
 
 export default async function AccountSettingsPage() {
   const { user, workspace, membership } = await requirePageWorkspace();
-  const db = await readDb();
+  const db = await readDb({ workspaceId: workspace.id });
   // True when the user owns this workspace and other account-backed members exist.
   const ownsSharedWorkspace = membership.role === 'owner'
     && db.workspaceMembers.some((m) => m.workspaceId === workspace.id && m.userId && m.userId !== user.id);

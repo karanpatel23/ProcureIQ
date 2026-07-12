@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     });
 
     // Persist the full reasoning run so loop state and the trace are durable.
-    await mutateDb((db) => { db.workflowRuns.push(output.run); });
+    await mutateDb((db) => { db.workflowRuns.push(output.run); }, { workspaceId: workspace.id });
     await writeAuditLog({
       workspaceId: workspace.id,
       actorUserId: user.id,

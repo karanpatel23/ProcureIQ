@@ -14,7 +14,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
   try {
     const { user, workspace } = await requireWorkspace(['owner', 'admin', 'member']);
     const { rfqId } = await params;
-    const db = await readDb();
+    const db = await readDb({ workspaceId: workspace.id });
     const rfq = db.rfqs.find((item) => item.id === rfqId && item.workspaceId === workspace.id) as (typeof db.rfqs)[number] & { selectedSupplierQuoteId?: string };
     if (!rfq) throw new ApiError(404, 'RFQ_NOT_FOUND', 'RFQ was not found.');
     if (!rfq.selectedSupplierQuoteId) throw new ApiError(400, 'QUOTE_SELECTION_REQUIRED', 'Select a supplier quote before generating a PO.');
@@ -51,7 +51,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ rfqId: st
     await mutateDb((store) => {
       if (!existing) store.purchaseOrderDrafts.push(po as never);
       store.workflowRuns.push(output.run);
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'po_generation.completed', entityType: 'workflow_run', entityId: output.run.id, metadata: { poId: po.id, readyToApprove: output.readyToApprove, openItems: output.openItems.length } });
 
     return jsonOk({

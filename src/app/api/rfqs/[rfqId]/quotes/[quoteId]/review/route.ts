@@ -24,7 +24,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ rfq
         db.quoteLineItems.push({ id: createId('qli'), workspaceId: workspace.id, supplierQuoteId: quote.id, description: line.description?.value || line.itemName?.value || 'Quote line item', quantity: Number(line.quantity?.value ?? 1), unitPrice: Number(line.unitPrice?.value ?? 0), leadTimeDays: undefined, sourceDocumentId: quote.quoteDocumentId, sourceExcerpt: line.description?.source || undefined, confidenceScore: Math.round(((line.itemName?.confidence ?? 0) + (line.unitPrice?.confidence ?? 0)) / 2), itemName: line.itemName?.value, unit: line.unit?.value, extendedPrice: Number(line.extendedPrice?.value ?? 0), alternatives: line.alternatives?.value, notes: line.notes?.value, createdAt: now() } as any);
       }
       return quote;
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: approve ? 'quote.approved' : 'quote.review_saved', entityType: 'supplier_quote', entityId: quote.id });
     // A human just cleared an exception — let autopilot carry the chain forward
     // (comparison → decision → PO) if the workspace runs exceptions-only mode.

@@ -8,7 +8,7 @@ export const metadata = { title: 'Suppliers | ProcureIQ' };
 export default async function SuppliersPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; add?: string }> }) {
   const { workspace } = await requirePageWorkspace();
   const filters = await searchParams;
-  const db = await readDb();
+  const db = await readDb({ workspaceId: workspace.id });
   const q = (filters.q ?? '').toLowerCase();
   const status = filters.status ?? 'all';
   const all = db.suppliers.filter((item) => item.workspaceId === workspace.id && !item.archivedAt);

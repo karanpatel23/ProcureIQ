@@ -18,7 +18,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ me
       if (input.role) target.role = input.role;
       if (input.title) target.title = input.title;
       return target;
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'team_member.updated', entityType: 'workspace_member', entityId: member.id, metadata: { role: member.role, title: member.title } });
     return jsonOk({ member });
   } catch (error) { return handleApiError(error); }
@@ -36,7 +36,7 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ memberI
       if (target.role === 'owner') throw new ApiError(400, 'CANNOT_REMOVE_OWNER', 'The workspace owner cannot be removed.');
       if (target.userId === user.id) throw new ApiError(400, 'CANNOT_REMOVE_SELF', 'You cannot remove yourself from the team.');
       db.workspaceMembers = db.workspaceMembers.filter((m) => m.id !== target.id);
-    });
+    }, { workspaceId: workspace.id });
     await writeAuditLog({ workspaceId: workspace.id, actorUserId: user.id, action: 'team_member.removed', entityType: 'workspace_member', entityId: memberId });
     return jsonOk({ removed: true });
   } catch (error) { return handleApiError(error); }
