@@ -126,7 +126,7 @@ export function HeroLine() {
   ] as const;
 
   return (
-    <div className="hero-line" aria-label="A purchase order moves through ingestion, extraction, and match; a person approves at the end">
+    <div className="hero-line" role="img" aria-label="A purchase order moves through ingestion, extraction, and match; a person approves at the end">
       <svg viewBox="0 52 1160 66" fill="none" aria-hidden="true">
         <defs>
           <linearGradient id="line-g" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse">

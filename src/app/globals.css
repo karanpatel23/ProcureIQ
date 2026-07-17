@@ -78,6 +78,7 @@ h1 { font-size: var(--text-h1); max-width: 840px; }
 h2 { font-size: var(--text-h2); max-width: 860px; }
 h3 { font-size: var(--text-h3); letter-spacing: -0.02em; }
 ::selection { background: rgba(125, 139, 161, 0.45); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; border-radius: 4px; }
 
 .eyebrow {
   margin: 0 0 14px;
@@ -240,8 +241,10 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
   line-height: 1.02;
   max-width: 100%;
   color: var(--ink);
-  animation: ink-rise 1s var(--ease-out) 0.1s both;
+  /* Movement only — fading the LCP element from opacity 0 delays LCP. */
+  animation: ink-rise-move 0.9s var(--ease-out) both;
 }
+@keyframes ink-rise-move { from { transform: translateY(18px); } to { transform: translateY(0); } }
 .ink-title em { font-style: italic; color: var(--ink-soft); }
 .ink-sub .ember-note { color: var(--ember-bright); font-weight: 500; }
 .ink-sub {
@@ -584,7 +587,9 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
   font-size: 0.9rem;
 }
 .footer p { font-size: 0.85rem; max-width: 380px; }
-.footer nav { display: flex; gap: 4px 16px; flex-wrap: wrap; justify-content: flex-end; align-content: flex-start; }
+.footer nav { display: flex; gap: 2px 12px; flex-wrap: wrap; justify-content: flex-end; align-content: flex-start; }
+/* 24px+ touch targets (WCAG 2.5.8 / Lighthouse target-size). */
+.footer nav a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 4px; }
 .footer nav a:hover { color: var(--ink); }
 
 /* ---------- Page heroes (subpages) ---------- */
