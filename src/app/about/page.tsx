@@ -2,7 +2,7 @@ import { FinalCta, FounderSection, GoalsSection } from '@/components/site';
 
 export const metadata = {
   title: 'About',
-  description: 'ProcureIQ is building the AI decision layer for procurement — founded by Karan Patel.',
+  description: 'Corven is building the AI decision layer for procurement — founded by Karan Patel.',
 };
 
 const principles = [
@@ -16,11 +16,11 @@ export default function AboutPage() {
   return (
     <main>
       <section className="page-hero section-shell compact">
-        <p className="eyebrow">About ProcureIQ</p>
+        <p className="eyebrow">About Corven</p>
         <h1>Building the AI decision layer for procurement.</h1>
         <p>
           Purchasing teams at manufacturers, contractors, distributors, and industrial operators make high-stakes
-          supplier decisions from fragmented quotes every week. ProcureIQ exists to give those decisions structure,
+          supplier decisions from fragmented quotes every week. Corven exists to give those decisions structure,
           context, and control.
         </p>
       </section>

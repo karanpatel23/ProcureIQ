@@ -4,7 +4,7 @@ import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 import { notFound } from 'next/navigation';
 
-export const metadata = { title: 'RFQ detail | ProcureIQ' };
+export const metadata = { title: 'RFQ detail | Corven' };
 
 export default async function RfqDetailPage({ params }: { params: Promise<{ rfqId: string }> }) {
   const { workspace } = await requirePageWorkspace();

@@ -19,7 +19,7 @@ export function Header() {
           <Link key={item.href} href={item.href}>{item.label}</Link>
         ))}
       </nav>
-      <Link className="brand" href="/" aria-label="ProcureIQ home">ProcureIQ</Link>
+      <Link className="brand" href="/" aria-label="Corven home">Corven</Link>
       <div className="header-actions">
         <Link href="/login">Log in</Link>
         <Link className="button primary" href="/demo" data-track="nav_book_demo">Book a demo</Link>
@@ -44,7 +44,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div>
-        <strong>ProcureIQ</strong>
+        <strong>Corven</strong>
         <p>The AI decision layer for procurement. Supplier quotes, exceptions, and approvals in one human-controlled decision workflow.</p>
       </div>
       <nav aria-label="Footer navigation">
@@ -64,10 +64,10 @@ export function Footer() {
 ------------------------------------------------------------------- */
 export function ProductFilm() {
   return (
-    <div className="film-stage" aria-label="Animated preview of the ProcureIQ decision layer">
+    <div className="film-stage" aria-label="Animated preview of the Corven decision layer">
       <div className="film-frame">
         <div className="film-titlebar">
-          <span>ProcureIQ · Decision workspace</span>
+          <span>Corven · Decision workspace</span>
           <span className="film-live"><i aria-hidden="true" />Guided review</span>
         </div>
         <div className="film-grid">
@@ -197,16 +197,16 @@ export function ProductStorySection() {
   const steps = [
     ['Supplier context in', 'Quotes, terms, exceptions, and supplier history enter one source-aware workspace.'],
     ['Guided review', 'The decision layer normalizes options, surfaces gaps, and preserves uncertainty instead of hiding it.'],
-    ['Confidence before action', 'Approvers see the recommendation, the risks, and the evidence — then decide. ProcureIQ never purchases on its own.'],
+    ['Confidence before action', 'Approvers see the recommendation, the risks, and the evidence — then decide. Corven never purchases on its own.'],
   ] as const;
 
   return (
     <section className="section-shell control-section">
       <div>
         <p className="eyebrow">The decision layer</p>
-        <h2>Between supplier quotes and purchase decisions sits a layer of judgment. ProcureIQ makes it visible.</h2>
+        <h2>Between supplier quotes and purchase decisions sits a layer of judgment. Corven makes it visible.</h2>
         <p>
-          Instead of replacing your process, ProcureIQ structures it: every quote is tied to its source, every gap is
+          Instead of replacing your process, Corven structures it: every quote is tied to its source, every gap is
           flagged, and every recommendation waits for a human decision.
         </p>
         <div className="hero-actions">
@@ -282,7 +282,7 @@ export function TrustSection() {
         <p className="eyebrow">Trust model</p>
         <h2>Intelligence you can review. Decisions you control.</h2>
         <p>
-          ProcureIQ is designed for accountable procurement: source-aware reasoning, visible uncertainty, and approval
+          Corven is designed for accountable procurement: source-aware reasoning, visible uncertainty, and approval
           by the people responsible for the outcome.
         </p>
         <div className="hero-actions">
@@ -297,7 +297,7 @@ export function TrustSection() {
 export function FinalCta({ title = 'See your next supplier decision, before you make it.' }: { title?: string }) {
   return (
     <section className="final-cta">
-      <p className="eyebrow">ProcureIQ</p>
+      <p className="eyebrow">Corven</p>
       <h2>{title}</h2>
       <p>Explore the live demo workflow with sample data — no account required.</p>
       <div className="hero-actions">
@@ -423,7 +423,7 @@ export function PlatformSystemMap() {
   return (
     <section className="system-map">
       <div className="system-core">
-        <span>ProcureIQ decision layer</span>
+        <span>Corven decision layer</span>
         <strong>RFQ → quote evidence → comparison → PO draft</strong>
         <p>One controlled record for supplier decisions.</p>
       </div>
@@ -500,8 +500,8 @@ export function FounderSection() {
           <p className="eyebrow">Founder</p>
           <h2>Karan Patel</h2>
           <p>
-            Karan Patel founded ProcureIQ with a conviction: purchasing teams do not need more automation that acts for
-            them — they need a decision layer that thinks with them. ProcureIQ turns fragmented supplier quotes into
+            Karan Patel founded Corven with a conviction: purchasing teams do not need more automation that acts for
+            them — they need a decision layer that thinks with them. Corven turns fragmented supplier quotes into
             structured, source-aware decisions so teams can move faster without giving up control, context, or
             accountability.
           </p>

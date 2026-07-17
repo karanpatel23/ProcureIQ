@@ -2,7 +2,7 @@ import { TeamManager } from '@/components/settings/TeamManager';
 import { canManageWorkspace, requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 
-export const metadata = { title: 'Team & roles | ProcureIQ' };
+export const metadata = { title: 'Team & roles | Corven' };
 
 export default async function TeamSettingsPage() {
   const { workspace, membership } = await requirePageWorkspace();

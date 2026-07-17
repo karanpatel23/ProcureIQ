@@ -2,7 +2,7 @@ import { DeleteAccountForm } from '@/components/settings/DeleteAccountForm';
 import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 
-export const metadata = { title: 'Account | ProcureIQ' };
+export const metadata = { title: 'Account | Corven' };
 
 export default async function AccountSettingsPage() {
   const { user, workspace, membership } = await requirePageWorkspace();
@@ -17,7 +17,7 @@ export default async function AccountSettingsPage() {
         <div className="page-head">
           <p className="eyebrow">Account</p>
           <h1>Your account</h1>
-          <p>Manage your personal account for ProcureIQ.</p>
+          <p>Manage your personal account for Corven.</p>
         </div>
 
         <div className="settings-card">

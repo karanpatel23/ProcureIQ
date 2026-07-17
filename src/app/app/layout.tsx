@@ -26,7 +26,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="product-frame">
       <aside className="product-sidebar">
-        <Link className="brand" href="/app/dashboard">ProcureIQ</Link>
+        <Link className="brand" href="/app/dashboard">Corven</Link>
         <nav aria-label="Primary">
           {nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}
         </nav>

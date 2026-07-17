@@ -1,2 +1,2 @@
-export const metadata = { title: 'Security overview | ProcureIQ' };
-export default function SecurityLegalPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Security</p><h1>Security program placeholder.</h1><p>ProcureIQ is building toward a documented security program with role-based access, source traceability, secure document handling, audit logs, and human approval controls for purchasing workflows.</p></section></main>; }
+export const metadata = { title: 'Security overview | Corven' };
+export default function SecurityLegalPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Security</p><h1>Security program placeholder.</h1><p>Corven is building toward a documented security program with role-based access, source traceability, secure document handling, audit logs, and human approval controls for purchasing workflows.</p></section></main>; }

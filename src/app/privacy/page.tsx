@@ -1,2 +1,2 @@
-export const metadata = { title: 'Privacy | ProcureIQ' };
-export default function PrivacyPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Privacy</p><h1>Privacy policy placeholder.</h1><p>ProcureIQ is preparing formal privacy language covering account data, supplier documents, quote content, audit logs, and operational metadata. Customer data is designed to remain workspace-scoped.</p></section></main>; }
+export const metadata = { title: 'Privacy | Corven' };
+export default function PrivacyPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Privacy</p><h1>Privacy policy placeholder.</h1><p>Corven is preparing formal privacy language covering account data, supplier documents, quote content, audit logs, and operational metadata. Customer data is designed to remain workspace-scoped.</p></section></main>; }

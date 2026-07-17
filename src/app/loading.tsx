@@ -1,1 +1,1 @@
-export default function LoadingPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Loading</p><h1>Preparing your workspace view.</h1><p>ProcureIQ is loading the latest RFQ, supplier, quote, and purchase order information.</p></section></main>; }
+export default function LoadingPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Loading</p><h1>Preparing your workspace view.</h1><p>Corven is loading the latest RFQ, supplier, quote, and purchase order information.</p></section></main>; }

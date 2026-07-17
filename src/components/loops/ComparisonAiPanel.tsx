@@ -34,7 +34,7 @@ export function ComparisonAiPanel({ rfqId }: { rfqId: string }) {
         {result && <span className={`advisor-score ${result.needsReview ? 'attention' : 'ready'}`}>{result.needsReview ? 'Needs review' : 'Ready to decide'}</span>}
       </div>
 
-      {!result && !loading && <p>Let ProcureIQ weigh price, lead time, terms, and risk across every quote and explain the tradeoffs — then you approve the decision.</p>}
+      {!result && !loading && <p>Let Corven weigh price, lead time, terms, and risk across every quote and explain the tradeoffs — then you approve the decision.</p>}
       {loading && <p className="loop-working"><span className="loop-dot" aria-hidden="true" />Weighing price, lead time, terms, and risk across all quotes…</p>}
       {error && <p className="form-error" role="alert">{error}</p>}
 

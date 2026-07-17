@@ -1,2 +1,2 @@
-export const metadata = { title: 'Terms | ProcureIQ' };
-export default function TermsPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Terms</p><h1>Terms of service placeholder.</h1><p>ProcureIQ is preparing formal legal terms for customer pilots and production agreements. This placeholder will be replaced with reviewed legal copy before self-serve billing or public contracting is enabled.</p></section></main>; }
+export const metadata = { title: 'Terms | Corven' };
+export default function TermsPage() { return <main><section className="page-hero section-shell compact"><p className="eyebrow">Terms</p><h1>Terms of service placeholder.</h1><p>Corven is preparing formal legal terms for customer pilots and production agreements. This placeholder will be replaced with reviewed legal copy before self-serve billing or public contracting is enabled.</p></section></main>; }
