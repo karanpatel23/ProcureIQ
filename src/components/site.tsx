@@ -183,8 +183,7 @@ export function FilmShowcase() {
     <section id="product-film" className="section-shell film-showcase">
       <div className="section-heading-block centered">
         <p className="eyebrow">The decision workspace</p>
-        <h2>Watch a supplier decision come together.</h2>
-        <p className="lead">Quotes arrive, the decision layer normalizes them, exceptions surface, and the recommendation waits for a person.</p>
+        <h2>Three quotes. Three formats. One defensible choice.</h2>
       </div>
       <ProductFilm />
     </section>
@@ -193,91 +192,50 @@ export function FilmShowcase() {
 
 export function ProofMetricsStrip() {
   const metrics = [
-    ['Quote comparison', 'Minutes, not afternoons', 'Normalized side-by-side review of every supplier response.'],
-    ['Exception visibility', 'Nothing silently missing', 'Missing terms, freight gaps, and expiring quotes are flagged.'],
-    ['Approval control', 'Humans decide', 'Recommendations wait for an authorized approver — always.'],
-    ['Audit readiness', 'Every step recorded', 'Decisions, overrides, and exports leave a reviewable trail.'],
+    ['Quote comparison', 'Minutes, not afternoons'],
+    ['Exceptions', 'Nothing silently missing'],
+    ['Approvals', 'Humans decide — always'],
+    ['Audit trail', 'Every step recorded'],
   ] as const;
 
   return (
     <section className="proof-strip" aria-label="What the decision layer guarantees">
-      {metrics.map(([label, value, detail], index) => (
+      {metrics.map(([label, value], index) => (
         <article key={label}>
           <span>[ {String(index + 1).padStart(2, '0')} ]</span>
           <strong>{value}</strong>
-          <p>{label} — {detail}</p>
+          <p>{label}</p>
         </article>
       ))}
     </section>
   );
 }
 
-export function ProblemSection() {
-  const items = [
-    ['Quotes arrive fragmented', 'Supplier pricing lands across email threads, PDFs, spreadsheets, and copied notes — each in its own format.'],
-    ['Comparison is manual', 'Teams re-key totals, freight, lead times, and exceptions into spreadsheets before a decision is even possible.'],
-    ['Decisions lose their context', 'Why a supplier was chosen — and what was missing from the losing quotes — disappears once the PO goes out.'],
-  ] as const;
-
-  return (
-    <section className="section-shell compact-section">
-      <div className="section-heading-block">
-        <p className="eyebrow">Why procurement needs a decision layer</p>
-        <h2>Quote-heavy purchasing breaks down between the inbox and the purchase order.</h2>
-        <p className="lead">The information exists. What is missing is a layer that assembles it into a decision your team can stand behind.</p>
-      </div>
-      <div className="three-card-grid">
-        {items.map(([title, body]) => (
-          <article key={title}><h3>{title}</h3><p>{body}</p></article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export function ProductStorySection() {
+export function HowItWorks() {
   const steps = [
-    ['Supplier context in', 'Quotes, terms, exceptions, and supplier history enter one source-aware workspace.'],
-    ['Guided review', 'The decision layer normalizes options, surfaces gaps, and preserves uncertainty instead of hiding it.'],
-    ['Confidence before action', 'Approvers see the recommendation, the risks, and the evidence — then decide. Corven never purchases on its own.'],
+    ['Ingest', 'Quotes come in as they are — PDF, email, spreadsheet.'],
+    ['Extract', 'AI pulls price, terms, freight, lead time — sources shown.'],
+    ['Match', 'Options line up side by side. Gaps get flagged, not guessed.'],
+    ['You approve', 'One recommendation, its evidence, your call.'],
   ] as const;
 
   return (
-    <section className="section-shell control-section">
-      <div>
-        <p className="eyebrow">The decision layer</p>
-        <h2>Between supplier quotes and purchase decisions sits a layer of judgment. Corven makes it visible.</h2>
-        <p>
-          Instead of replacing your process, Corven structures it: every quote is tied to its source, every gap is
-          flagged, and every recommendation waits for a human decision.
-        </p>
-        <div className="hero-actions">
-          <Link className="text-link" href="/platform">See the full platform →</Link>
-        </div>
-      </div>
-      <ol className="workflow-rail">
-        {steps.map(([title, body], index) => (
-          <li key={title}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <div><b>{title}</b><p style={{ margin: '4px 0 0', fontSize: '0.88rem' }}>{body}</p></div>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
-export function WorkflowPreview() {
-  return (
     <section className="section-shell compact-section">
       <div className="section-heading-block">
-        <p className="eyebrow">Workflow overview</p>
-        <h2>Five controlled stages from request to purchase-order draft.</h2>
-        <p className="lead">Each stage keeps your team in review, with supplier evidence and confidence visible before purchasing action.</p>
+        <p className="eyebrow">How it works</p>
+        <h2>AI does the work. You make the call.</h2>
       </div>
-      <WorkflowRail />
+      <div className="stage-grid">
+        {steps.map(([title, body], index) => (
+          <article key={title} className={index === steps.length - 1 ? 'human' : undefined}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
       <div className="hero-actions">
-        <Link className="text-link" href="/workflow">Walk through the full workflow →</Link>
+        <Link className="text-link" href="/workflow">Walk the full workflow →</Link>
       </div>
     </section>
   );
@@ -285,12 +243,12 @@ export function WorkflowPreview() {
 
 export function UseCasesSection() {
   const cases = [
-    ['Manufacturing', 'Compare component and materials quotes with technical requirements, alternates, and exceptions in view.'],
-    ['Construction', 'Coordinate bid packages, substitutions, lead times, and vendor terms across active jobs.'],
-    ['Distribution', 'Track landed costs, supplier responsiveness, and recurring replenishment decisions in one record.'],
-    ['Industrial services', 'Standardize purchasing across field teams, project work, repairs, and urgent supplier requests.'],
-    ['Facilities and maintenance', 'Turn recurring parts and service quotes into clean approvals with full visibility.'],
-    ['Operations teams', 'Give approvers the context behind every supplier recommendation before money moves.'],
+    ['Manufacturing', 'Components and materials, alternates in view.'],
+    ['Construction', 'Bid packages, substitutions, live lead times.'],
+    ['Distribution', 'Landed costs and replenishment decisions.'],
+    ['Industrial services', 'Field teams, repairs, urgent requests.'],
+    ['Facilities', 'Recurring parts and service quotes, clean approvals.'],
+    ['Operations', 'The context behind every recommendation.'],
   ] as const;
 
   return (
@@ -310,11 +268,11 @@ export function UseCasesSection() {
 
 export function TrustSection() {
   const controls = [
-    'Recommendations are drafts — an authorized person approves every purchasing action',
-    'Extracted fields keep confidence and source context visible for review',
-    'Missing information stays flagged; the system never fills gaps with guesses',
-    'Supplier data, quotes, and decisions are scoped to your workspace',
-    'Decisions, overrides, approvals, and exports are recorded for audit',
+    'A person approves every purchasing action',
+    'Every field shows its confidence and source',
+    'Gaps stay flagged — never guessed',
+    'Your data is scoped to your workspace',
+    'Full audit trail of decisions and overrides',
     'No autonomous purchasing — ever',
   ] as const;
 
@@ -323,10 +281,6 @@ export function TrustSection() {
       <div>
         <p className="eyebrow">Trust model</p>
         <h2>Intelligence you can review. Decisions you control.</h2>
-        <p>
-          Corven is designed for accountable procurement: source-aware reasoning, visible uncertainty, and approval
-          by the people responsible for the outcome.
-        </p>
         <div className="hero-actions">
           <Link className="text-link" href="/security">Read the security model →</Link>
         </div>
@@ -341,7 +295,7 @@ export function FinalCta({ title = 'See your next supplier decision, before you 
     <section className="final-cta">
       <p className="eyebrow">Corven</p>
       <h2>{title}</h2>
-      <p>Explore the live demo workflow with sample data — no account required.</p>
+      <p>Live demo with sample data — no account required.</p>
       <div className="hero-actions">
         <Link className="button primary" href="/demo-workflow" data-track="cta_live_demo">Explore the live demo</Link>
         <Link className="button secondary" href="/demo" data-track="cta_book_demo">Book a demo</Link>

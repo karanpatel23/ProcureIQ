@@ -447,8 +447,8 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
   color: var(--mist);
   white-space: nowrap;
 }
-.film-chip.review { border-color: rgba(171, 151, 140, 0.5); color: var(--warm); }
-.film-chip.violet { border-color: rgba(123, 127, 138, 0.55); color: #aab0bb; }
+.film-chip.review { border-color: rgba(201, 123, 90, 0.5); color: var(--ember-bright); }
+.film-chip.violet { border-color: rgba(201, 123, 90, 0.4); color: var(--ember); }
 
 .film-approval {
   display: flex;
@@ -492,6 +492,26 @@ body:has(.product-frame) .site-header, body:has(.product-frame) .footer { displa
 .three-card-grid article:hover, .card-grid article:hover { border-color: var(--line-strong); transform: translateY(-2px); }
 .three-card-grid h3, .card-grid h3 { margin-bottom: 4px; }
 .card-kicker { display: block; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 12px; }
+
+/* ---------- How it works: the four stages of The Line ---------- */
+.stage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.stage-grid article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  background: linear-gradient(165deg, var(--glass-strong), var(--glass));
+  transition: border-color var(--speed), transform var(--speed) var(--ease-out);
+}
+.stage-grid article:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.stage-grid span { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; color: var(--accent-bright); }
+.stage-grid h3 { margin-top: 10px; }
+.stage-grid p { font-size: 0.88rem; }
+/* The one warm card: the human approval. */
+.stage-grid article.human { border-color: rgba(201, 123, 90, 0.38); }
+.stage-grid article.human:hover { border-color: rgba(201, 123, 90, 0.6); }
+.stage-grid article.human span { color: var(--ember-bright); }
+@media (max-width: 980px) { .stage-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .stage-grid { grid-template-columns: 1fr; } }
 
 /* ---------- Story / control sections ---------- */
 .control-section {
