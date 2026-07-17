@@ -3,12 +3,10 @@ import {
   FilmShowcase,
   FinalCta,
   Hero,
-  ProblemSection,
-  ProductStorySection,
+  HowItWorks,
   ProofMetricsStrip,
   TrustSection,
   UseCasesSection,
-  WorkflowPreview,
 } from '@/components/site';
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
@@ -19,9 +17,7 @@ export default function Home() {
       <Hero />
       <FilmShowcase />
       <ProofMetricsStrip />
-      <ProblemSection />
-      <ProductStorySection />
-      <WorkflowPreview />
+      <HowItWorks />
       <UseCasesSection />
       <TrustSection />
       <FinalCta />

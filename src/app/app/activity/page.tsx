@@ -3,7 +3,7 @@ import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 import type { AuditLog } from '@/lib/server/schema';
 
-export const metadata = { title: 'Activity | ProcureIQ' };
+export const metadata = { title: 'Activity | Corven' };
 
 /*
  * The glass box. Every action — AI or human — lands in the audit trail; this

@@ -1,7 +1,7 @@
 import { CompanyForm } from '@/components/settings/CompanyForm';
 import { canManageWorkspace, requirePageWorkspace } from '@/lib/server/auth';
 
-export const metadata = { title: 'Company settings | ProcureIQ' };
+export const metadata = { title: 'Company settings | Corven' };
 
 export default async function CompanySettingsPage() {
   const { workspace, membership } = await requirePageWorkspace();
@@ -19,7 +19,7 @@ export default async function CompanySettingsPage() {
         <div className="page-head">
           <p className="eyebrow">Company settings</p>
           <h1>{workspace.name}</h1>
-          <p>The details ProcureIQ uses to tailor RFQs, approvals, and supplier workflows to how your company buys.</p>
+          <p>The details Corven uses to tailor RFQs, approvals, and supplier workflows to how your company buys.</p>
         </div>
         <CompanyForm profile={profile} canManage={canManageWorkspace(membership.role)} />
       </section>

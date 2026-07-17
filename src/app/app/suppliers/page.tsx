@@ -4,7 +4,7 @@ import { ImportSuppliers } from '@/components/rfq/ImportSuppliers';
 import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 
-export const metadata = { title: 'Suppliers | ProcureIQ' };
+export const metadata = { title: 'Suppliers | Corven' };
 
 export default async function SuppliersPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; add?: string }> }) {
   const { workspace } = await requirePageWorkspace();

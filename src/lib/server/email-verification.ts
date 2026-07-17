@@ -40,7 +40,7 @@ export async function sendVerificationEmail(request: Request, to: string, token:
   const url = `${baseUrl(request)}/api/auth/verify?token=${token}`;
   return sendEmail({
     to,
-    subject: 'Verify your ProcureIQ email',
-    text: `Welcome to ProcureIQ.\n\nConfirm this email address to activate your account:\n${url}\n\nThis link expires in 24 hours. If you did not create a ProcureIQ account, you can ignore this message.`,
+    subject: 'Verify your Corven email',
+    text: `Welcome to Corven.\n\nConfirm this email address to activate your account:\n${url}\n\nThis link expires in 24 hours. If you did not create a Corven account, you can ignore this message.`,
   });
 }

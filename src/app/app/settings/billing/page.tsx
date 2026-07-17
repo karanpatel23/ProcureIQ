@@ -2,7 +2,7 @@ import { BillingPlanForm } from '@/components/billing/BillingPlanForm';
 import { requirePageWorkspace } from '@/lib/server/auth';
 import { env } from '@/lib/server/env';
 
-export const metadata = { title: 'Billing settings | ProcureIQ' };
+export const metadata = { title: 'Billing settings | Corven' };
 const planCopy = { starter: 'Lean purchasing teams getting organized', growth: 'Teams managing recurring supplier quotes', pro: 'Multi-user procurement and operations teams', enterprise: 'Advanced controls, integrations, and tailored onboarding' } as const;
 
 export default async function BillingSettingsPage() {

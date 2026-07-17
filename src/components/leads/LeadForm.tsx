@@ -21,7 +21,7 @@ export function LeadForm({ type, cta }: LeadFormProps) {
       const body = await response.json();
       if (response.ok) {
         track('lead_submitted', { type });
-        setStatus(body.data?.message ?? 'Thanks — the ProcureIQ team will follow up shortly.');
+        setStatus(body.data?.message ?? 'Thanks — the Corven team will follow up shortly.');
         formElement.reset();
       } else {
         setStatus(body.error?.message ?? 'Unable to submit request. Please check the required fields and try again.');

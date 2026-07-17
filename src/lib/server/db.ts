@@ -208,7 +208,7 @@ export async function findWorkspaceIdsByInvitedEmail(email: string): Promise<str
 
 async function readFromFile(): Promise<Database> {
   try {
-    const content = await fs.readFile(env.PROCUREIQ_DATA_PATH, 'utf8');
+    const content = await fs.readFile(env.CORVEN_DATA_PATH, 'utf8');
     return normalizeDatabase({ ...emptyDatabase(), ...JSON.parse(content) });
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
@@ -217,8 +217,8 @@ async function readFromFile(): Promise<Database> {
 }
 
 async function writeToFile(db: Database) {
-  await fs.mkdir(dirname(env.PROCUREIQ_DATA_PATH), { recursive: true });
-  await fs.writeFile(env.PROCUREIQ_DATA_PATH, JSON.stringify(db, null, 2));
+  await fs.mkdir(dirname(env.CORVEN_DATA_PATH), { recursive: true });
+  await fs.writeFile(env.CORVEN_DATA_PATH, JSON.stringify(db, null, 2));
 }
 
 export async function readDb(scope?: DbScope): Promise<Database> {

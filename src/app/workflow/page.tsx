@@ -3,7 +3,7 @@ import { QuoteStack, RFQPacket } from '@/components/site';
 
 export const metadata = {
   title: 'Workflow',
-  description: 'How ProcureIQ runs a supplier decision: RFQ, quote intake, extraction review, comparison, human approval, and PO draft — with the checks that protect each step.',
+  description: 'How Corven runs a supplier decision: RFQ, quote intake, extraction review, comparison, human approval, and PO draft — with the checks that protect each step.',
 };
 
 const steps = [
@@ -45,12 +45,12 @@ const steps = [
   ['08', 'Approve, then export', {
     do: 'Approve internally, then export CSV or PDF for your ERP, accounting system, or the supplier.',
     surface: 'An audit trail of who reviewed, selected, approved, and exported — every step attributable after the fact.',
-    matters: 'ProcureIQ never sends purchase orders on its own. The system prepares; your team commits.',
+    matters: 'Corven never sends purchase orders on its own. The system prepares; your team commits.',
   }],
 ] as const;
 
 const quoteTraps = [
-  ['Expiring validity', 'Metal, resin, and freight-linked quotes often hold for 15–30 days. A quote that expires mid-approval reopens the whole negotiation — ProcureIQ flags validity windows and expired quotes automatically.'],
+  ['Expiring validity', 'Metal, resin, and freight-linked quotes often hold for 15–30 days. A quote that expires mid-approval reopens the whole negotiation — Corven flags validity windows and expired quotes automatically.'],
   ['Freight exclusions', 'Two totals are not comparable if one includes delivery and the other quietly excludes it. Freight terms are extracted per quote and their absence is flagged as a risk.'],
   ['Substitutions and alternates', 'A lower price sometimes buys a different part. Notes mentioning substitutions, alternates, or exclusions are surfaced next to the comparison, not buried in an attachment.'],
   ['Minimum order quantities', 'A great unit price at 500 units is not a price at your quantity of 120. Reviewing extracted line items against RFQ quantities catches coverage gaps before selection.'],
@@ -65,7 +65,7 @@ export default function WorkflowPage() {
         <div>
           <p className="eyebrow">Workflow</p>
           <h1>A controlled path from supplier request to PO draft.</h1>
-          <p>Eight stages, each with a clear owner: your team makes the calls, ProcureIQ keeps the evidence, exceptions, and status visible.</p>
+          <p>Eight stages, each with a clear owner: your team makes the calls, Corven keeps the evidence, exceptions, and status visible.</p>
           <div className="hero-actions">
             <Link className="button primary" href="/demo-workflow" data-track="workflow_live_demo">Explore the live demo</Link>
             <Link className="button secondary" href="/demo" data-track="workflow_book_demo">Book a demo</Link>
@@ -82,7 +82,7 @@ export default function WorkflowPage() {
               <h2>{title}</h2>
               <div className="module-grid three-col">
                 <p><b>What you do</b>{detail.do}</p>
-                <p><b>What ProcureIQ surfaces</b>{detail.surface}</p>
+                <p><b>What Corven surfaces</b>{detail.surface}</p>
                 <p><b>Why it matters</b>{detail.matters}</p>
               </div>
             </div>

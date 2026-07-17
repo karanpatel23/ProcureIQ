@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ForgotPasswordForm } from '@/components/auth/PasswordForms';
 
-export const metadata = { title: 'Reset password | ProcureIQ', description: 'Request a link to reset your ProcureIQ password.' };
+export const metadata = { title: 'Reset password | Corven', description: 'Request a link to reset your Corven password.' };
 
 export default function ForgotPasswordPage() {
   return (

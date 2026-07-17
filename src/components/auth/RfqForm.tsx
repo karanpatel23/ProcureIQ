@@ -143,7 +143,7 @@ export function RfqForm({ suppliers, rfq, items = [] }: Props) {
             {loop && <span className={`advisor-score ${loop.readyToSend ? 'ready' : 'attention'}`}>{loop.score}/100</span>}
           </div>
 
-          {!loop && !building && <p>Click <b>Build with AI</b> and ProcureIQ reviews your draft, safely fills what it can, flags what needs your input, and drafts supplier-ready language — you stay in control and approve everything.</p>}
+          {!loop && !building && <p>Click <b>Build with AI</b> and Corven reviews your draft, safely fills what it can, flags what needs your input, and drafts supplier-ready language — you stay in control and approve everything.</p>}
           {building && <p className="loop-working"><span className="loop-dot" aria-hidden="true" />Reviewing your draft, checking for gaps, and improving it…</p>}
 
           {loop && (

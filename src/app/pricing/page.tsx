@@ -2,7 +2,7 @@ import { FinalCta, PricingSection } from '@/components/site';
 
 export const metadata = {
   title: 'Pricing',
-  description: 'Starter from $99/month, Growth from $249/month, Pro from $799/month, and custom Enterprise plans for ProcureIQ.',
+  description: 'Starter from $99/month, Growth from $249/month, Pro from $799/month, and custom Enterprise plans for Corven.',
 };
 
 export default function PricingPage() {

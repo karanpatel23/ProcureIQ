@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { CinematicBackdrop } from '@/components/cinematic-backdrop';
 import { MobileNav } from '@/components/mobile-nav';
 
 export const navItems = [
@@ -19,7 +18,7 @@ export function Header() {
           <Link key={item.href} href={item.href}>{item.label}</Link>
         ))}
       </nav>
-      <Link className="brand" href="/" aria-label="ProcureIQ home">ProcureIQ</Link>
+      <Link className="brand" href="/" aria-label="Corven home">Corven</Link>
       <div className="header-actions">
         <Link href="/login">Log in</Link>
         <Link className="button primary" href="/demo" data-track="nav_book_demo">Book a demo</Link>
@@ -44,7 +43,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div>
-        <strong>ProcureIQ</strong>
+        <strong>Corven</strong>
         <p>The AI decision layer for procurement. Supplier quotes, exceptions, and approvals in one human-controlled decision workflow.</p>
       </div>
       <nav aria-label="Footer navigation">
@@ -64,10 +63,10 @@ export function Footer() {
 ------------------------------------------------------------------- */
 export function ProductFilm() {
   return (
-    <div className="film-stage" aria-label="Animated preview of the ProcureIQ decision layer">
+    <div className="film-stage" aria-label="Animated preview of the Corven decision layer">
       <div className="film-frame">
         <div className="film-titlebar">
-          <span>ProcureIQ · Decision workspace</span>
+          <span>Corven · Decision workspace</span>
           <span className="film-live"><i aria-hidden="true" />Guided review</span>
         </div>
         <div className="film-grid">
@@ -111,27 +110,70 @@ export function ProductFilm() {
   );
 }
 
+/* ------------------------------------------------------------------
+   The Line — the signature hero motif. A purchase order travels one
+   continuous line through ingestion → extraction → match, and the line
+   ends at the only warm moment on the page: the human approval.
+   Pure SVG + CSS/SMIL, no WebGL, static under prefers-reduced-motion.
+------------------------------------------------------------------- */
+const LINE_PATH = 'M 0 92 C 87 92, 123 76, 210 76 C 331 76, 379 102, 500 102 C 621 102, 669 70, 790 70 C 911 70, 959 90, 1080 90';
+
+export function HeroLine() {
+  const nodes = [
+    { x: 210, y: 76 },
+    { x: 500, y: 102 },
+    { x: 790, y: 70 },
+  ] as const;
+
+  return (
+    <div className="hero-line" role="img" aria-label="A purchase order moves through ingestion, extraction, and match; a person approves at the end">
+      <svg viewBox="0 52 1160 66" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="line-g" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#7d8ba1" stopOpacity="0" />
+            <stop offset="0.1" stopColor="#7d8ba1" />
+            <stop offset="0.8" stopColor="#7d8ba1" />
+            <stop offset="1" stopColor="#c97b5a" />
+          </linearGradient>
+        </defs>
+        <path className="line-path" d={LINE_PATH} pathLength={1} stroke="url(#line-g)" strokeWidth="1.6" />
+        {nodes.map(({ x, y }) => (
+          <g className="line-node" key={x}>
+            <circle cx={x} cy={y} r="5" fill="var(--bg-0)" stroke="#7d8ba1" strokeWidth="1.6" />
+            <circle cx={x} cy={y} r="1.8" fill="#a7b4c9" />
+          </g>
+        ))}
+        <g className="line-node">
+          <circle className="line-pulse" cx="1080" cy="90" r="9" fill="none" stroke="#c97b5a" strokeWidth="1.4" />
+          <circle cx="1080" cy="90" r="6.5" fill="var(--bg-0)" stroke="#c97b5a" strokeWidth="1.8" />
+          <circle cx="1080" cy="90" r="2.4" fill="#e0997a" />
+        </g>
+        <circle className="line-traveler" r="3.4" fill="#cdd2da">
+          <animateMotion dur="7s" begin="3.2s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.62;1" path={LINE_PATH} />
+        </circle>
+      </svg>
+      <div className="line-labels" aria-hidden="true">
+        <span style={{ left: '18.1%' }}>Ingest</span>
+        <span style={{ left: '43.1%' }}>Extract</span>
+        <span style={{ left: '68.1%' }}>Match</span>
+        <span className="ember" style={{ left: '93.1%' }}>You approve</span>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   return (
-    <section className="cine-hero">
-      <div className="cine-bg" aria-hidden="true">
-        <CinematicBackdrop />
-        <span className="cine-card card-1" />
-        <span className="cine-card card-2" />
-        <span className="cine-card card-3" />
-        <span className="cine-card card-4" />
-        <i className="cine-grain" />
-      </div>
-      <div className="cine-center">
-        <p className="cine-kicker">The AI decision layer for procurement</p>
-        <h1 className="cine-title">Procurement without guesswork.</h1>
-        <p className="cine-sub">Supplier quotes, exceptions, and approvals — turned into decisions your team can stand behind.</p>
-        <div className="hero-actions cine-actions">
-          <Link className="button primary" href="/demo-workflow" data-track="hero_live_demo">Explore the live demo</Link>
-          <Link className="button secondary" href="/demo" data-track="hero_book_demo">Book a demo</Link>
+    <section className="ink-hero">
+      <div className="ink-hero-center">
+        <p className="ink-kicker">The AI decision layer for procurement</p>
+        <h1 className="ink-title">Procurement without <em>guesswork</em>.</h1>
+        <p className="ink-sub">AI reads every supplier quote, flags what&apos;s off, and drafts the order. <b className="ember-note">You approve.</b></p>
+        <div className="ink-cta">
+          <Link className="button primary" href="/demo-workflow" data-track="hero_live_demo">See it work</Link>
         </div>
       </div>
-      <a className="cine-scroll" href="#product-film" aria-label="Scroll to product preview"><span>Scroll</span><i /></a>
+      <HeroLine />
     </section>
   );
 }
@@ -141,8 +183,7 @@ export function FilmShowcase() {
     <section id="product-film" className="section-shell film-showcase">
       <div className="section-heading-block centered">
         <p className="eyebrow">The decision workspace</p>
-        <h2>Watch a supplier decision come together.</h2>
-        <p className="lead">Quotes arrive, the decision layer normalizes them, exceptions surface, and the recommendation waits for a person.</p>
+        <h2>Three quotes. Three formats. One defensible choice.</h2>
       </div>
       <ProductFilm />
     </section>
@@ -151,91 +192,50 @@ export function FilmShowcase() {
 
 export function ProofMetricsStrip() {
   const metrics = [
-    ['Quote comparison', 'Minutes, not afternoons', 'Normalized side-by-side review of every supplier response.'],
-    ['Exception visibility', 'Nothing silently missing', 'Missing terms, freight gaps, and expiring quotes are flagged.'],
-    ['Approval control', 'Humans decide', 'Recommendations wait for an authorized approver — always.'],
-    ['Audit readiness', 'Every step recorded', 'Decisions, overrides, and exports leave a reviewable trail.'],
+    ['Quote comparison', 'Minutes, not afternoons'],
+    ['Exceptions', 'Nothing silently missing'],
+    ['Approvals', 'Humans decide — always'],
+    ['Audit trail', 'Every step recorded'],
   ] as const;
 
   return (
     <section className="proof-strip" aria-label="What the decision layer guarantees">
-      {metrics.map(([label, value, detail], index) => (
+      {metrics.map(([label, value], index) => (
         <article key={label}>
           <span>[ {String(index + 1).padStart(2, '0')} ]</span>
           <strong>{value}</strong>
-          <p>{label} — {detail}</p>
+          <p>{label}</p>
         </article>
       ))}
     </section>
   );
 }
 
-export function ProblemSection() {
-  const items = [
-    ['Quotes arrive fragmented', 'Supplier pricing lands across email threads, PDFs, spreadsheets, and copied notes — each in its own format.'],
-    ['Comparison is manual', 'Teams re-key totals, freight, lead times, and exceptions into spreadsheets before a decision is even possible.'],
-    ['Decisions lose their context', 'Why a supplier was chosen — and what was missing from the losing quotes — disappears once the PO goes out.'],
-  ] as const;
-
-  return (
-    <section className="section-shell compact-section">
-      <div className="section-heading-block">
-        <p className="eyebrow">Why procurement needs a decision layer</p>
-        <h2>Quote-heavy purchasing breaks down between the inbox and the purchase order.</h2>
-        <p className="lead">The information exists. What is missing is a layer that assembles it into a decision your team can stand behind.</p>
-      </div>
-      <div className="three-card-grid">
-        {items.map(([title, body]) => (
-          <article key={title}><h3>{title}</h3><p>{body}</p></article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export function ProductStorySection() {
+export function HowItWorks() {
   const steps = [
-    ['Supplier context in', 'Quotes, terms, exceptions, and supplier history enter one source-aware workspace.'],
-    ['Guided review', 'The decision layer normalizes options, surfaces gaps, and preserves uncertainty instead of hiding it.'],
-    ['Confidence before action', 'Approvers see the recommendation, the risks, and the evidence — then decide. ProcureIQ never purchases on its own.'],
+    ['Ingest', 'Quotes come in as they are — PDF, email, spreadsheet.'],
+    ['Extract', 'AI pulls price, terms, freight, lead time — sources shown.'],
+    ['Match', 'Options line up side by side. Gaps get flagged, not guessed.'],
+    ['You approve', 'One recommendation, its evidence, your call.'],
   ] as const;
 
   return (
-    <section className="section-shell control-section">
-      <div>
-        <p className="eyebrow">The decision layer</p>
-        <h2>Between supplier quotes and purchase decisions sits a layer of judgment. ProcureIQ makes it visible.</h2>
-        <p>
-          Instead of replacing your process, ProcureIQ structures it: every quote is tied to its source, every gap is
-          flagged, and every recommendation waits for a human decision.
-        </p>
-        <div className="hero-actions">
-          <Link className="text-link" href="/platform">See the full platform →</Link>
-        </div>
-      </div>
-      <ol className="workflow-rail">
-        {steps.map(([title, body], index) => (
-          <li key={title}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <div><b>{title}</b><p style={{ margin: '4px 0 0', fontSize: '0.88rem' }}>{body}</p></div>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
-export function WorkflowPreview() {
-  return (
     <section className="section-shell compact-section">
       <div className="section-heading-block">
-        <p className="eyebrow">Workflow overview</p>
-        <h2>Five controlled stages from request to purchase-order draft.</h2>
-        <p className="lead">Each stage keeps your team in review, with supplier evidence and confidence visible before purchasing action.</p>
+        <p className="eyebrow">How it works</p>
+        <h2>AI does the work. You make the call.</h2>
       </div>
-      <WorkflowRail />
+      <div className="stage-grid">
+        {steps.map(([title, body], index) => (
+          <article key={title} className={index === steps.length - 1 ? 'human' : undefined}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{body}</p>
+          </article>
+        ))}
+      </div>
       <div className="hero-actions">
-        <Link className="text-link" href="/workflow">Walk through the full workflow →</Link>
+        <Link className="text-link" href="/workflow">Walk the full workflow →</Link>
       </div>
     </section>
   );
@@ -243,12 +243,12 @@ export function WorkflowPreview() {
 
 export function UseCasesSection() {
   const cases = [
-    ['Manufacturing', 'Compare component and materials quotes with technical requirements, alternates, and exceptions in view.'],
-    ['Construction', 'Coordinate bid packages, substitutions, lead times, and vendor terms across active jobs.'],
-    ['Distribution', 'Track landed costs, supplier responsiveness, and recurring replenishment decisions in one record.'],
-    ['Industrial services', 'Standardize purchasing across field teams, project work, repairs, and urgent supplier requests.'],
-    ['Facilities and maintenance', 'Turn recurring parts and service quotes into clean approvals with full visibility.'],
-    ['Operations teams', 'Give approvers the context behind every supplier recommendation before money moves.'],
+    ['Manufacturing', 'Components and materials, alternates in view.'],
+    ['Construction', 'Bid packages, substitutions, live lead times.'],
+    ['Distribution', 'Landed costs and replenishment decisions.'],
+    ['Industrial services', 'Field teams, repairs, urgent requests.'],
+    ['Facilities', 'Recurring parts and service quotes, clean approvals.'],
+    ['Operations', 'The context behind every recommendation.'],
   ] as const;
 
   return (
@@ -268,11 +268,11 @@ export function UseCasesSection() {
 
 export function TrustSection() {
   const controls = [
-    'Recommendations are drafts — an authorized person approves every purchasing action',
-    'Extracted fields keep confidence and source context visible for review',
-    'Missing information stays flagged; the system never fills gaps with guesses',
-    'Supplier data, quotes, and decisions are scoped to your workspace',
-    'Decisions, overrides, approvals, and exports are recorded for audit',
+    'A person approves every purchasing action',
+    'Every field shows its confidence and source',
+    'Gaps stay flagged — never guessed',
+    'Your data is scoped to your workspace',
+    'Full audit trail of decisions and overrides',
     'No autonomous purchasing — ever',
   ] as const;
 
@@ -281,10 +281,6 @@ export function TrustSection() {
       <div>
         <p className="eyebrow">Trust model</p>
         <h2>Intelligence you can review. Decisions you control.</h2>
-        <p>
-          ProcureIQ is designed for accountable procurement: source-aware reasoning, visible uncertainty, and approval
-          by the people responsible for the outcome.
-        </p>
         <div className="hero-actions">
           <Link className="text-link" href="/security">Read the security model →</Link>
         </div>
@@ -297,9 +293,9 @@ export function TrustSection() {
 export function FinalCta({ title = 'See your next supplier decision, before you make it.' }: { title?: string }) {
   return (
     <section className="final-cta">
-      <p className="eyebrow">ProcureIQ</p>
+      <p className="eyebrow">Corven</p>
       <h2>{title}</h2>
-      <p>Explore the live demo workflow with sample data — no account required.</p>
+      <p>Live demo with sample data — no account required.</p>
       <div className="hero-actions">
         <Link className="button primary" href="/demo-workflow" data-track="cta_live_demo">Explore the live demo</Link>
         <Link className="button secondary" href="/demo" data-track="cta_book_demo">Book a demo</Link>
@@ -423,7 +419,7 @@ export function PlatformSystemMap() {
   return (
     <section className="system-map">
       <div className="system-core">
-        <span>ProcureIQ decision layer</span>
+        <span>Corven decision layer</span>
         <strong>RFQ → quote evidence → comparison → PO draft</strong>
         <p>One controlled record for supplier decisions.</p>
       </div>
@@ -500,8 +496,8 @@ export function FounderSection() {
           <p className="eyebrow">Founder</p>
           <h2>Karan Patel</h2>
           <p>
-            Karan Patel founded ProcureIQ with a conviction: purchasing teams do not need more automation that acts for
-            them — they need a decision layer that thinks with them. ProcureIQ turns fragmented supplier quotes into
+            Karan Patel founded Corven with a conviction: purchasing teams do not need more automation that acts for
+            them — they need a decision layer that thinks with them. Corven turns fragmented supplier quotes into
             structured, source-aware decisions so teams can move faster without giving up control, context, or
             accountability.
           </p>

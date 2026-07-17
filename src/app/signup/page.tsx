@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { AuthForm } from '@/components/auth/AuthForm';
 import { OAuthButtons } from '@/components/auth/OAuthButtons';
 
-export const metadata = { title: 'Sign up | ProcureIQ', description: 'Create a ProcureIQ account and start setting up your company workspace.' };
+export const metadata = { title: 'Sign up | Corven', description: 'Create a Corven account and start setting up your company workspace.' };
 export default function SignupPage() {
   return (
     <main>

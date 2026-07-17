@@ -1,6 +1,6 @@
-# ProcureIQ deployment checklist
+# Corven deployment checklist
 
-ProcureIQ is a Next.js App Router application with a local JSON adapter for early development and SQL migrations prepared for a managed database rollout.
+Corven is a Next.js App Router application with a local JSON adapter for early development and SQL migrations prepared for a managed database rollout.
 
 ## 1. Preflight quality gates
 
@@ -23,7 +23,7 @@ Set these on Vercel, Render, Railway, or your server runtime:
 
 - `AUTH_SECRET`: at least 32 random characters. Never use the development fallback in production.
 - `DATABASE_URL`: set this to a managed Postgres connection string (Neon, Vercel Postgres, Supabase, etc.) for any hosted deployment. When set, workspace state persists in a `procureiq_state` table that the app creates automatically; when unset, the local JSON file adapter is used.
-- `PROCUREIQ_DATA_PATH`: local JSON adapter path, used only when `DATABASE_URL` is not set.
+- `CORVEN_DATA_PATH`: local JSON adapter path, used only when `DATABASE_URL` is not set.
 - `QUOTE_STORAGE_PATH`: private server-side storage path for uploaded quote sources.
 - `MAX_UPLOAD_BYTES`: maximum quote upload size. Default is `10000000`.
 - `ALLOWED_UPLOAD_MIME_TYPES`: comma-separated safe upload MIME types.

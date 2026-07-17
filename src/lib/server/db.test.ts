@@ -6,8 +6,8 @@ import { join } from 'node:path';
 // Exercise the default (file) storage backend with a throwaway data path.
 let dir: string;
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'procureiq-db-'));
-  process.env.PROCUREIQ_DATA_PATH = join(dir, 'data.json');
+  dir = mkdtempSync(join(tmpdir(), 'corven-db-'));
+  process.env.CORVEN_DATA_PATH = join(dir, 'data.json');
   delete process.env.DATABASE_URL;
 });
 afterEach(() => rmSync(dir, { recursive: true, force: true }));

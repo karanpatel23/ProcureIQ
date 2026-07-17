@@ -38,7 +38,7 @@ export async function sendPasswordResetEmail(request: Request, to: string, token
   }
   return sendEmail({
     to,
-    subject: 'Reset your ProcureIQ password',
-    text: `We received a request to reset the password for your ProcureIQ account.\n\nChoose a new password using this link:\n${url}\n\nThis link expires in 1 hour and can be used once. If you did not request a reset, you can safely ignore this email — your password will not change.`,
+    subject: 'Reset your Corven password',
+    text: `We received a request to reset the password for your Corven account.\n\nChoose a new password using this link:\n${url}\n\nThis link expires in 1 hour and can be used once. If you did not request a reset, you can safely ignore this email — your password will not change.`,
   });
 }

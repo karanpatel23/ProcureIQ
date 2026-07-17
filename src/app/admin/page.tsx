@@ -1,7 +1,7 @@
 import { requirePageInternalAdmin } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 
-export const metadata = { title: 'Internal admin | ProcureIQ' };
+export const metadata = { title: 'Internal admin | Corven' };
 
 export default async function AdminPage() {
   await requirePageInternalAdmin();

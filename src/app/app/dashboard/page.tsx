@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { requirePageWorkspace } from '@/lib/server/auth';
 import { readDb } from '@/lib/server/db';
 
-export const metadata = { title: 'Dashboard', description: 'ProcureIQ workspace dashboard.' };
+export const metadata = { title: 'Dashboard', description: 'Corven workspace dashboard.' };
 
 export default async function DashboardPage() {
   const { user, workspace, membership } = await requirePageWorkspace();

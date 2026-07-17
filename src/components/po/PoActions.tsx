@@ -67,7 +67,7 @@ export function PoActions({ rfqId, poId, status }: { rfqId: string; poId: string
         <button className="button secondary" type="button" onClick={runChecks} disabled={running}>{running ? 'Checking…' : checks ? 'Re-run AI checks' : 'Run AI checks'}</button>
         <button className="button primary" type="button" onClick={send} disabled={sending || !approved} title={approved ? '' : 'Approve the PO before sending'}>{sending ? 'Sending…' : 'Send to supplier'}</button>
       </div>
-      {!approved && <p className="form-hint">Approve the PO to enable sending. ProcureIQ never sends a PO before human approval.</p>}
+      {!approved && <p className="form-hint">Approve the PO to enable sending. Corven never sends a PO before human approval.</p>}
     </section>
   );
 }

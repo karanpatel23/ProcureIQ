@@ -2,7 +2,7 @@ import { FinalCta } from '@/components/site';
 
 export const metadata = {
   title: 'Security and Trust',
-  description: 'The ProcureIQ security model: workspace boundaries, access control, human approval, auditability, source-aware review, and responsible AI.',
+  description: 'The Corven security model: workspace boundaries, access control, human approval, auditability, source-aware review, and responsible AI.',
 };
 
 const sections = [
@@ -21,7 +21,7 @@ export default function SecurityPage() {
       <section className="page-hero section-shell compact">
         <p className="eyebrow">Security and trust</p>
         <h1>Controls for sensitive supplier pricing and purchasing decisions.</h1>
-        <p>ProcureIQ is built around reviewable drafts, source evidence, workspace boundaries, and auditability — not autonomous purchasing.</p>
+        <p>Corven is built around reviewable drafts, source evidence, workspace boundaries, and auditability — not autonomous purchasing.</p>
       </section>
       <section className="section-shell module-list">
         {sections.map(([num, title, body]) => (
@@ -36,7 +36,7 @@ export default function SecurityPage() {
           <p className="eyebrow">Compliance posture</p>
           <h2>Honest about where we are.</h2>
           <p className="lead">
-            ProcureIQ is an early-stage product and does not yet hold formal certifications. We publish the controls
+            Corven is an early-stage product and does not yet hold formal certifications. We publish the controls
             above because they are implemented today, and we are happy to walk security teams through the architecture
             during evaluation.
           </p>
