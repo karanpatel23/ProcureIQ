@@ -1,9 +1,28 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import { Footer, Header } from '@/components/site';
 import { SiteAnalytics } from '@/components/site-analytics';
 import { env } from '@/lib/server/env';
 import { brand, siteUrl, structuredData } from '@/lib/seo';
 import './globals.css';
+
+// Self-hosted brand typography (SIL OFL, licenses alongside the files).
+// Instrument Sans carries all UI/body text; Instrument Serif is reserved
+// for display headlines. Exposed as CSS variables consumed in globals.css.
+const fontSans = localFont({
+  src: [{ path: '../fonts/instrument-sans-variable.woff2', weight: '100 900', style: 'normal' }],
+  variable: '--font-sans-brand',
+  display: 'swap',
+});
+
+const fontDisplay = localFont({
+  src: [
+    { path: '../fonts/instrument-serif-400.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/instrument-serif-400-italic.woff2', weight: '400', style: 'italic' },
+  ],
+  variable: '--font-display-brand',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -23,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${fontSans.variable} ${fontDisplay.variable}`}>
       <body>
         <Header />
         {children}

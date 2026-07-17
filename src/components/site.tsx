@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { CinematicBackdrop } from '@/components/cinematic-backdrop';
 import { MobileNav } from '@/components/mobile-nav';
 
 export const navItems = [
@@ -111,27 +110,70 @@ export function ProductFilm() {
   );
 }
 
+/* ------------------------------------------------------------------
+   The Line — the signature hero motif. A purchase order travels one
+   continuous line through ingestion → extraction → match, and the line
+   ends at the only warm moment on the page: the human approval.
+   Pure SVG + CSS/SMIL, no WebGL, static under prefers-reduced-motion.
+------------------------------------------------------------------- */
+const LINE_PATH = 'M 0 92 C 87 92, 123 76, 210 76 C 331 76, 379 102, 500 102 C 621 102, 669 70, 790 70 C 911 70, 959 90, 1080 90';
+
+export function HeroLine() {
+  const nodes = [
+    { x: 210, y: 76 },
+    { x: 500, y: 102 },
+    { x: 790, y: 70 },
+  ] as const;
+
+  return (
+    <div className="hero-line" aria-label="A purchase order moves through ingestion, extraction, and match; a person approves at the end">
+      <svg viewBox="0 52 1160 66" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="line-g" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#7d8ba1" stopOpacity="0" />
+            <stop offset="0.1" stopColor="#7d8ba1" />
+            <stop offset="0.8" stopColor="#7d8ba1" />
+            <stop offset="1" stopColor="#c97b5a" />
+          </linearGradient>
+        </defs>
+        <path className="line-path" d={LINE_PATH} pathLength={1} stroke="url(#line-g)" strokeWidth="1.6" />
+        {nodes.map(({ x, y }) => (
+          <g className="line-node" key={x}>
+            <circle cx={x} cy={y} r="5" fill="var(--bg-0)" stroke="#7d8ba1" strokeWidth="1.6" />
+            <circle cx={x} cy={y} r="1.8" fill="#a7b4c9" />
+          </g>
+        ))}
+        <g className="line-node">
+          <circle className="line-pulse" cx="1080" cy="90" r="9" fill="none" stroke="#c97b5a" strokeWidth="1.4" />
+          <circle cx="1080" cy="90" r="6.5" fill="var(--bg-0)" stroke="#c97b5a" strokeWidth="1.8" />
+          <circle cx="1080" cy="90" r="2.4" fill="#e0997a" />
+        </g>
+        <circle className="line-traveler" r="3.4" fill="#cdd2da">
+          <animateMotion dur="7s" begin="3.2s" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.62;1" path={LINE_PATH} />
+        </circle>
+      </svg>
+      <div className="line-labels" aria-hidden="true">
+        <span style={{ left: '18.1%' }}>Ingest</span>
+        <span style={{ left: '43.1%' }}>Extract</span>
+        <span style={{ left: '68.1%' }}>Match</span>
+        <span className="ember" style={{ left: '93.1%' }}>You approve</span>
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   return (
-    <section className="cine-hero">
-      <div className="cine-bg" aria-hidden="true">
-        <CinematicBackdrop />
-        <span className="cine-card card-1" />
-        <span className="cine-card card-2" />
-        <span className="cine-card card-3" />
-        <span className="cine-card card-4" />
-        <i className="cine-grain" />
-      </div>
-      <div className="cine-center">
-        <p className="cine-kicker">The AI decision layer for procurement</p>
-        <h1 className="cine-title">Procurement without guesswork.</h1>
-        <p className="cine-sub">Supplier quotes, exceptions, and approvals — turned into decisions your team can stand behind.</p>
-        <div className="hero-actions cine-actions">
-          <Link className="button primary" href="/demo-workflow" data-track="hero_live_demo">Explore the live demo</Link>
-          <Link className="button secondary" href="/demo" data-track="hero_book_demo">Book a demo</Link>
+    <section className="ink-hero">
+      <div className="ink-hero-center">
+        <p className="ink-kicker">The AI decision layer for procurement</p>
+        <h1 className="ink-title">Procurement without <em>guesswork</em>.</h1>
+        <p className="ink-sub">AI reads every supplier quote, flags what&apos;s off, and drafts the order. <b className="ember-note">You approve.</b></p>
+        <div className="ink-cta">
+          <Link className="button primary" href="/demo-workflow" data-track="hero_live_demo">See it work</Link>
         </div>
       </div>
-      <a className="cine-scroll" href="#product-film" aria-label="Scroll to product preview"><span>Scroll</span><i /></a>
+      <HeroLine />
     </section>
   );
 }
