@@ -11,8 +11,8 @@ export async function POST() {
     const { user } = await requireUser();
     const result = await sendEmail({
       to: user.email,
-      subject: 'ProcureIQ test email — your configuration works',
-      text: `This is a test email from your ProcureIQ deployment.\n\nIf you are reading this in your inbox, RESEND_API_KEY and EMAIL_FROM are configured correctly and password resets, verification, welcome emails, and RFQ sending will all deliver.\n\n— ProcureIQ`,
+      subject: 'Corven test email — your configuration works',
+      text: `This is a test email from your Corven deployment.\n\nIf you are reading this in your inbox, RESEND_API_KEY and EMAIL_FROM are configured correctly and password resets, verification, welcome emails, and RFQ sending will all deliver.\n\n— Corven`,
     });
     return jsonOk({ configured: emailProviderConfigured(), ...result });
   } catch (error) { return handleApiError(error); }

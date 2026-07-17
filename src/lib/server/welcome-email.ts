@@ -11,7 +11,7 @@ import { sendEmail } from './email';
  */
 function baseUrl(request: Request): string {
   if (env.APP_URL) return env.APP_URL.replace(/\/$/, '');
-  try { return new URL(request.url).origin; } catch { return 'https://procureiqs.com'; }
+  try { return new URL(request.url).origin; } catch { return 'https://corven.com'; }
 }
 
 function firstNameOf(name: string): string {
@@ -21,12 +21,12 @@ function firstNameOf(name: string): string {
 
 export function buildWelcomeEmail(name: string, ctaUrl: string) {
   const first = firstNameOf(name);
-  const subject = `Welcome to ProcureIQ, ${first} — your workspace is ready`;
+  const subject = `Welcome to Corven, ${first} — your workspace is ready`;
 
   const text = [
-    `Welcome to ProcureIQ, ${first}.`,
+    `Welcome to Corven, ${first}.`,
     ``,
-    `ProcureIQ is your AI decision layer for procurement — supplier quotes, exceptions, and approvals brought into one clear, human-controlled workflow.`,
+    `Corven is your AI decision layer for procurement — supplier quotes, exceptions, and approvals brought into one clear, human-controlled workflow.`,
     ``,
     `Your first step: set up your workspace.`,
     ctaUrl,
@@ -39,11 +39,11 @@ export function buildWelcomeEmail(name: string, ctaUrl: string) {
     `If there's anything I can help with, just reply to this email — it reaches me directly.`,
     ``,
     `Karan Patel`,
-    `Founder, ProcureIQ`,
+    `Founder, Corven`,
   ].join('\n');
 
   const html = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Welcome to ProcureIQ</title></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Welcome to Corven</title></head>
 <body style="margin:0;padding:0;background:#f4f5f7;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Set up your workspace and run your first supplier quote comparison in minutes.</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f5f7;padding:32px 16px;">
@@ -52,12 +52,12 @@ export function buildWelcomeEmail(name: string, ctaUrl: string) {
         <tr><td style="background:#0e1116;padding:22px 32px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
             <td style="width:34px;"><div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,#9db0cc,#6b7c98);color:#0e1116;font-weight:800;font-size:20px;text-align:center;line-height:34px;">P</div></td>
-            <td style="padding-left:12px;color:#e9e6e7;font-size:19px;font-weight:700;letter-spacing:-0.2px;">ProcureIQ</td>
+            <td style="padding-left:12px;color:#e9e6e7;font-size:19px;font-weight:700;letter-spacing:-0.2px;">Corven</td>
           </tr></table>
         </td></tr>
         <tr><td style="padding:38px 40px 8px;">
-          <h1 style="margin:0 0 14px;font-size:24px;line-height:1.25;color:#12161d;font-weight:800;letter-spacing:-0.4px;">Welcome to ProcureIQ, ${first}.</h1>
-          <p style="margin:0 0 22px;font-size:15.5px;line-height:1.65;color:#41474f;">ProcureIQ is your AI decision layer for procurement — supplier quotes, exceptions, and approvals brought into one clear, <strong style="color:#12161d;">human-controlled</strong> workflow.</p>
+          <h1 style="margin:0 0 14px;font-size:24px;line-height:1.25;color:#12161d;font-weight:800;letter-spacing:-0.4px;">Welcome to Corven, ${first}.</h1>
+          <p style="margin:0 0 22px;font-size:15.5px;line-height:1.65;color:#41474f;">Corven is your AI decision layer for procurement — supplier quotes, exceptions, and approvals brought into one clear, <strong style="color:#12161d;">human-controlled</strong> workflow.</p>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 30px;"><tr><td style="border-radius:10px;background:#2c3a55;">
             <a href="${ctaUrl}" style="display:inline-block;padding:13px 28px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px;">Set up your workspace →</a>
           </td></tr></table>
@@ -78,11 +78,11 @@ export function buildWelcomeEmail(name: string, ctaUrl: string) {
         <tr><td style="padding:24px 40px 36px;">
           <div style="border-top:1px solid #eceef1;padding-top:22px;">
             <p style="margin:0 0 18px;font-size:14.5px;line-height:1.6;color:#41474f;">If there's anything I can help with, just reply to this email — it reaches me directly.</p>
-            <p style="margin:0;font-size:14.5px;line-height:1.5;color:#1a1f27;"><strong>Karan Patel</strong><br><span style="color:#8a919b;">Founder, ProcureIQ</span></p>
+            <p style="margin:0;font-size:14.5px;line-height:1.5;color:#1a1f27;"><strong>Karan Patel</strong><br><span style="color:#8a919b;">Founder, Corven</span></p>
           </div>
         </td></tr>
         <tr><td style="background:#f7f8fa;padding:18px 40px;border-top:1px solid #eceef1;">
-          <p style="margin:0;font-size:12px;line-height:1.5;color:#9aa1ab;">You're receiving this because you created a ProcureIQ account. ProcureIQ — the AI decision layer for procurement.</p>
+          <p style="margin:0;font-size:12px;line-height:1.5;color:#9aa1ab;">You're receiving this because you created a Corven account. Corven — the AI decision layer for procurement.</p>
         </td></tr>
       </table>
     </td></tr>

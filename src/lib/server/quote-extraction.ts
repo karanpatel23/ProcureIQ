@@ -158,5 +158,5 @@ export async function extractQuote(sourceText: string, fallbackSupplierName?: st
     }
   }
   const local = runQuoteExtraction(sourceText, fallbackSupplierName);
-  return { ...local, modelProvider: aiEnv.AI_PROVIDER === 'anthropic' ? 'procureiq-local-extractor (claude fallback)' : 'procureiq-local-extractor' };
+  return { ...local, modelProvider: aiEnv.AI_PROVIDER === 'anthropic' ? 'corven-local-extractor (claude fallback)' : 'corven-local-extractor' };
 }

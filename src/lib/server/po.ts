@@ -2,11 +2,11 @@ import { createId, now } from './db';
 import type { Database, Rfq, Workspace } from './schema';
 
 const value = (field: any) => field?.value ?? null;
-// Sequential, per-workspace PO references (PIQ-2026-0001, -0002…). Computed
+// Sequential, per-workspace PO references (CRV-2026-0001, -0002…). Computed
 // inside the storage transaction, so concurrent creates cannot collide.
 function nextPoNumber(db: Database, workspaceId: string): string {
   const year = new Date().getFullYear();
-  const prefix = `PIQ-${year}-`;
+  const prefix = `CRV-${year}-`;
   const existing = db.purchaseOrderDrafts.filter((po: any) => po.workspaceId === workspaceId);
   let n = existing.length + 1;
   const taken = new Set(existing.map((po: any) => po.poNumber));
