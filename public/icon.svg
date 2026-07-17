@@ -7,7 +7,7 @@
   </defs>
   <rect width="512" height="512" rx="112" fill="#0e1116"/>
   <rect x="1" y="1" width="510" height="510" rx="111" fill="none" stroke="#2a323f" stroke-width="2"/>
-  <path d="M170 150h96c50 0 84 32 84 80s-34 80-84 80h-44v72h-48V150zm48 116h42c22 0 36-14 36-36s-14-36-36-36h-42v72z" fill="url(#g)"/>
-  <circle cx="330" cy="330" r="46" fill="none" stroke="url(#g)" stroke-width="20"/>
-  <line x1="360" y1="360" x2="392" y2="392" stroke="url(#g)" stroke-width="22" stroke-linecap="round"/>
+  <!-- Corven C: an open arc that watches over the mark's still point -->
+  <path d="M 352 158 A 138 138 0 1 0 352 354" fill="none" stroke="url(#g)" stroke-width="52" stroke-linecap="round"/>
+  <circle cx="330" cy="256" r="27" fill="url(#g)"/>
 </svg>

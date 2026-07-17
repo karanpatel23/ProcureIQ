@@ -51,7 +51,7 @@ export function buildWelcomeEmail(name: string, ctaUrl: string) {
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border:1px solid #e6e8ec;border-radius:16px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
         <tr><td style="background:#0e1116;padding:22px 32px;">
           <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-            <td style="width:34px;"><div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,#9db0cc,#6b7c98);color:#0e1116;font-weight:800;font-size:20px;text-align:center;line-height:34px;">P</div></td>
+            <td style="width:34px;"><div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(150deg,#9db0cc,#6b7c98);color:#0e1116;font-weight:800;font-size:20px;text-align:center;line-height:34px;">C</div></td>
             <td style="padding-left:12px;color:#e9e6e7;font-size:19px;font-weight:700;letter-spacing:-0.2px;">Corven</td>
           </tr></table>
         </td></tr>
