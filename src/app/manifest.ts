@@ -3,8 +3,8 @@ import { brand } from '@/lib/seo';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `ProcureIQ — ${brand.tagline}`,
-    short_name: 'ProcureIQ',
+    name: `Corven — ${brand.tagline}`,
+    short_name: 'Corven',
     description: brand.description,
     start_url: '/',
     display: 'standalone',
