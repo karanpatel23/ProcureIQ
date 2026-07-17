@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const required = ['AUTH_SECRET', 'PROCUREIQ_DATA_PATH', 'QUOTE_STORAGE_PATH', 'MAX_UPLOAD_BYTES', 'ALLOWED_UPLOAD_MIME_TYPES'];
+const required = ['AUTH_SECRET', 'CORVEN_DATA_PATH', 'QUOTE_STORAGE_PATH', 'MAX_UPLOAD_BYTES', 'ALLOWED_UPLOAD_MIME_TYPES'];
 const envExample = readFileSync('.env.example', 'utf8');
 const missing = required.filter((key) => !envExample.includes(`${key}=`));
 if (missing.length) throw new Error(`.env.example is missing: ${missing.join(', ')}`);
